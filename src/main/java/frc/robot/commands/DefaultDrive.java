@@ -16,7 +16,7 @@ public class DefaultDrive extends CommandBase {
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
-		addRequirements(swerve);
+		addRequirements(SWERVE);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class DefaultDrive extends CommandBase {
 		rotationalVelocity = rotationalVelocity * maxSpeed;
 
 
-		swerve.drive(xVelocity, yVelocity, rotationalVelocity);
+		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 	}
 
 	// Returns true when the command should end.

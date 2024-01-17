@@ -6,6 +6,7 @@ import static frc.robot.RobotContainer.*;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -36,7 +37,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	 */
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds chassisSpeeds =
-				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, imu.yaw());
+				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, PIGEON.getYawAsRotation2d());
 
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
 		for (int i = 0; i < modules.length; i++) {
@@ -51,11 +52,25 @@ public class SwerveSubsystem extends SubsystemBase {
 		}
 	}
 
-	public void getOffsets() {
+	public SwerveDriveKinematics getKinematics() { return kinematics; }
+
+	public SwerveModulePosition[] getPositions(){
+		SwerveModulePosition[] swerveModulePositions = new SwerveModulePosition[4];
+
+		for (int i = 0; i < modules.length; i++) {
+			SwerveModule module = modules[i];
+
+			swerveModulePositions[i] = module.getPosition();
+		}
+
+		return swerveModulePositions;
+	}
+
+	public void fixOffsets() {
 		for (SwerveModule module : modules) module.fixOffset();
 	}
 
 	public Command printOffsets() {
-		return new InstantCommand(this::getOffsets, this);
+		return new InstantCommand(this::fixOffsets, this);
 	}
 }

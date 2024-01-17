@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.commands.DefaultDrive;
-import frc.robot.subsystems.IMU;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -20,9 +20,9 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	public static final SwerveSubsystem swerve = new SwerveSubsystem();
+	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 
-	public static final IMU imu = new IMU();
+	public static final Pigeon PIGEON = new Pigeon();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final CommandXboxController driveController =
@@ -44,9 +44,9 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		swerve.setDefaultCommand(new DefaultDrive());
+		SWERVE.setDefaultCommand(new DefaultDrive());
 
-		driveController.a().onTrue(swerve.printOffsets());
-		driveController.x().onTrue(new InstantCommand(() -> imu.zeroYaw()));
+		driveController.a().onTrue(SWERVE.printOffsets());
+		driveController.x().onTrue(new InstantCommand(() -> PIGEON.zeroYaw()));
 	}
 }

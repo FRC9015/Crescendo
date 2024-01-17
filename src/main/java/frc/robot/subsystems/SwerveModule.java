@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConfiguration;
@@ -79,5 +80,9 @@ public class SwerveModule {
 
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
+	}
+
+	public SwerveModulePosition getPosition() {
+		return new SwerveModulePosition(); // TODO: add math to get position
 	}
 }
