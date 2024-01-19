@@ -3,9 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.Constants;
-
-import static java.lang.Math.*;
-
 import edu.wpi.first.math.util.Units;
 
 /**
