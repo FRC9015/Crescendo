@@ -1,7 +1,4 @@
 package frc.robot.Constants;
-
-import static java.lang.Math.*;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public enum SwerveModuleConfiguration {
