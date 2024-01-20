@@ -82,7 +82,7 @@ public class SwerveModule {
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
 	}
 
-	public SwerveModulePosition getPosition() {
-		return new SwerveModulePosition(); // TODO: add math to get position
+	public SwerveModulePosition getPosition () {
+		return new SwerveModulePosition(driveEncoder.getPosition(), getDirection());
 	}
 }
