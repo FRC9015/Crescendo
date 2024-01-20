@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
+import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
@@ -23,6 +24,9 @@ public class RobotContainer {
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 
 	public static final Pigeon PIGEON = new Pigeon();
+
+	// Replace with CommandPS4Controller or CommandJoystick if needed
+	private final LimelightInterface limelightInterface = new LimelightInterface();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {

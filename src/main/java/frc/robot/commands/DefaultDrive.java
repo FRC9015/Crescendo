@@ -34,7 +34,7 @@ public class DefaultDrive extends Command {
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
-		double sign = (DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Blue) ? 1.0 : -1.0);
+		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
 		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
 		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
