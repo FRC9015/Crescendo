@@ -9,6 +9,8 @@ import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -29,11 +31,13 @@ public class DefaultDrive extends Command {
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
-		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed;
-		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed;
-		rotationalVelocity = rotationalVelocity * maxSpeed;
+		double sign = (DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Blue) ? 1.0 : -1.0);
 
-
+		
+		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
+		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
+		rotationalVelocity = rotationalVelocity * angularSpeed * angularMultiplier;
+		
 		swerve.drive(xVelocity, yVelocity, rotationalVelocity);
 	}
 
