@@ -4,13 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +28,9 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
+
+		SWERVE.init(new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
+		SWERVE.initShuffleboard();
 	}
 
 	/**

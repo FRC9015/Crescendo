@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
 import static java.lang.Math.*;
@@ -61,7 +61,13 @@ public class SwerveModule {
 		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
 				.minus(encoderOffset);
 	}
+	public SwerveModulePosition getPosition(){
+		return new SwerveModulePosition(getDriveDistance(), getDirection());
 
+	}
+	public double getDriveDistance(){
+		return driveEncoder.getPosition() / gearRatio*2*Math.PI*Units.inchesToMeters(2);
+	}
 	public void setState(SwerveModuleState state) {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());
 	}
@@ -71,7 +77,7 @@ public class SwerveModule {
 				+ getDirection().plus(encoderOffset).getRotations());
 	}
 
-	public void periodic() {
+	public void teleop() {
 		if (targetState == null) return;
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;
@@ -80,9 +86,5 @@ public class SwerveModule {
 
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
-	}
-
-	public SwerveModulePosition getPosition () {
-		return new SwerveModulePosition(driveEncoder.getPosition(), getDirection());
 	}
 }
