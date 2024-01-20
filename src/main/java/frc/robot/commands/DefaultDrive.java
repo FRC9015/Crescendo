@@ -9,10 +9,12 @@ import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.InputManager;
 
 /** An example command that uses an example subsystem. */
-public class DefaultDrive extends CommandBase {
+public class DefaultDrive extends Command {
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
@@ -22,9 +24,10 @@ public class DefaultDrive extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		double xVelocity = driveController.getLeftX();
-		double yVelocity = -driveController.getLeftY();
-		double rotationalVelocity = -driveController.getRightX();
+		Translation2d moveVelocity = InputManager.getInstance().getSwerveVelocity2D();
+		double xVelocity = moveVelocity.getX();
+		double yVelocity = -moveVelocity.getY();
+		double rotationalVelocity = InputManager.getInstance().getSwerveRotationalVelocity();
 		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);

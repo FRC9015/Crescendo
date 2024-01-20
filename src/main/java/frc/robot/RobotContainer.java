@@ -24,10 +24,6 @@ public class RobotContainer {
 
 	public static final Pigeon PIGEON = new Pigeon();
 
-	// Replace with CommandPS4Controller or CommandJoystick if needed
-	public static final CommandXboxController driveController =
-			new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
@@ -46,7 +42,7 @@ public class RobotContainer {
 	private void configureBindings() {
 		SWERVE.setDefaultCommand(new DefaultDrive());
 
-		driveController.a().onTrue(SWERVE.printOffsets());
-		driveController.x().onTrue(new InstantCommand(() -> PIGEON.zeroYaw()));
+		InputManager.getInstance().setSwervePrintOffsetButton(SWERVE.printOffsets());
+		InputManager.getInstance().setZeroGyroButton(new InstantCommand(() -> PIGEON.zeroYaw()));
 	}
 }
