@@ -12,6 +12,8 @@ import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.IMU;
 import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.SelfDrive.AmpSelfDrive;
+import frc.robot.subsystems.SelfDrive.SpeakerSelfDrive;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
@@ -28,6 +30,8 @@ public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface limelightInterface = new LimelightInterface();
+	private final AmpSelfDrive AmpSelfDrive = new AmpSelfDrive(driveController, limelightInterface, swerve);
+	private final SpeakerSelfDrive SpeakerSelfDrive = new SpeakerSelfDrive(driveController, limelightInterface, swerve);
 	public static final CommandXboxController driveController =
 			new CommandXboxController(OperatorConstants.kDriverControllerPort);
 

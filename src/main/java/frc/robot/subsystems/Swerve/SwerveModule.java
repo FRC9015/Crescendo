@@ -22,7 +22,7 @@ public class SwerveModule {
 	private RelativeEncoder driveEncoder;
 	private SwerveModuleState targetState;
 
-	private PIDController drivePID, turnPPID;
+	private PIDController drivePID, turnPID;
 	private String name;
 	private double kV = 3;
 
@@ -32,9 +32,9 @@ public class SwerveModule {
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
 		drivePID = new PIDController(3, 0, 0);
-		turnPPID = new PIDController(2, 0, 0);
+		turnPID = new PIDController(2, 0, 0);
         
-		turnPPID.enableContinuousInput(-PI, PI);
+		turnPID.enableContinuousInput(-PI, PI);
 		encoderOffset = config.offset;
 		drive.restoreFactoryDefaults();
 		turn.restoreFactoryDefaults();
@@ -85,6 +85,13 @@ public class SwerveModule {
 				* targetState.speedMetersPerSecond;
 
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
-		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
+		turn.setVoltage(turnPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
+	}
+	public void drivePID(double current,double target){
+		drive.setVoltage(drivePID.calculate(current, target) + target * kV);
+
+	}
+	public void turnPID(){
+		turn.setVoltage(turnPID.calculate(getPosition().distanceMeters));
 	}
 }

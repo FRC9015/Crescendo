@@ -28,9 +28,9 @@ public class DefaultDrive extends Command {
 		double xVelocity = driveController.getLeftX();
 		double yVelocity = -driveController.getLeftY();
 		double rotationalVelocity = -driveController.getRightX();
-		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
+		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.15);
 		double speed = Math.hypot(xVelocity, yVelocity);
-		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
+		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.15);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
