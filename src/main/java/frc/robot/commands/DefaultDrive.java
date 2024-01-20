@@ -9,6 +9,7 @@ import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +39,9 @@ public class DefaultDrive extends Command {
 		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
 		rotationalVelocity = rotationalVelocity * angularSpeed * angularMultiplier;
 		
-		swerve.drive(xVelocity, yVelocity, rotationalVelocity);
+		ChassisSpeeds speeds =
+				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, swerve.pose_est.getEstimatedPosition().getRotation());
+		swerve.drive(speeds);
 	}
 
 	// Returns true when the command should end.

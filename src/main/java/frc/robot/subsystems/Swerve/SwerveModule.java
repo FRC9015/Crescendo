@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
 import static java.lang.Math.*;
@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConfiguration;
@@ -60,7 +61,13 @@ public class SwerveModule {
 		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
 				.minus(encoderOffset);
 	}
+	public SwerveModulePosition getPosition(){
+		return new SwerveModulePosition(getDriveDistance(), getDirection());
 
+	}
+	public double getDriveDistance(){
+		return driveEncoder.getPosition() / gearRatio*2*Math.PI*Units.inchesToMeters(2);
+	}
 	public void setState(SwerveModuleState state) {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());
 	}
@@ -70,7 +77,7 @@ public class SwerveModule {
 				+ getDirection().plus(encoderOffset).getRotations());
 	}
 
-	public void periodic() {
+	public void teleop() {
 		if (targetState == null) return;
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;
