@@ -23,6 +23,8 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.SelfDrive.AmpSelfDrive;
+import frc.robot.subsystems.SelfDrive.SpeakerSelfDrive;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
@@ -42,6 +44,11 @@ public class RobotContainer {
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	SendableChooser<Command> pathChooser = new SendableChooser<>();
+	
+	private final AmpSelfDrive AmpSelfDrive = new AmpSelfDrive(driveController, LIMELIGHT_INTERFACE, SWERVE);
+	private final SpeakerSelfDrive SpeakerSelfDrive = new SpeakerSelfDrive(driveController, LIMELIGHT_INTERFACE, SWERVE);
+	public static final CommandXboxController driveController =
+			new CommandXboxController(0);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
