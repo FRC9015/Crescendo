@@ -12,6 +12,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
@@ -32,10 +34,11 @@ public class DefaultDrive extends Command {
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
-		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed;
-		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed;
-		rotationalVelocity = rotationalVelocity * maxSpeed;
+		double sign = (DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Blue) ? 1.0 : -1.0);
 
+		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
+		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
+		rotationalVelocity = rotationalVelocity * angularSpeed * angularMultiplier;
 
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 	}
