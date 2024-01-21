@@ -59,7 +59,7 @@ public class LimelightInterface extends SubsystemBase{
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         angleToGoalDegrees = limelightMountAngleDegrees - y;
-            theta = angleToGoalDegrees * (Math.PI / 180.0);
+        theta = angleToGoalDegrees * (Math.PI / 180.0);
         height = limelightLensHeightInches - goalHeightInches;
             if(tagCheck()){
             

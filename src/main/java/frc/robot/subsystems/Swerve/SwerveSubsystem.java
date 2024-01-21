@@ -246,5 +246,20 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
+	public void drive(double vx, double vy, double w, double preserve) {
+		dvl = vx - w * DriveTrainConstants.RADIUS;
+		dvr = vx + w * DriveTrainConstants.RADIUS;
+		dvm = vy;
+
+		double max = renormalize(vx, vy, w, preserve);
+
+		dvl /= max;
+		dvr /= max;
+		dvm /= max;
+	}
+	public void drive(double vx, double vy, double w) {
+		drive(vx, vy, w, 1);
+	}
+
 }
 	
