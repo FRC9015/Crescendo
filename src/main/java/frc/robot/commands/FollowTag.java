@@ -36,6 +36,6 @@ public class FollowTag extends Command{
    
     @Override
 	public void execute() {
-		 swerve.drive(new ChassisSpeeds(1+x,1+y,1-rotationalVelocity));
+		 SWERVE.drive(new ChassisSpeeds(1+x,1+y,1-rotationalVelocity));
 	}	
 }
