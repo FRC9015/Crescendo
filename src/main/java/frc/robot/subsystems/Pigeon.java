@@ -19,4 +19,6 @@ public class Pigeon {
 	public void zeroYaw() {
 		pigeon.setYaw(0);
 	}
+
+	public void resetYaw(double angle){ pigeon.setYaw(angle); }
 }

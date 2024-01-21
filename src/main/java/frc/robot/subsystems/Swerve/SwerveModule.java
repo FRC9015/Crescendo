@@ -66,7 +66,7 @@ public class SwerveModule {
 
 	}
 	public double getDriveDistance(){
-		return driveEncoder.getPosition() / gearRatio*2*Math.PI*Units.inchesToMeters(2);
+		return driveEncoder.getPosition() / gearRatio * 2 * Math.PI * Units.inchesToMeters(2);
 	}
 	public void setState(SwerveModuleState state) {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());

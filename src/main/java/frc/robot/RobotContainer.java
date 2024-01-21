@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
@@ -22,19 +23,19 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
-
 	public static final Pigeon PIGEON = new Pigeon();
+	public static final PoseEstimator POSE_ESTIMATOR =
+			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private final LimelightInterface limelightInterface = new LimelightInterface();
+	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
 
-		SWERVE.init(new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
-		SWERVE.initShuffleboard();
+
 	}
 
 	/**

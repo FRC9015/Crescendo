@@ -10,7 +10,7 @@ public class InputManager {
     private static InputManager Instance;
     private CommandXboxController driveController;
 
-    public InputManager(){
+    private InputManager(){
         driveController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     }
 
