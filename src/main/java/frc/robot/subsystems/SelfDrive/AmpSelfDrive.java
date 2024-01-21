@@ -6,13 +6,14 @@ import frc.robot.RobotSelf;
 import frc.robot.RobotSelf.RobotSelves;
 import frc.robot.Utils.Transform2d;
 import frc.robot.commands.FollowTag;
-import frc.robot.subsystems.IMU;
+
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.Swerve.SwerveModule;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
+import frc.robot.subsystems.Pigeon;
 
 import static frc.robot.RobotContainer.driveController;
-import static frc.robot.RobotContainer.swerve;
+import static frc.robot.RobotContainer.SWERVE;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,11 +26,11 @@ public class AmpSelfDrive extends SubsystemBase{
     private SwerveSubsystem drive;
     private LimelightInterface limelight;
     private CommandXboxController controller;
-    private IMU imu;
+    private Pigeon imu;
    
     
     //makes the subsystems exist and usable
-    public AmpSelfDrive(CommandXboxController drivecontroller, LimelightInterface limelight,SwerveSubsystem drive, IMU imu) {
+    public AmpSelfDrive(CommandXboxController drivecontroller, LimelightInterface limelight,SwerveSubsystem drive, Pigeon imu) {
         this.controller = drivecontroller;
         this.imu = imu;
         this.limelight = limelight;
@@ -71,7 +72,7 @@ public class AmpSelfDrive extends SubsystemBase{
                     diagonalDistance = limelight.getDiagonalDistance();
                     floorDistance = limelight.getFloorDistance();
                     // uses drive system to drive based on tag
-                    swerve.runFollowTag(x,y,area,diagonalDistance,floorDistance);
+                
                     
                     
                     
