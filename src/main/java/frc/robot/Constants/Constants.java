@@ -38,6 +38,10 @@ public final class Constants {
 		.getEntry().get().getDouble()/100;
 	}
 
+	public static class ShooterConstants {
+		
+	}
+
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
