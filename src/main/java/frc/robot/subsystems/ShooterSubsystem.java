@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase{
-    public ShooterSubsystem() {}
+    public ShooterSubsystem() {
+
+
+    }
 
     /**
      * Example command factory method.
@@ -30,6 +33,20 @@ public class ShooterSubsystem extends SubsystemBase{
       // Query some boolean state, such as a digital sensor.
       return false;
     }
+
+    public void resetShooter() {
+
+    }
+
+    public void pivotShooter() {
+
+    }
+
+    public void shootNote() {
+
+    }
+
+    
   
     @Override
     public void periodic() {
