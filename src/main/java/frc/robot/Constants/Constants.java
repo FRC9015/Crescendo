@@ -24,18 +24,6 @@ public final class Constants {
 	public static class SwerveConstants {
 		public static final double maxSpeed = Units.feetToMeters(16.6);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
-
-		public static final double speedMultiplier = Shuffleboard.getTab("Drive")
-		.add("Max Speed", 50)
-		.withWidget(BuiltInWidgets.kNumberSlider)
-		.withProperties(Map.of("min", 0, "max", 100)) // specify widget properties here
-		.getEntry().get().getDouble()/100;
-		
-		public static final double angularMultiplier = Shuffleboard.getTab("Drive")
-		.add("Max Angular Speed", 50)
-		.withWidget(BuiltInWidgets.kNumberSlider)
-		.withProperties(Map.of("min", 0, "max", 100)) // specify widget properties here
-		.getEntry().get().getDouble()/100;
 	}
 
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot

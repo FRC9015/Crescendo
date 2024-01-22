@@ -8,13 +8,30 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
+import java.util.Map;
+
 public class SwerveSubsystem extends SubsystemBase {
 
+	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
+			.add("Max Speed", .5)
+			.withWidget(BuiltInWidgets.kNumberSlider)
+			.withProperties(Map.of("min", 0, "max", 1));
+
+	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
+			.add("Max Angular Speed", .5)
+			.withWidget(BuiltInWidgets.kNumberSlider)
+			.withProperties(Map.of("min", 0, "max", 1));
+
+	private double speedMultiplier;
+	private double angularMultiplier;
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
 			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
@@ -51,6 +68,9 @@ public class SwerveSubsystem extends SubsystemBase {
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}
+
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble();
+		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	}
 
 	public void getOffsets() {
@@ -64,6 +84,13 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
-	
+
+	public double getSpeedMultiplier(){
+		return speedMultiplier;
+	}
+
+	public double getAngularMultiplier(){
+		return angularMultiplier;
+	}
 }
 	

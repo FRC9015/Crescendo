@@ -36,9 +36,9 @@ public class DefaultDrive extends Command {
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
-		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
-		rotationalVelocity = rotationalVelocity * angularSpeed * angularMultiplier;
+		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign;
+		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign;
+		rotationalVelocity = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
 
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 	}
