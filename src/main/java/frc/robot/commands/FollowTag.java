@@ -3,23 +3,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 
-
 import static frc.robot.RobotContainer.*;
-
 import static java.lang.Math.*;
-
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LimelightInterface;
 
-
-
-
-public class FollowTag extends CommandBase{
+public class FollowTag extends Command{
    
     private LimelightInterface limelight = new LimelightInterface();
-
     
+
 	public double fvx, fvy;
 
     private double x = limelight.getX();
@@ -38,14 +31,14 @@ public class FollowTag extends CommandBase{
 		else xPID.setI(0);
 		if (abs(yPID.getPositionError()) < 0.2) yPID.setI(0.5);
 		else yPID.setI(0);
-		if (abs(wPID.getPositionError()) < 20 * Math.PI / 180) wPID.setI(1);
+		if (abs(wPID.getPositionError()) < 20 * PI / 180) wPID.setI(1);
 		else wPID.setI(0);
 
-		double vx = xPID.calculate(x);
-		double vy = yPID.calculate(y);
-		double w = wPID.calculate(theta);
+		double vx = xPID.calculate(odom.now().x, x);
+		double vy = yPID.calculate(odom.now().y, y);
+		double w = wPID.calculate(odom.now().theta, theta);
 
-		double robot_angle = theta;
+		double robot_angle = odom.now().theta;
 		double vf = cos(robot_angle) * vx + sin(robot_angle) * vy;
 		double vs = -sin(robot_angle) * vx + cos(robot_angle) * vy;
 

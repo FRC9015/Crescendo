@@ -57,7 +57,9 @@ public class AmpSelfDrive extends SubsystemBase{
                     area = limelight.getArea();
                     diagonalDistance = limelight.getDiagonalDistance();
                     // uses drive system to drive based on tag
-                    drive.runFollowTag(x, y, area, diagonalDistance, floorDistance);
+                    new FollowTag();
+                    
+                    //drive.runFollowTag(x, y, area, diagonalDistance, floorDistance);
                     
                 }
             }

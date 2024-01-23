@@ -97,6 +97,9 @@ public class LimelightInterface extends SubsystemBase{
     public double getFloorDistance(){
         return floorDistance;
     }
+    public double getTheta(){
+        return theta;
+    }
     
     public boolean tagCheck(){
         if(getArea() > 0.1){
