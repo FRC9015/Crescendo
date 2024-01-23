@@ -17,12 +17,12 @@ import frc.robot.Utils.Transform2d;
 
 public class Odometry extends SubsystemBase{
     
-	private IMU imu;
+	private Pigeon imu;
     private SwerveSubsystem swerve;
 	private LimelightInterface limelight;
 	public SwerveDrivePoseEstimator pose_est;
 
-	public Odometry(IMU imu, SwerveSubsystem swerve, LimelightInterface limlight){
+	public Odometry(Pigeon imu, SwerveSubsystem swerve, LimelightInterface limlight){
 		this.imu = imu;
 		this.swerve = swerve;
 		this.limelight = limlight;
@@ -49,7 +49,7 @@ public class Odometry extends SubsystemBase{
     @Override
 	public void periodic() {
         
-        pose_est.update(imu.rotationYaw(),swerve.getPositions());
+        pose_est.update(imu.getYawAsRotation2d(),swerve.getPositions());
 			LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
 			
 			if(LimelightHelpers.getTV("limelight")){
@@ -76,7 +76,7 @@ public class Odometry extends SubsystemBase{
     public void init(Pose2d init_pose){
 		pose_est = new SwerveDrivePoseEstimator(
 			swerve.kinematics,
-			imu.rotationYaw(),
+			imu.getYawAsRotation2d(),
 			swerve.getPositions(),
 			init_pose,
 			VecBuilder.fill(0.1, 0.1, 0.1),
