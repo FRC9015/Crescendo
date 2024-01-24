@@ -2,6 +2,7 @@ package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 import edu.wpi.first.math.VecBuilder;
@@ -14,7 +15,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +44,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDrivePoseEstimator pose_est;
 
 	Field2d field = new Field2d();
+
+	
+	
 	
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
@@ -130,6 +136,8 @@ public class SwerveSubsystem extends SubsystemBase {
 			VecBuilder.fill(0.1, 0.1, 0.1));
 		
 	}
+
+	
 	
 }
 	

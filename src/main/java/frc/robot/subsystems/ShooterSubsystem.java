@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -11,19 +12,16 @@ public class ShooterSubsystem extends SubsystemBase{
 
 	public static final IMU gyro = new IMU();
 
-	private final LimelightInterface limInterface = new LimelightInterface();
-
-    public ShooterSubsystem() {
+	private final LimelightInterface limelight = new LimelightInterface();
 
 
-    }
 
     /**
      * Example command factory method.
      *
      * @return a command
      */
-    public Command exampleMethodCommand() {
+    public Command shootDisk() {
       // Inline construction of command goes here.
       // Subsystem::RunOnce implicitly requires `this` subsystem.
       return runOnce(
@@ -42,15 +40,20 @@ public class ShooterSubsystem extends SubsystemBase{
       return false;
     }
 
-    public void resetShooter() {
+    public Command resetShooter() {
+        //does nothing, needs to be changed later
+        return new InstantCommand();
+    }
+
+    public Command pivotShooter() {
+        //does nothing, needs to be changed later
+        return new InstantCommand();
 
     }
 
-    public void pivotShooter() {
-
-    }
-
-    public void shootNote() {
+    public Command shootNote() {
+        //does nothing, needs to be changed later
+        return new InstantCommand();
 
     }
 
