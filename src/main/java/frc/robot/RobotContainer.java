@@ -50,7 +50,9 @@ public class RobotContainer {
 	private void configureBindings() {
 		SWERVE.setDefaultCommand(new DefaultDrive());
 
-		InputManager.getInstance().setSwervePrintOffsetButton(SWERVE.printOffsets());
-		InputManager.getInstance().setZeroGyroButton(new InstantCommand(() -> PIGEON.zeroYaw()));
+		InputManager.getInstance().init(
+				InputManager.Button.A, SWERVE.printOffsets(),
+				InputManager.Button.X, new InstantCommand(() -> PIGEON.zeroYaw()),
+				InputManager.Button.B, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 	}
 }
