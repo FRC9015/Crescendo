@@ -49,7 +49,7 @@ public class Odometry extends SubsystemBase{
     @Override
 	public void periodic() {
         
-        pose_est.update(imu.yaw(),swerve.getPositions());
+        pose_est.update(imu.rotationYaw(),swerve.getPositions());
 			LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
 			
 			if(LimelightHelpers.getTV("limelight")){
@@ -76,7 +76,7 @@ public class Odometry extends SubsystemBase{
     public void init(Pose2d init_pose){
 		pose_est = new SwerveDrivePoseEstimator(
 			swerve.kinematics,
-			imu.yaw(),
+			imu.rotationYaw(),
 			swerve.getPositions(),
 			init_pose,
 			VecBuilder.fill(0.1, 0.1, 0.1),

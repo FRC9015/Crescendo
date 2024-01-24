@@ -21,6 +21,8 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 	public static class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
+
+		public static final double JOYSTICK_DEADZONE = 0.15;
 	}
 
 	public static class SwerveConstants {

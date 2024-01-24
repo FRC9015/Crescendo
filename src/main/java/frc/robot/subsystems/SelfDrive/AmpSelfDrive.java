@@ -4,11 +4,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotSelf;
 import frc.robot.RobotSelf.RobotSelves;
+import frc.robot.Utils.Transform2d;
 import frc.robot.commands.FollowTag;
+import frc.robot.subsystems.IMU;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.Swerve.SwerveModule;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
+
+import static frc.robot.RobotContainer.driveController;
+import static frc.robot.RobotContainer.swerve;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Utils.*;
 
 
 public class AmpSelfDrive extends SubsystemBase{
@@ -17,16 +25,21 @@ public class AmpSelfDrive extends SubsystemBase{
     private SwerveSubsystem drive;
     private LimelightInterface limelight;
     private CommandXboxController controller;
+    private IMU imu;
    
     
     //makes the subsystems exist and usable
-    public AmpSelfDrive(CommandXboxController drivecontroller, LimelightInterface limelight,SwerveSubsystem drive) {
+    public AmpSelfDrive(CommandXboxController drivecontroller, LimelightInterface limelight,SwerveSubsystem drive, IMU imu) {
         this.controller = drivecontroller;
-       
+        this.imu = imu;
         this.limelight = limelight;
         this.drive = drive;
         
     }
+    Transform2d target;
+    double rotationalVelocity = -driveController.getRightX();
+    double xVelocity = driveController.getLeftX();
+    double yVelocity = -driveController.getLeftY();
     
 	@Override
     public void periodic(){
@@ -57,9 +70,9 @@ public class AmpSelfDrive extends SubsystemBase{
                     area = limelight.getArea();
                     diagonalDistance = limelight.getDiagonalDistance();
                     // uses drive system to drive based on tag
-                    new FollowTag();
+                    swerve.drive(new ChassisSpeeds(1-xVelocity,1-yVelocity,1-imu.yaw()));
                     
-                    //drive.runFollowTag(x, y, area, diagonalDistance, floorDistance);
+                    
                     
                 }
             }
