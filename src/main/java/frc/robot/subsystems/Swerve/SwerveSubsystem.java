@@ -227,7 +227,6 @@ public class SwerveSubsystem extends SubsystemBase {
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	}
-
 	public void getOffsets() {
 		for (SwerveModule module : modules) module.fixOffset();
 	}

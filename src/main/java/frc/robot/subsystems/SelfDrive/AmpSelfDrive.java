@@ -69,8 +69,9 @@ public class AmpSelfDrive extends SubsystemBase{
                     y = limelight.getY();
                     area = limelight.getArea();
                     diagonalDistance = limelight.getDiagonalDistance();
+                    floorDistance = limelight.getFloorDistance();
                     // uses drive system to drive based on tag
-                    swerve.drive(new ChassisSpeeds(1-xVelocity,1-yVelocity,1-imu.yaw()));
+                    swerve.runFollowTag(x,y,area,diagonalDistance,floorDistance);
                     
                     
                     
