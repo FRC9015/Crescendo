@@ -33,6 +33,8 @@ public class DefaultDrive extends Command {
 
 	SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
+	SlewRateLimiter rotationOnlyfilter = new SlewRateLimiter(Math.PI/2);
+
 	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Speed", 0.5)
 		.withWidget(BuiltInWidgets.kNumberSlider)
@@ -48,18 +50,20 @@ public class DefaultDrive extends Command {
 		private double angularMultipiler; 
 	@Override
 	public void execute() {
-		double xVelocity = driveController.getLeftX();
-		double yVelocity = -driveController.getLeftY();
+		double LeftX = driveController.getLeftX();
+		double LeftY = -driveController.getLeftY();
 		double rotationalVelocity = -driveController.getRightX();
+
+
 		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.15);
-		double speed = Math.hypot(xVelocity, yVelocity);
+		double speed = Math.hypot(LeftX, LeftY);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.15);
-		double velocityDir = Math.atan2(yVelocity, xVelocity);
+		double velocityDir = Math.atan2(LeftY, LeftX); 
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
 		
-		xVelocity = filter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
-		yVelocity = filter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
+		double xVelocity = filter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
+		double yVelocity = filter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
 		rotationalVelocity = filter.calculate(rotationalVelocity * angularSpeed * angularMultipiler);
 		
 		ChassisSpeeds speeds =
