@@ -13,10 +13,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
 	private final LimelightInterface limelight = new LimelightInterface();
 
-    public boolean intakePivotState() {
+    public boolean isReadytoIntake() {
         //this does nothing, needs to be changed.
         return false;
     }
+
+    public boolean isReadyToHandoff() {
+        //this does nothing, needs to be changed.
+        return false;
+    }
+
+
     public Command intakeNote(){
         //this does nothing, needs to be changed.
         return new InstantCommand();

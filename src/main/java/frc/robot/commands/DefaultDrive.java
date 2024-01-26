@@ -33,7 +33,7 @@ public class DefaultDrive extends Command {
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 		
 		
-		private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
+	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Angular Speed", 0.5)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
