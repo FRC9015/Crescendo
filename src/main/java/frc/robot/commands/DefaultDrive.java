@@ -8,10 +8,16 @@ import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
+import java.util.Map;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -22,7 +28,24 @@ public class DefaultDrive extends Command {
 		addRequirements(swerve);
 	}
 
+
 	// Called every time the scheduler runs while the command is scheduled.
+
+	SlewRateLimiter filter = new SlewRateLimiter(0.5);
+
+	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
+		.add("Max Speed", 0.5)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
+		
+		
+	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
+		.add("Max Angular Speed", 50)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 100)); // specify widget properties here
+
+		private double speedMultiplier; 
+		private double angularMultipiler; 
 	@Override
 	public void execute() {
 		double xVelocity = driveController.getLeftX();
@@ -35,13 +58,19 @@ public class DefaultDrive extends Command {
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
 		
-		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
-		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign;
-		rotationalVelocity = rotationalVelocity * angularSpeed * angularMultiplier;
+		xVelocity = filter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
+		yVelocity = filter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * speedMultiplier * sign);
+		rotationalVelocity = filter.calculate(rotationalVelocity * angularSpeed * angularMultipiler);
 		
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, swerve.pose_est.getEstimatedPosition().getRotation());
 		swerve.drive(speeds);
+	}
+
+	public void periodic() {
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble()/100;
+		angularMultipiler = angularMultiplierWidget.getEntry().get().getDouble()/100;
+		
 	}
 
 	// Returns true when the command should end.
