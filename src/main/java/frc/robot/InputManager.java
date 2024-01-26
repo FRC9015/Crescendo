@@ -1,9 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.OperatorConstants;
 
 /**
@@ -14,22 +18,26 @@ import frc.robot.Constants.Constants.OperatorConstants;
 public class InputManager {
 
     public enum Button{
-        A,
-        B,
-        X,
-        Y,
-        LB,
-        RB,
-        LT,
-        RT
+        A_Button1(1),
+        B_Button2(2),
+        X_Button3(3),
+        Y_Button4(4),
+        LB_Button5(5),
+        RB_Button6(6);
+
+        public final int buttonID;
+
+        Button(int id){
+            buttonID = id;
+        }
     }
 
     private static InputManager Instance;
-    private final CommandXboxController driveController;
+    private CommandGenericHID driveController;
     private boolean hasBeenInitialized;
 
     private InputManager(){
-        driveController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+        driveController = new CommandGenericHID(OperatorConstants.kDriverControllerPort);
     }
 
     public static InputManager getInstance(){
@@ -72,23 +80,18 @@ public class InputManager {
     }
 
     private void setButtonCommand(Button button, Command command){
-        switch (button){
-            case A -> driveController.a().onTrue(command);
-            case B -> driveController.b().onTrue(command);
-            case X -> driveController.x().onTrue(command);
-            case Y -> driveController.y().onTrue(command);
-            case LB -> driveController.leftBumper().onTrue(command);
-            case RB -> driveController.rightBumper().onTrue(command);
-            case LT -> driveController.leftTrigger().onTrue(command);
-            case RT -> driveController.rightTrigger().onTrue(command);
-        }
+        driveController.button(button.buttonID).onTrue(command);
     }
 
     public Translation2d getSwerveVelocity2D(){
-        return new Translation2d(driveController.getLeftX(), -driveController.getLeftY());
+        return new Translation2d(driveController.getRawAxis(0), -driveController.getRawAxis(1));
     }
 
     public double getSwerveRotationalVelocity(){
-        return -driveController.getRightX();
+        if (driveController.getHID().getType() == GenericHID.HIDType.kXInputGamepad){
+            return -driveController.getRawAxis(4);
+        } else{
+            return -driveController.getRawAxis(2);
+        }
     }
 }
