@@ -19,14 +19,19 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
 	
-	SlewRateLimiter filter = new SlewRateLimiter(10);
-	
+	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(50);
+	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(50);
+	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(50);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
 		addRequirements(SWERVE);
 	}
-
+	public double exponentialCurve(double input){
+		double a = 1;
+		double b = 1;
+		return a*Math.pow(input, 3) + (b-a)*input;
+	}
 	
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
@@ -40,15 +45,14 @@ public class DefaultDrive extends Command {
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
-
-		xVelocity = filter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign);
-		System.out.println("X Velocity:" +xVelocity);
-
-		yVelocity = filter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
-		System.out.println("Y Velocity:" +yVelocity);
-
-		rotationalVelocity = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
-
+		
+		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign);
+		
+		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
+		
+		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
+		System.out.println("X:" +xVelocity+ " | Y:" + yVelocity + " | R: "+ rotationalVelocity);
+		
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 	}
 
