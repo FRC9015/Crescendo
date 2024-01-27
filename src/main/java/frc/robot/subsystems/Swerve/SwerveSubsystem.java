@@ -71,7 +71,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-		
+		speeds = ChassisSpeeds.discretize(speeds, 0.02)
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
