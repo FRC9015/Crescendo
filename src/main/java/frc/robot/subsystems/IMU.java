@@ -17,4 +17,25 @@ public class IMU {
 	public void zeroYaw() {
 		imu.setYaw(0);
 	}
+
+	public double getHeading() {
+        return Math.IEEEremainder(imu.getAngle(), 360);
+    }
+
+	public double getXVelocity() {
+		//includes acceleration due to gravity
+		return imu.getAccelerationX().getValueAsDouble();
+	}
+
+	public double getYVelocity() {
+		return imu.getAccelerationY().getValueAsDouble();
+	}
+
+	public double getRotationalVelocity() {
+		return imu.getAngularVelocityXDevice().getValueAsDouble() * (Math.PI/180);
+	}
+
+	public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(getHeading());
+    }
 }
