@@ -24,6 +24,12 @@ public final class Constants {
 	public static class SwerveConstants {
 		public static final double maxSpeed = Units.feetToMeters(16.6);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
+
+		
+	}
+
+	public static class ShooterConstants {
+
 	}
 
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot

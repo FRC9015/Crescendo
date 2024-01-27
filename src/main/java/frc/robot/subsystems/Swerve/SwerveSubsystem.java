@@ -10,6 +10,11 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import java.lang.Math.*;
+import java.util.Map;
+import java.util.Optional;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,6 +27,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,17 +45,24 @@ import java.util.Map;
 public class SwerveSubsystem extends SubsystemBase {
 
 	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
-			.add("Max Speed", .5)
-			.withWidget(BuiltInWidgets.kNumberSlider)
-			.withProperties(Map.of("min", 0, "max", 1));
-
+		.add("Max Speed", 0.5)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
+		
+		
 	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
-			.add("Max Angular Speed", .5)
-			.withWidget(BuiltInWidgets.kNumberSlider)
-			.withProperties(Map.of("min", 0, "max", 1));
+		.add("Max Angular Speed", 0.5)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 
-	private double speedMultiplier;
-	private double angularMultiplier;
+		private double speedMultiplier; 
+		private double angularMultiplier; 
+
+	Field2d field = new Field2d();
+
+	
+	
+	
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
 			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
@@ -143,9 +162,8 @@ public class SwerveSubsystem extends SubsystemBase {
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}
-
-		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble();
-		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble()/100;
+		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble()/100;
 	}
 
 	public void getOffsets() {
@@ -156,10 +174,6 @@ public class SwerveSubsystem extends SubsystemBase {
 		return new InstantCommand(this::getOffsets, this);
 	}
 
-	public SwerveDriveKinematics getKinematics(){
-		return kinematics;
-	}
-
 	public double getSpeedMultiplier(){
 		return speedMultiplier;
 	}
@@ -167,5 +181,13 @@ public class SwerveSubsystem extends SubsystemBase {
 	public double getAngularMultiplier(){
 		return angularMultiplier;
 	}
+
+	public SwerveDriveKinematics getKinematics(){
+		return kinematics;
+	}
+
+
+	
+
 }
 	

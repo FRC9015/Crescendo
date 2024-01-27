@@ -8,6 +8,8 @@ import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
+import java.util.Map;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,6 +18,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
@@ -34,6 +40,9 @@ public class DefaultDrive extends Command {
 		return a*Math.pow(input, 3) + (b-a)*input;
 	}
 	
+
+	
+
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
@@ -54,12 +63,15 @@ public class DefaultDrive extends Command {
 		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
 		
 		ChassisSpeeds speeds =
-				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, SWERVE.getCurrentPose().getRotation());
-		SWERVE.drive(speeds);	}
-
+				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
+		SWERVE.drive(speeds);
+	}
+	
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
 		return false;
 	}
+
+	
 }
