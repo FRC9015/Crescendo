@@ -30,6 +30,13 @@ public final class Constants {
 
 	}
 
+	public static class IntakeConstants {
+
+	}
+
+	public static class LEDConstants {
+
+	}
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
