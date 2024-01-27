@@ -31,9 +31,10 @@ public class SwerveModule {
 		drive = new CANSparkMax(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
-		drivePID = new PIDController(3, 0, 0);
-		turnPPID = new PIDController(2, 0, 0);
-        
+		drivePID = new PIDController(1.5, 0, 0);
+		turnPPID = new PIDController(3, 0, 0);
+        // drivePID current working values: p: 1.5, i:0, d:0
+		// turnPID current working values: p: 3, i: 0, d: 0
 		turnPPID.enableContinuousInput(-PI, PI);
 		encoderOffset = config.offset;
 		drive.restoreFactoryDefaults();

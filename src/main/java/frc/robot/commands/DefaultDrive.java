@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
@@ -51,9 +54,10 @@ public class DefaultDrive extends Command {
 		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
 		
 		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
-		System.out.println("X:" +xVelocity+ " | Y:" + yVelocity + " | R: "+ rotationalVelocity);
 		
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
+		
+		SWERVE.velocityGraphUpdate(xVelocity,yVelocity);
 	}
 
 	// Returns true when the command should end.
