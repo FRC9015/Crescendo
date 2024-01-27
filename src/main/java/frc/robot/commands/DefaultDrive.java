@@ -9,6 +9,7 @@ import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
@@ -17,12 +18,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
+	
+	SlewRateLimiter filter = new SlewRateLimiter(10);
+	
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
 		addRequirements(SWERVE);
 	}
 
+	
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
@@ -36,8 +41,12 @@ public class DefaultDrive extends Command {
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
 
-		xVelocity = cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign;
-		yVelocity = sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign;
+		xVelocity = filter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign);
+		System.out.println("X Velocity:" +xVelocity);
+
+		yVelocity = filter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
+		System.out.println("Y Velocity:" +yVelocity);
+
 		rotationalVelocity = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
 
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
