@@ -18,10 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj2.command.Command;
+
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
