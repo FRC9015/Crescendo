@@ -21,4 +21,23 @@ public class Pigeon {
 	}
 
 	public void resetYaw(double angle){ pigeon.setYaw(angle); }
+
+	public double getXVelocity() {
+		//includes acceleration due to gravity
+		return pigeon.getAccelerationX().getValueAsDouble();
+	}
+
+	public double getYVelocity() {
+		return pigeon.getAccelerationY().getValueAsDouble();
+	}
+
+	public double getZVelocity() {
+		return pigeon.getAccelerationZ().getValueAsDouble();
+	}
+
+	public double getRotationalVelocity() {
+		return pigeon.getAngularVelocityXDevice().getValueAsDouble() * (Math.PI/180);
+	}
+
+
 }

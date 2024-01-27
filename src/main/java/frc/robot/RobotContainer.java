@@ -4,10 +4,21 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
@@ -30,10 +41,34 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
+	SendableChooser<Command> pathChooser = new SendableChooser<>();
+
+	//Constants for path following
+	double xVelocity;
+	double yVelocity;
+	double rotationalVelocity;
+	double velocityDir;
+	double speed;
+	double deadbandSpeed;
+
+
+	double sign = (DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Blue) ? 1.0 : -1.0);
+
+
+		
+	double xVel;
+	double yVel;
+	double rotationalVel;
+	///////////
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
+		Shuffleboard.getTab("Autonomous").add(pathChooser);
+		
+		pathChooser.addOption("Path 1", SWERVE.followPathCommand("Example Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
+		pathChooser.addOption("Path 2", SWERVE.followPathCommand("New Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
 
 
 	}
@@ -55,4 +90,39 @@ public class RobotContainer {
 				InputManager.Button.X_Button3, new InstantCommand(() -> PIGEON.zeroYaw()),
 				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 	}
+
+	public void periodic() {
+		POSE_ESTIMATOR.periodic();
+
+		xVelocity = PIGEON.getXVelocity();
+		yVelocity = PIGEON.getYVelocity();
+		rotationalVelocity = PIGEON.getRotationalVelocity();
+
+		double velocityDir = Math.atan2(yVelocity, xVelocity);
+
+		double speed = Math.hypot(xVelocity, yVelocity);
+
+
+		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
+
+		xVel = cos(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
+	 	yVel = sin(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
+	 	rotationalVel = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
+	}
+
+	public double getxVel() {
+		return xVel;
+	}
+	
+	public double getyVel() {
+		return yVel;
+	}
+	
+	public double getrotationalVel() {
+		return rotationalVel;
+	}
+	
+	public Command getAutonomousCommand() {
+		return pathChooser.getSelected();
+	  }
 }

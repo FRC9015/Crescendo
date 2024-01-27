@@ -3,17 +3,29 @@ package frc.robot.subsystems.Swerve;
 import static frc.robot.Constants.Constants.*;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+import java.lang.Math.*;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 import java.util.Map;
@@ -51,6 +63,39 @@ public class SwerveSubsystem extends SubsystemBase {
         for (int i = 0; i < 4; i++) pos[i] = modules[i].getPosition();
         return pos;
     }
+	public ChassisSpeeds getChassisSpeeds(double xVelocity, double yVelocity, double rotationalVelocity) {
+		return ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
+}
+	public void drive(ChassisSpeeds speeds) {
+
+
+	SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+		for (int i = 0; i < modules.length; i++) {
+		modules[i].setState(states[i]);
+}
+
+	
+}
+
+		/**
+	 * Get the closest angle between the given angles.
+	 */
+	public double closestAngle(double a, double b)
+	{
+			// get direction
+			double dir = (b % 360.0) - (a % 360.0);
+
+			// convert from -360 to 360 to -180 to 180
+			if (Math.abs(dir) > 180.0)
+			{
+					dir = -(Math.signum(dir) * 360.0) + dir;
+			}
+			return dir;
+	}
+	public  Pose2d getCurrentPose(){
+		return POSE_ESTIMATOR.getEstimatedPose();
+	}
+
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
@@ -60,6 +105,36 @@ public class SwerveSubsystem extends SubsystemBase {
 			modules[i].setState(states[i]);
 		}
 	}
+
+	public Command followPathCommand(String pathName, double xVelocity, double yVelocity, double rotationalVelocity) {
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+        return new FollowPathHolonomic(
+                path,
+                this::getCurrentPose, // Robot pose supplier
+				() -> this.getChassisSpeeds(xVelocity,yVelocity,rotationalVelocity),// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        SwerveConstants.maxSpeed, // Max module speed, in m/s
+                        Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+    }
 
 
 	@Override

@@ -11,6 +11,7 @@ import static java.lang.Math.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -51,10 +52,10 @@ public class DefaultDrive extends Command {
 		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
 		
 		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
-		System.out.println("X:" +xVelocity+ " | Y:" + yVelocity + " | R: "+ rotationalVelocity);
 		
-		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
-	}
+		ChassisSpeeds speeds =
+				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, SWERVE.getCurrentPose().getRotation());
+		SWERVE.drive(speeds);	}
 
 	// Returns true when the command should end.
 	@Override
