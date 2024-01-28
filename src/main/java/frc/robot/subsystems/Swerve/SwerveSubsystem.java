@@ -2,7 +2,7 @@ package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
-
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -68,7 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-		speeds = ChassisSpeeds.discretize(speeds, 0.02);
+				speeds = ChassisSpeeds.discretize(speeds, 0.02);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
@@ -78,6 +78,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+
+		double[] states = new double[8];
+		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getTargetState().angle.getRadians();
+		Logger.recordOutput("Target States", states);
+		for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
+		Logger.recordOutput("Measured States", states);
+
+
 		//if statment is so that the telop wont run if selfdrive is on.
 		for (SwerveModule module : modules) {
 			module.teleop();

@@ -58,6 +58,8 @@ public class SwerveModule {
 		turn.burnFlash();
 	}
 
+
+
 	public Rotation2d getDirection() {
 		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
 				.minus(encoderOffset);
@@ -73,6 +75,14 @@ public class SwerveModule {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());
 	}
 
+	public SwerveModuleState getTargetState(){
+		return targetState;
+	}
+
+	public SwerveModuleState getMeasuredState() {
+		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection()); 
+	}
+	
 	public void fixOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
 				+ getDirection().plus(encoderOffset).getRotations());
