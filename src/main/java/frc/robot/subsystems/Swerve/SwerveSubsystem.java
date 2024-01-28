@@ -104,6 +104,10 @@ public class SwerveSubsystem extends SubsystemBase {
 		return POSE_ESTIMATOR.getEstimatedPose();
 	}
 
+	public void resetOdom() {
+		POSE_ESTIMATOR.resetOdometry();
+	}
+
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
@@ -174,9 +178,6 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
-
-
 	
-
 }
 	

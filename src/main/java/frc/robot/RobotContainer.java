@@ -43,7 +43,7 @@ public class RobotContainer {
 
 	SendableChooser<Command> pathChooser = new SendableChooser<>();
 
-	//Constants for path following: DO NOT TOUCH THIS WITHOUT LETTING ME KNOW
+	//Variables for path following: DO NOT TOUCH THIS WITHOUT LETTING ME KNOW
 	// - Omkaar
 	double xVelocity;
 	double yVelocity;
