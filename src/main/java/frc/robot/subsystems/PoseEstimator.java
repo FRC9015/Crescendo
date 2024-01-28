@@ -50,8 +50,7 @@ public class PoseEstimator extends SubsystemBase{
         Shuffleboard.getTab("swerve").add(field);
     }
 
-    @Override
-    public void periodic() {
+    public void updatePoseEstimator() {
         swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
 
         if (addVisionMeasurement) {
@@ -79,6 +78,11 @@ public class PoseEstimator extends SubsystemBase{
         currentPos.setDoubleArray(curr_pos);
 
         addVisionMeasurement = visionMeasurementToggle.getEntry().get().getBoolean();
+    }
+
+    @Override
+    public void periodic() {
+        updatePoseEstimator();
     }
 
     public Pose2d getEstimatedPose(){

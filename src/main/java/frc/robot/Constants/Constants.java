@@ -3,6 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.Constants;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.util.Units;
 
 
@@ -42,4 +46,14 @@ public final class Constants {
 	public static final double wheelRatio = Units.inchesToMeters(2);
 
 	public static final double gearRatio = 6.12;
+
+
+	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
+			new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
+			SwerveConstants.maxSpeed, // Max module speed, in m/s
+			Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
+			new ReplanningConfig() // Default path replanning config. See the API for the options here
+			);
+
 }

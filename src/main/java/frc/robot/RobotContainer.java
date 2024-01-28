@@ -93,7 +93,7 @@ public class RobotContainer {
 	}
 
 	public void periodic() {
-		POSE_ESTIMATOR.periodic();
+		POSE_ESTIMATOR.updatePoseEstimator();
 
 		xVelocity = PIGEON.getXVelocity();
 		yVelocity = PIGEON.getYVelocity();

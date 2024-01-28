@@ -73,6 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
         for (int i = 0; i < 4; i++) pos[i] = modules[i].getPosition();
         return pos;
     }
+
 	public ChassisSpeeds getChassisSpeeds(double xVelocity, double yVelocity, double rotationalVelocity) {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
 }
@@ -127,8 +128,8 @@ public class SwerveSubsystem extends SubsystemBase {
 				() -> this.getChassisSpeeds(xVelocity,yVelocity,rotationalVelocity),// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
                         SwerveConstants.maxSpeed, // Max module speed, in m/s
                         Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -157,6 +158,8 @@ public class SwerveSubsystem extends SubsystemBase {
 		}
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble()/100;
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble()/100;
+		POSE_ESTIMATOR.updatePoseEstimator();
+		
 	}
 
 	public void getOffsets() {
