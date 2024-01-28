@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
+import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -68,7 +69,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-				speeds = ChassisSpeeds.discretize(speeds, 0.02);
+				speeds = ChassisSpeeds.discretize(speeds, dtSeconds);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);

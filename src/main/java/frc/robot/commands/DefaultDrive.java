@@ -21,18 +21,13 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
 	
-	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(50);
-	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(50);
-	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(50);
+	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(slewRateLimit);
+	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(slewRateLimit);
+	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(slewRateLimit);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
 		addRequirements(SWERVE);
-	}
-	public double exponentialCurve(double input){
-		double a = 1;
-		double b = 1;
-		return a*Math.pow(input, 3) + (b-a)*input;
 	}
 	
 	// Called every time the scheduler runs while the command is scheduled.
@@ -46,11 +41,11 @@ public class DefaultDrive extends Command {
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
-		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
+		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
 		
-		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign);
+		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -forwardDirectionSign);
 		
-		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
+		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
 		
 		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
 		

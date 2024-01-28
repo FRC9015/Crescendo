@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
+import static frc.robot.Constants.Constants.PIDConstants.*;
 import static java.lang.Math.*;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -31,8 +32,8 @@ public class SwerveModule {
 		drive = new CANSparkMax(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
-		drivePID = new PIDController(1.5, 0, 0);  // drivePID current working values: p: 1.5, i:0, d:0		
-		turnPPID = new PIDController(2.54, 0, 0); // turnPID current working values: p: 2.54, i: 0, d: 0
+		drivePID = new PIDController(driveP, driveI, driveD);
+		turnPPID = new PIDController(turnP, turnI, turnD); 
 
         
 		turnPPID.enableContinuousInput(-PI, PI);

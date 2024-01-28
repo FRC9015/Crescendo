@@ -22,11 +22,26 @@ public final class Constants {
 	public static class SwerveConstants {
 		public static final double maxSpeed = Units.feetToMeters(16.6);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
+		public static final double slewRateLimit = 50;
+		public static final double dtSeconds = 0.02;
 	}
 
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
-
 	public static final double gearRatio = 6.12;
+	
+	public static class PigeonConstants {
+		public static final int pigeonID = 23;
+	}
+
+	public static class PIDConstants {
+		public static final double driveP = 1.5;
+		public static final double driveI = 0;
+		public static final double driveD = 0;
+
+		public static final double turnP = 2.5;
+		public static final double turnI = 0;
+		public static final double turnD = 0;
+	}
 }
