@@ -85,6 +85,28 @@ public class SwerveSubsystem extends SubsystemBase {
 		return states;
 	  }
 
+	public SwerveSubsystem() {
+		AutoBuilder.configureHolonomic(
+			this::getCurrentPose, 
+			this::resetOdom, 
+			this::getChassisSpeedsAuto, 
+			this::drive, 
+			Constants.PATH_FOLLOWER_CONFIG,
+			() -> {
+				// Boolean supplier that controls when the path will be mirrored for the red alliance
+				// This will flip the path being followed to the red side of the field.
+				// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+				var alliance = DriverStation.getAlliance();
+				if (alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				}
+				return false;
+			},
+			this
+    );
+	}
+
 	
 
 	public ChassisSpeeds getChassisSpeedsAuto() {
@@ -166,27 +188,7 @@ public class SwerveSubsystem extends SubsystemBase {
         );
     }
 
-	public SwerveSubsystem() {
-		AutoBuilder.configureHolonomic(
-			this::getCurrentPose, 
-			this::resetOdom, 
-			this::getChassisSpeedsAuto, 
-			this::drive, 
-			Constants.PATH_FOLLOWER_CONFIG,
-			() -> {
-				// Boolean supplier that controls when the path will be mirrored for the red alliance
-				// This will flip the path being followed to the red side of the field.
-				// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-				var alliance = DriverStation.getAlliance();
-				if (alliance.isPresent()) {
-					return alliance.get() == DriverStation.Alliance.Red;
-				}
-				return false;
-			},
-			this
-    );
-	}
+	
 
 
 	@Override
