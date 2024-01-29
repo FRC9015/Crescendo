@@ -73,6 +73,10 @@ public class SwerveModule {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());
 	}
 
+	public SwerveModuleState getMeasuredState() {
+		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection()); 
+	}
+
 	public void fixOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
 				+ getDirection().plus(encoderOffset).getRotations());

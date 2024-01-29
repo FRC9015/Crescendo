@@ -94,4 +94,8 @@ public class PoseEstimator extends SubsystemBase{
 
         swerveDrivePoseEstimator.resetPosition(originPose.getRotation(), swerveSubsystem.getPositions(), originPose);
     }
+
+    public void resetOdomGivenPose2d(Pose2d pose) {
+		swerveDrivePoseEstimator.resetPosition(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions(), pose);
+	  }
 }

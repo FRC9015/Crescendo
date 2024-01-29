@@ -103,12 +103,14 @@ public class RobotContainer {
 
 		double speed = Math.hypot(xVelocity, yVelocity);
 
-
+		//might need to get rid of this
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 
 		xVel = cos(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
 	 	yVel = sin(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
 	 	rotationalVel = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
+
+		System.out.println("XVelocity: " + xVel + " YVelocity: " + yVel + " RotationalVelocity: " + rotationalVel);
 	}
 
 	public double getxVel() {

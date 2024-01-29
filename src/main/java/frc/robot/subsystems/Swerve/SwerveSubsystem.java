@@ -2,7 +2,9 @@ package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+import static frc.robot.RobotContainer.PIGEON;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -29,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.SwerveConstants;
+import frc.robot.Constants.Constants;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 import java.util.Map;
@@ -74,7 +77,21 @@ public class SwerveSubsystem extends SubsystemBase {
         return pos;
     }
 
-	public ChassisSpeeds getChassisSpeeds(double xVelocity, double yVelocity, double rotationalVelocity) {
+	public SwerveModuleState[] getModuleStates() {
+		SwerveModuleState[] states = new SwerveModuleState[modules.length];
+		for (int i = 0; i < modules.length; i++) {
+		  states[i] = modules[i].getMeasuredState();
+		}
+		return states;
+	  }
+
+	
+
+	public ChassisSpeeds getChassisSpeedsAuto() {
+		return kinematics.toChassisSpeeds(getModuleStates());
+	}
+
+	public ChassisSpeeds getChassisSpeedsTeleop(double xVelocity, double yVelocity, double rotationalVelocity) {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
 }
 	public void drive(ChassisSpeeds speeds) {
@@ -105,9 +122,9 @@ public class SwerveSubsystem extends SubsystemBase {
 		return POSE_ESTIMATOR.getEstimatedPose();
 	}
 
-	public void resetOdom() {
-		POSE_ESTIMATOR.resetOdometry();
-	}
+	public void resetOdom(Pose2d pose) {
+		POSE_ESTIMATOR.resetOdomGivenPose2d(pose);
+	  }
 
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
@@ -125,7 +142,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return new FollowPathHolonomic(
                 path,
                 this::getCurrentPose, // Robot pose supplier
-				() -> this.getChassisSpeeds(xVelocity,yVelocity,rotationalVelocity),// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+				() -> this.getChassisSpeedsTeleop(xVelocity,yVelocity,rotationalVelocity),// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                         new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
@@ -148,6 +165,28 @@ public class SwerveSubsystem extends SubsystemBase {
                 this // Reference to this subsystem to set requirements
         );
     }
+
+	public SwerveSubsystem() {
+		AutoBuilder.configureHolonomic(
+			this::getCurrentPose, 
+			this::resetOdom, 
+			this::getChassisSpeedsAuto, 
+			this::drive, 
+			Constants.PATH_FOLLOWER_CONFIG,
+			() -> {
+				// Boolean supplier that controls when the path will be mirrored for the red alliance
+				// This will flip the path being followed to the red side of the field.
+				// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+				var alliance = DriverStation.getAlliance();
+				if (alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				}
+				return false;
+			},
+			this
+    );
+	}
 
 
 	@Override
