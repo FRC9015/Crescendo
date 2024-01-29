@@ -157,8 +157,17 @@ public class SwerveSubsystem extends SubsystemBase {
 			modules[i].setState(states[i]);
 		}
 	}
-
-	public Command followPathCommand(String pathName, double xVelocity, double yVelocity, double rotationalVelocity) {
+	/*
+	* The two commands below are commands to follow a single path for two different "phases", teleop and auto.
+	* The command that I tested was the teleop one, but to actually get the right velocities to use them with a pigeon and gyro
+	*  is too much work, so I made a different command.
+	* followPathCommandTeleop accepts an x,y, and rotationalVelocity that I tried to get using the Pigeon, but it doesn't seem to
+	* be accurate. So I created a new getChassisSpeedsAuto command that passes in module states (getModuleStates())
+	* in place of the getChassisSpeeds method that takes in the velocities. Testing is pending, but I just thought that it might be useful.
+	*
+	* AutoBuilder has also been configured in the SwerveSubsystem constructor class, so we can work with autos now.
+	* */
+	public Command followPathCommandTeleop(String pathName, double xVelocity, double yVelocity, double rotationalVelocity) {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
         return new FollowPathHolonomic(
@@ -168,7 +177,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                         new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
+                        new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
                         SwerveConstants.maxSpeed, // Max module speed, in m/s
                         Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -187,6 +196,36 @@ public class SwerveSubsystem extends SubsystemBase {
                 this // Reference to this subsystem to set requirements
         );
     }
+
+	public Command followPathCommandAuto(String pathName) {
+		PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+		return new FollowPathHolonomic(
+				path,
+				this::getCurrentPose, // Robot pose supplier
+				this::getChassisSpeedsAuto,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+				this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+				new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+						new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
+						new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
+						SwerveConstants.maxSpeed, // Max module speed, in m/s
+						Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
+						new ReplanningConfig() // Default path replanning config. See the API for the options here
+				),
+				() -> {
+					// Boolean supplier that controls when the path will be mirrored for the red alliance
+					// This will flip the path being followed to the red side of the field.
+					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+					var alliance = DriverStation.getAlliance();
+					if (alliance.isPresent()) {
+						return alliance.get() == DriverStation.Alliance.Red;
+					}
+					return false;
+				},
+				this // Reference to this subsystem to set requirements
+		);
+	}
 
 	
 

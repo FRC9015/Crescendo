@@ -68,8 +68,8 @@ public class RobotContainer {
 		configureBindings();
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
 		
-		pathChooser.addOption("Path 1", SWERVE.followPathCommand("Example Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
-		pathChooser.addOption("Path 2", SWERVE.followPathCommand("New Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
+		pathChooser.addOption("Path 1", SWERVE.followPathCommandTeleop("Example Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
+		pathChooser.addOption("Path 2", SWERVE.followPathCommandTeleop("New Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
 
 
 	}
