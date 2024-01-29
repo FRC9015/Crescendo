@@ -34,19 +34,10 @@ public class SwerveSubsystem extends SubsystemBase {
 			.add("Max Angular Speed", .5)
 			.withWidget(BuiltInWidgets.kNumberSlider)
 			.withProperties(Map.of("min", 0, "max", 1));
-	// ---------------WIP------------------
-			// private SimpleWidget deadBandWidget = Shuffleboard.getTab("Drive")
-	// 		.add("Dead Band", 0.1)
-	// 		.withWidget(BuiltInWidgets.kNumberSlider)
-	// 		.withProperties(Map.of("min", 0, "max", 1));
-	// private SimpleWidget slewRateLimitWidget = Shuffleboard.getTab("Drive")
-	// 		.add("Slew Rate Limit", 50)
-	// 		.withWidget(BuiltInWidgets.kNumberSlider)
-	// 		.withProperties(Map.of("min", 1, "max", 100));
+
 	private double speedMultiplier;
 	private double angularMultiplier;
-	// private double deadBandSetter;
-	// private double slewRateLimit;
+
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
 			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
@@ -98,8 +89,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble();
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
-		// deadBandSetter = deadBandWidget.getEntry().get().getDouble();
-		// slewRateLimit = slewRateLimitWidget.getEntry().get().getDouble();
+	
 	}
 
 	public void getOffsets() {
@@ -121,11 +111,6 @@ public class SwerveSubsystem extends SubsystemBase {
 	public double getAngularMultiplier(){
 		return angularMultiplier;
 	}
-	// public double getDeadBandInput(){
-	// 	return deadBandSetter;
-	// }
-	// public double getSlewRateLimit(){
-	// 	return slewRateLimit;
-	// }
+
 }
 	
