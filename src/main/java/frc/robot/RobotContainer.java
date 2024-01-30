@@ -68,9 +68,8 @@ public class RobotContainer {
 		configureBindings();
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
 		
-		pathChooser.addOption("Path 1", SWERVE.followPathCommandTeleop("Example Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
-		pathChooser.addOption("Path 2", SWERVE.followPathCommandTeleop("New Path", this.getxVel(), this.getyVel(), this.getrotationalVel()));
-
+		pathChooser.addOption("Path 1", SWERVE.followPathCommandAuto("Example Path"));
+		pathChooser.addOption("Path 2", SWERVE.followPathCommandAuto("New Path"));
 
 	}
 
@@ -92,38 +91,9 @@ public class RobotContainer {
 				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 	}
 
-	public void periodic() {
-		POSE_ESTIMATOR.updatePoseEstimator();
 
-		xVelocity = PIGEON.getXVelocity();
-		yVelocity = PIGEON.getYVelocity();
-		rotationalVelocity = PIGEON.getRotationalVelocity();
 
-		double velocityDir = Math.atan2(yVelocity, xVelocity);
 
-		double speed = Math.hypot(xVelocity, yVelocity);
-
-		//might need to get rid of this
-		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
-
-		xVel = cos(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
-	 	yVel = sin(velocityDir) * deadbandSpeed * SwerveConstants.maxSpeed * SWERVE.getSpeedMultiplier() * sign;
-	 	rotationalVel = rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier();
-
-		System.out.println("XVelocity: " + xVel + " YVelocity: " + yVel + " RotationalVelocity: " + rotationalVel);
-	}
-
-	public double getxVel() {
-		return xVel;
-	}
-	
-	public double getyVel() {
-		return yVel;
-	}
-	
-	public double getrotationalVel() {
-		return rotationalVel;
-	}
 	
 	public Command getAutonomousCommand() {
 		return pathChooser.getSelected();
