@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -110,32 +109,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public ChassisSpeeds getChassisSpeedsTeleop(double xVelocity, double yVelocity, double rotationalVelocity) {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
-}
+	}
 	public void drive(ChassisSpeeds speeds) {
 	SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
-		modules[i].setState(states[i]);
-}
-
-	
-}
-
-		/**
-	 * Get the closest angle between the given angles.
-	 */
-	public double closestAngle(double a, double b)
-	{
-			// get direction
-			double dir = (b % 360.0) - (a % 360.0);
-
-			// convert from -360 to 360 to -180 to 180
-			if (Math.abs(dir) > 180.0)
-			{
-					dir = -(Math.signum(dir) * 360.0) + dir;
-			}
-			return dir;
+			modules[i].setState(states[i]);
+		}
 	}
-	public  Pose2d getCurrentPose(){
+
+	public Pose2d getCurrentPose() {
 		return POSE_ESTIMATOR.getEstimatedPose();
 	}
 

@@ -43,25 +43,6 @@ public class RobotContainer {
 
 	SendableChooser<Command> pathChooser = new SendableChooser<>();
 
-	//Variables for path following: DO NOT TOUCH THIS WITHOUT LETTING ME KNOW
-	// - Omkaar
-	double xVelocity;
-	double yVelocity;
-	double rotationalVelocity;
-	double velocityDir;
-	double speed;
-	double deadbandSpeed;
-
-
-	double sign = (DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Blue) ? 1.0 : -1.0);
-
-
-		
-	double xVel;
-	double yVel;
-	double rotationalVel;
-	///////////
-
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
@@ -91,10 +72,6 @@ public class RobotContainer {
 				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 	}
 
-
-
-
-	
 	public Command getAutonomousCommand() {
 		return pathChooser.getSelected();
 	  }
