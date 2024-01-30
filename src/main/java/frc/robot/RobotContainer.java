@@ -8,10 +8,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.commands.DefaultDrive;
-import frc.robot.subsystems.IMU;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
@@ -22,23 +22,20 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	public static final SwerveSubsystem swerve = new SwerveSubsystem();
-
-	public static final IMU imu = new IMU();
+	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
+	public static final Pigeon PIGEON = new Pigeon();
+	public static final PoseEstimator POSE_ESTIMATOR =
+			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private final LimelightInterface limelightInterface = new LimelightInterface();
-	public static final CommandXboxController driveController =
-			new CommandXboxController(OperatorConstants.kDriverControllerPort);
+	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
 
-		
-		swerve.init(new Pose2d(1, 1, imu.yaw()));
-		swerve.initShuffleboard();
+
 	}
 
 	/**
@@ -51,9 +48,11 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		swerve.setDefaultCommand(new DefaultDrive());
+		SWERVE.setDefaultCommand(new DefaultDrive());
 
-		driveController.a().onTrue(swerve.printOffsets());
-		driveController.x().onTrue(new InstantCommand(() -> imu.zeroYaw()));
+		InputManager.getInstance().init(
+				InputManager.Button.A_Button1, SWERVE.printOffsets(),
+				InputManager.Button.X_Button3, new InstantCommand(() -> PIGEON.zeroYaw()),
+				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 	}
 }
