@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static java.lang.Math.*;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -12,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 public class SwerveModule {
@@ -22,7 +22,6 @@ public class SwerveModule {
 
 	private RelativeEncoder driveEncoder;
 	private SwerveModuleState targetState;
-
 	private PIDController drivePID, turnPPID;
 	private String name;
 	private double kV = 3;
@@ -32,9 +31,11 @@ public class SwerveModule {
 		drive = new CANSparkMax(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
-		drivePID = new PIDController(1.5, 0, 0); //1.5,0,0
-		turnPPID = new PIDController(3, 0, 0); //3,0,0
-        
+
+		// TODO: Look into individually tuning these modules
+		drivePID = new PIDController(driveP, driveI, driveD);
+		turnPPID = new PIDController(turnP, turnI, turnD); 
+
 		turnPPID.enableContinuousInput(-PI, PI);
 		encoderOffset = config.offset;
 		drive.restoreFactoryDefaults();
@@ -71,6 +72,10 @@ public class SwerveModule {
 	}
 	public void setState(SwerveModuleState state) {
 		this.targetState = SwerveModuleState.optimize(state, getDirection());
+	}
+
+	public SwerveModuleState getTargetState(){
+		return targetState;
 	}
 
 	public SwerveModuleState getMeasuredState() {

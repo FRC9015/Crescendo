@@ -80,15 +80,16 @@ public class InputManager {
         driveController.button(button.buttonID).onTrue(command);
     }
 
-    public Translation2d getSwerveVelocity2D(){
+    public Translation2d getControllerXYAxes(){
         return new Translation2d(driveController.getRawAxis(0), -driveController.getRawAxis(1));
     }
 
-    public double getSwerveRotationalVelocity(){
+    public double getControllerRotationalAxis(){
         if (driveController.getHID().getType() == GenericHID.HIDType.kXInputGamepad){
             return -driveController.getRawAxis(4);
         } else{
             return -driveController.getRawAxis(2);
         }
     }
+    
 }

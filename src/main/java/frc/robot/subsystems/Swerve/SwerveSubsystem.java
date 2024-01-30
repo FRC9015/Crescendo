@@ -1,19 +1,11 @@
 package frc.robot.subsystems.Swerve;
 
-import static frc.robot.Constants.Constants.*;
-import static frc.robot.RobotContainer.POSE_ESTIMATOR;
-import static frc.robot.RobotContainer.PIGEON;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-import java.util.Map;
-
-
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -25,38 +17,41 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.Constants;
+import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.Map;
 
-public class SwerveSubsystem extends SubsystemBase {
+import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
+import static frc.robot.Constants.Constants.robotLength;
+import static frc.robot.Constants.Constants.robotWidth;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
+public class SwerveSubsystem extends SubsystemBase {
+	public void velocityGraphUpdate(double xVelocity, double yVelocity){
+		SmartDashboard.putNumber("xVelocity Graph", xVelocity);
+		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
+	}
 	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Speed", 0.5)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
-		
-		
+
 	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Angular Speed", 0.5)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 
-		private double speedMultiplier; 
-		private double angularMultiplier; 
+	private double speedMultiplier;
+	private double angularMultiplier;
 
-	Field2d field = new Field2d();
-
-	
-	
-	
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
 			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
@@ -151,7 +146,8 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-		speeds = ChassisSpeeds.discretize(speeds, 0.02);
+
+		speeds = ChassisSpeeds.discretize(speeds, dtSeconds);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
@@ -232,14 +228,25 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+
+		double[] states = new double[8];
+		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getTargetState().angle.getRadians();
+		Logger.recordOutput("Target States", states);
+		for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
+		Logger.recordOutput("Measured States", states);
+
+
 		//if statment is so that the telop wont run if selfdrive is on.
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}
-		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble()/100;
-		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble()/100;
-		POSE_ESTIMATOR.updatePoseEstimator();
-		
+		//TODO: Add all data visualization to one subsystem
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
+		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	}
 
 	public void getOffsets() {
@@ -261,6 +268,6 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
-	
+
 }
 	

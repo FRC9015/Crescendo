@@ -7,9 +7,6 @@ package frc.robot.commands;
 import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
-
-import java.util.Map;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,45 +20,37 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
 	
-	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(50);
-	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(50);
-	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(50);
+	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(slewRateLimit);
+	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(slewRateLimit);
+	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(slewRateLimit);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
 		addRequirements(SWERVE);
 	}
-	public double exponentialCurve(double input){
-		double a = 1;
-		double b = 1;
-		return a*Math.pow(input, 3) + (b-a)*input;
-	}
-	
-
-	
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Translation2d moveVelocity = InputManager.getInstance().getSwerveVelocity2D();
+		Translation2d moveVelocity = InputManager.getInstance().getControllerXYAxes();
 		double xVelocity = moveVelocity.getX();
-		double yVelocity = -moveVelocity.getY();
-		double rotationalVelocity = InputManager.getInstance().getSwerveRotationalVelocity();
+		double yVelocity = moveVelocity.getY();
+		double rotationalVelocity = InputManager.getInstance().getControllerRotationalAxis();
 		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
-		double sign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
+		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
 		
-		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -sign);
+		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * -forwardDirectionSign);
 		
-		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * sign);
+		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
 		
 		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
+
+		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 		
-		ChassisSpeeds speeds =
-				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-		SWERVE.drive(speeds);
+		SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
 	}
 	
 	// Returns true when the command should end.

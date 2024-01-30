@@ -7,12 +7,6 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    public static final SwerveSubsystem swerveDrive = new SwerveSubsystem();
-
-	public static final Pigeon gyro = new Pigeon();
-
-	private final LimelightInterface limelight = new LimelightInterface();
-
     public boolean isReadytoIntake() {
         //this does nothing, needs to be changed.
         return false;
