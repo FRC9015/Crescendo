@@ -33,10 +33,10 @@ public class DefaultDrive extends Command {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Translation2d moveVelocity = InputManager.getInstance().getSwerveVelocity2D();
+		Translation2d moveVelocity = InputManager.getInstance().getControllerXYAxes();
 		double xVelocity = moveVelocity.getX();
-		double yVelocity = -moveVelocity.getY();
-		double rotationalVelocity = InputManager.getInstance().getSwerveRotationalVelocity();
+		double yVelocity = moveVelocity.getY();
+		double rotationalVelocity = InputManager.getInstance().getControllerRotationalAxis();
 		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
 		double speed = Math.hypot(xVelocity, yVelocity);
 		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
@@ -51,7 +51,7 @@ public class DefaultDrive extends Command {
 		
 		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
 		
-		SWERVE.velocityGraphUpdate(xVelocity,yVelocity);
+		SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
 	}
 
 	// Returns true when the command should end.

@@ -86,8 +86,8 @@ public class SwerveSubsystem extends SubsystemBase {
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}
-
-		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble();
+		//TODO: Add all data visualization to one subsystem
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	
 	}
