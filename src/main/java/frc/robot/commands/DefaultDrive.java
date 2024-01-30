@@ -8,6 +8,8 @@ import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
 
+import java.util.Map;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,8 +17,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
-
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
@@ -29,7 +33,21 @@ public class DefaultDrive extends Command {
     public DefaultDrive() {
 		addRequirements(SWERVE);
 	}
-	
+
+	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
+		.add("Max Speed", 0.5)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
+		
+		
+	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
+		.add("Max Angular Speed", 0.5)
+		.withWidget(BuiltInWidgets.kNumberSlider)
+		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
+
+		private double speedMultiplier; 
+		private double angularMultiplier; 
+
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
@@ -53,7 +71,10 @@ public class DefaultDrive extends Command {
 		
 		SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
 	}
-
+	public void periodic() {
+		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble()/100;
+		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble()/100;
+	}
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
