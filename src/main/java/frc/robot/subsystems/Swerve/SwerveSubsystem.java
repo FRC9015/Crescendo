@@ -220,9 +220,12 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void periodic() {
 
 		//if statment is so that the telop wont run if selfdrive is on.
-		for (SwerveModule module : modules) {
-			module.teleop();
+		if(!RobotSelves.getAmpSelf() && !RobotSelves.getSpeakerSelf()){
+			for (SwerveModule module : modules) {
+				module.teleop();
+			}
 		}
+		
 		//TODO: Add all data visualization to one subsystem
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
@@ -241,6 +244,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public double getAngularMultiplier(){
 		return angularMultiplier;
+	}
+	public SwerveDriveKinematics getKinematics(){
+		return kinematics;
 	}
 
 	

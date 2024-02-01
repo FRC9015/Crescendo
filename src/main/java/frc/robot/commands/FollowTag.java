@@ -21,7 +21,7 @@ public class FollowTag extends Command{
 	public Transform2d target;
 	public double fvx, fvy;
 	
-	double rotationalVelocity = -driveController.getRightX();
+	
 	
     private double x = limelight.getX();
     private double y = limelight.getY();
@@ -35,6 +35,6 @@ public class FollowTag extends Command{
    
     @Override
 	public void execute() {
-		 SWERVE.drive(new ChassisSpeeds(1+x,1+y,1-rotationalVelocity));
+
 	}	
 }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -19,6 +20,7 @@ public class LimelightInterface extends SubsystemBase{
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
     NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
+    
 
     //makes variables for the X Y and Area values of the limelight
     double x = tx.getDouble(0.0);
@@ -43,7 +45,7 @@ public class LimelightInterface extends SubsystemBase{
     double limelightLensHeightInches = 6.5; 
 
     // distance from the target to the floor
-    double goalHeightInches = 54.5; 
+    double goalHeightInches = 44; 
 
     
     double angleToGoalDegrees = 0;
@@ -54,6 +56,10 @@ public class LimelightInterface extends SubsystemBase{
     //updates limelight X, Y, and Area and puts them onto smartdashboard.
     @Override
     public void periodic() {
+        
+        System.out.println("botPose" + LimelightHelpers.getBotPose("limelight"));
+        System.out.println("target bot pose" + LimelightHelpers.getTargetPose_RobotSpace("limelight"));
+
         //updates the X,Y,Area values
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);

@@ -3,6 +3,7 @@ package frc.robot.subsystems.SelfDrive;
 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotSelf;
 import frc.robot.RobotSelf.RobotSelves;
@@ -18,11 +19,11 @@ public class SpeakerSelfDrive extends SubsystemBase{
     //brings in other subsystems to be used
     private SwerveSubsystem drive;
     private LimelightInterface limelight;
-    private CommandXboxController controller;
+    private CommandGenericHID controller;
     
     
     //makes the subsystems exist and usable
-    public SpeakerSelfDrive(CommandXboxController controller, LimelightInterface limelightInterface, SwerveSubsystem swerve) {
+    public SpeakerSelfDrive(CommandGenericHID controller, LimelightInterface limelightInterface, SwerveSubsystem swerve) {
         this.controller = controller;
         this.limelight = limelightInterface;
         this.drive = swerve;
@@ -30,7 +31,7 @@ public class SpeakerSelfDrive extends SubsystemBase{
     }
     @Override
     public void periodic(){
-        if(controller.getHID().getYButtonPressed() && !RobotSelves.getAmpSelf()){//need to find out what the y button is in the command controller
+        if(controller.getHID().getRawButton(4) && !RobotSelves.getAmpSelf()){//need to find out what the y button is in the command controller
             //toggles the speaker boolean for doing speaker self drive
             RobotSelves.toggleSpeakerSelf();
             //puts speakerSelf onto smartdashboard

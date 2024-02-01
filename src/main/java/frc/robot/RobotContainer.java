@@ -5,6 +5,7 @@
 package frc.robot;
 
 import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
+import static frc.robot.RobotContainer.inputManager;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -26,7 +27,8 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.SelfDrive.AmpSelfDrive;
 import frc.robot.subsystems.SelfDrive.SpeakerSelfDrive;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
-import frc.robot.subsystems.Odometry;
+import frc.robot.InputManager;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,17 +41,17 @@ public class RobotContainer {
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 	public static final PoseEstimator POSE_ESTIMATOR =
-			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
+		new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
+	public static final InputManager inputManager = InputManager.getInstance();
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	SendableChooser<Command> pathChooser = new SendableChooser<>();
 	
-	private final AmpSelfDrive AmpSelfDrive = new AmpSelfDrive(driveController, LIMELIGHT_INTERFACE, SWERVE);
-	private final SpeakerSelfDrive SpeakerSelfDrive = new SpeakerSelfDrive(driveController, LIMELIGHT_INTERFACE, SWERVE);
-	public static final CommandXboxController driveController =
-			new CommandXboxController(0);
+	private final AmpSelfDrive AmpSelfDrive = new AmpSelfDrive(inputManager.getDriverController(), LIMELIGHT_INTERFACE, SWERVE,PIGEON);
+	private final SpeakerSelfDrive SpeakerSelfDrive = new SpeakerSelfDrive(inputManager.getDriverController(), LIMELIGHT_INTERFACE, SWERVE);
+	
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {

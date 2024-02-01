@@ -1,6 +1,7 @@
 package frc.robot.subsystems.SelfDrive;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotSelf;
 import frc.robot.RobotSelf.RobotSelves;
@@ -8,16 +9,16 @@ import frc.robot.Utils.Transform2d;
 import frc.robot.commands.FollowTag;
 
 import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.Swerve.SwerveModule;
+
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.subsystems.Pigeon;
 
-import static frc.robot.RobotContainer.driveController;
+
 import static frc.robot.RobotContainer.SWERVE;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Utils.*;
+
 
 
 public class AmpSelfDrive extends SubsystemBase{
@@ -25,27 +26,24 @@ public class AmpSelfDrive extends SubsystemBase{
     //brings in other subsystems to be used
     private SwerveSubsystem drive;
     private LimelightInterface limelight;
-    private CommandXboxController controller;
+    private CommandGenericHID controller;
     private Pigeon imu;
    
     
     //makes the subsystems exist and usable
-    public AmpSelfDrive(CommandXboxController drivecontroller, LimelightInterface limelight,SwerveSubsystem drive, Pigeon imu) {
-        this.controller = drivecontroller;
+    public AmpSelfDrive(CommandGenericHID controller, LimelightInterface limelight,SwerveSubsystem drive, Pigeon imu) {
+        this.controller = controller;
         this.imu = imu;
         this.limelight = limelight;
         this.drive = drive;
         
     }
-    Transform2d target;
-    double rotationalVelocity = -driveController.getRightX();
-    double xVelocity = driveController.getLeftX();
-    double yVelocity = -driveController.getLeftY();
+ 
     
 	@Override
     public void periodic(){
         //checks to see if the X button has been pressed
-        if(controller.getHID().getBButtonPressed() && !RobotSelves.getSpeakerSelf()){//need to find how the x button is pressed in the command controller.
+        if(controller.getHID().getRawButton(2) && !RobotSelves.getSpeakerSelf()){//need to find how the x button is pressed in the command controller.
             //toggles selfdrive boolean
             RobotSelves.toggleAmpSelf();
             

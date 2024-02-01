@@ -91,5 +91,9 @@ public class InputManager {
             return -driveController.getRawAxis(2);
         }
     }
+
+    public CommandGenericHID getDriverController(){
+        return driveController;
+    }
     
 }
