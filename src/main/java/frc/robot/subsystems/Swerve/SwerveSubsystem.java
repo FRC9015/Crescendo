@@ -211,17 +211,6 @@ public class SwerveSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 
-		double[] states = new double[8];
-		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
-		for (int i = 0; i < 4; i++)
-			states[i * 2] = modules[i].getTargetState().angle.getRadians();
-		Logger.recordOutput("Target States", states);
-		for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
-		for (int i = 0; i < 4; i++)
-			states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
-		Logger.recordOutput("Measured States", states);
-
-
 		//if statment is so that the telop wont run if selfdrive is on.
 		for (SwerveModule module : modules) {
 			module.teleop();
