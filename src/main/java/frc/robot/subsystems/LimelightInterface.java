@@ -68,8 +68,6 @@ public class LimelightInterface extends SubsystemBase{
         
     }
 
-
-
     public double getX(){
         return tx.getDouble(0.0);
     }

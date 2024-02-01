@@ -4,26 +4,19 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,6 +27,7 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
+	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 	public static final PoseEstimator POSE_ESTIMATOR =
 			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
@@ -69,7 +63,10 @@ public class RobotContainer {
 		InputManager.getInstance().init(
 				InputManager.Button.A_Button1, SWERVE.printOffsets(),
 				InputManager.Button.X_Button3, new InstantCommand(() -> PIGEON.zeroYaw()),
-				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
+				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry),
+				InputManager.Button.LB_Button5, INTAKE.intakeNote(),
+				InputManager.Button.RB_Button6, INTAKE.stopIntake()
+				);
 	}
 
 	public Command getAutonomousCommand() {
