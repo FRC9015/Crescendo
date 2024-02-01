@@ -78,7 +78,7 @@ public class InputManager {
 
         hasBeenInitialized = true;
     }
-
+// TODO Add Trigger and Hold Support, and Operator Controller
     private void setButtonCommand(Button button, Command command){
         driveController.button(button.buttonID).onTrue(command);
     }
