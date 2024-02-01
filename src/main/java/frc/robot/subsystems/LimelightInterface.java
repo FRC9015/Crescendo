@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.geometry.Pose2d;
 
 
     
@@ -57,8 +58,8 @@ public class LimelightInterface extends SubsystemBase{
     @Override
     public void periodic() {
         
-        System.out.println("botPose" + LimelightHelpers.getBotPose("limelight"));
-        System.out.println("target bot pose" + LimelightHelpers.getTargetPose_RobotSpace("limelight"));
+        System.out.println("botPose" + LimelightHelpers.getBotPose2d("limelight"));
+        System.out.println("target bot pose" + LimelightTarget_Retro.);
 
         //updates the X,Y,Area values
         x = tx.getDouble(0.0);
