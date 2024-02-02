@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+	
 	public static class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
 	}
@@ -31,11 +32,13 @@ public final class Constants {
 	}
 
 	public static class ShooterConstants {
-
+	
 	}
 
 	public static class IntakeConstants {
-
+		public static final int intakeMotor1ID = 41;
+		public static final int intakeMotor2ID = 42;
+		public static final int intakeMotor3ID = 43;
 	}
 
 	public static class LEDConstants {
