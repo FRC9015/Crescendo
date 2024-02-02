@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
@@ -27,8 +28,9 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command intakeNote(){
-        return new InstantCommand(
-            this::setIntakeMotorSpeeds
+        return new StartEndCommand(
+            this::setIntakeMotorSpeeds,
+            this::stopIntakeMotors
         );
     }
 
