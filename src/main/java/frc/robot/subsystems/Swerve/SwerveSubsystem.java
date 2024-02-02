@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
-import org.littletonrobotics.junction.Logger;
 
 import java.util.Map;
 
@@ -218,12 +217,12 @@ public class SwerveSubsystem extends SubsystemBase {
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	}
 
-	public void getOffsets() {
-		for (SwerveModule module : modules) module.fixOffset();
-	}
-
 	public Command printOffsets() {
-		return new InstantCommand(this::getOffsets, this);
+		return new InstantCommand(() -> {
+			for (SwerveModule module : modules){
+				module.printOffset();
+			}
+		}, this);
 	}
 
 	public double getSpeedMultiplier(){

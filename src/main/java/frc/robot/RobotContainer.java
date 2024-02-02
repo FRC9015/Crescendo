@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDrive;
@@ -62,8 +61,7 @@ public class RobotContainer {
 		SWERVE.setDefaultCommand(new DefaultDrive());
 
 		InputManager.getInstance().init(
-				new InputManager.ButtonMap(InputManager.Button.LB_Button5, INTAKE.intakeNote(), true),
-        new InputManager.ButtonMap(InputManager.Button.RB_Button6, INTAKE.stopIntake(), false),
+				new InputManager.ButtonMap(InputManager.Button.LT_Button7, INTAKE.intakeNote(), true),
 				new InputManager.ButtonMap(InputManager.Button.A_Button1, SWERVE.printOffsets(), false),
 				new InputManager.ButtonMap(InputManager.Button.X_Button3, new InstantCommand(PIGEON::zeroYaw), false),
 				new InputManager.ButtonMap(InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry), false)
