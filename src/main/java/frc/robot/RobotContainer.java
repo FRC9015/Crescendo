@@ -51,8 +51,10 @@ public class RobotContainer {
 		SWERVE.setDefaultCommand(new DefaultDrive());
 
 		InputManager.getInstance().init(
-				InputManager.Button.A_Button1, SWERVE.printOffsets(),
-				InputManager.Button.X_Button3, new InstantCommand(() -> PIGEON.zeroYaw()),
-				InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry));
+				new InputManager.ButtonMap(InputManager.Button.A_Button1, SWERVE.printOffsets(), false),
+				new InputManager.ButtonMap(InputManager.Button.X_Button3, new InstantCommand(PIGEON::zeroYaw), false),
+				new InputManager.ButtonMap(InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry), false),
+				new InputManager.ButtonMap(InputManager.Button.LT_Button7, new InstantCommand(() -> System.out.println("Yipeee!")), false)
+		);
 	}
 }

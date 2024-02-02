@@ -2,20 +2,39 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.OperatorConstants;
 
 /**
  * This handles ALL input from the controller.
+ * Supports Joysticks and Xbox Controllers.
  * DO NOT FUCKING TOUCH THIS CLASS WITHOUT ME!
  * - Matthew
  */
 public class InputManager {
+
+    /**
+     * This struct is used to handle Button Mapping on the controller.
+     */
+    public static class ButtonMap{
+        public Button button;
+        public Command command;
+        public boolean whileHeld;
+
+        /**
+         * Creates the ButtonMap
+         * @param button The button on the controller as a {@link Button}
+         * @param command The command mapped to the button.
+         * @param whileHeld Will the command run when the button is held. If false will only work on press.
+         */
+        public ButtonMap(Button button, Command command, boolean whileHeld){
+            this.button = button;
+            this.command = command;
+            this.whileHeld = whileHeld;
+        }
+    }
 
     public enum Button{
         A_Button1(1),
@@ -23,7 +42,9 @@ public class InputManager {
         X_Button3(3),
         Y_Button4(4),
         LB_Button5(5),
-        RB_Button6(6);
+        RB_Button6(6),
+        LT_Button7(7),
+        RT_Button8(8);
 
         public final int buttonID;
 
@@ -50,38 +71,61 @@ public class InputManager {
 
     /**
      * Initializes the Controls for the buttons on the controller.
-     * You can pass in as many buttons and commands as you need and if a button isn't stated, it's mapped to nothing.
-     * Make sure that every {@link Button} you put has a {@link Command} to go with it and that the Button goes first.
-     * @param controls The Controls you would like to initialize. Must follow the pattern
-     *                 ({@link Button}, {@link Command}...)
+     * You can pass in as many {@link ButtonMap}s as you want and any button not inputted
+     * will be mapped to nothing and won't do anything. This works for both press and hold
+     * commands on the controller.
+     * @param controls The controls you want to map onto the controller as {@link ButtonMap}s.
      */
-    public void init(Object... controls){
+    public void init(ButtonMap... controls){
         if (hasBeenInitialized){
             System.err.println("Controls have already been initialized!");
             return;
         }
 
-        for (int i = 0; i < controls.length; i++) {
-            if ((i % 2 == 0 && !(controls[i] instanceof Button)) || (i % 2 == 1 && !(controls[i] instanceof Command))){
-                System.err.println("Parameters must follow pattern (Button, Command, Button, Command,...)!");
+        for (ButtonMap buttonMap : controls){
+            if (buttonMap.whileHeld){
+                setButtonCommandHold(buttonMap.button, buttonMap.command);
+            }else {
+                setButtonCommandPressed(buttonMap.button, buttonMap.command);
             }
-        }
-
-        if (controls.length % 2 != 0) System.err.println("Every Button must have a Command");
-
-        for (int i = 0; i < controls.length; i += 2) {
-            Button button = (Button) controls[i];
-            Command command = (Command) controls[i + 1];
-
-            setButtonCommand(button, command);
         }
 
         hasBeenInitialized = true;
     }
-// TODO Add Trigger and Hold Support, and Operator Controller
-    private void setButtonCommand(Button button, Command command){
-        driveController.button(button.buttonID).onTrue(command);
+// TODO Operator Controller
+    private void setButtonCommandPressed(Button button, Command command){
+        // TODO Check if this code works on real robot
+        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad){
+            driveController.button(button.buttonID).onTrue(command);
+            return;
+        }
+
+        float pressThreshold = 0.5f;
+        if (button == Button.LT_Button7){
+            driveController.axisGreaterThan(2, pressThreshold).onTrue(command);
+        }else if (button == Button.RT_Button8){
+            driveController.axisGreaterThan(3, pressThreshold).onTrue(command);
+        }else {
+            driveController.button(button.buttonID).onTrue(command);
+        }
     }
+
+    private void setButtonCommandHold(Button button, Command command){
+        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad){
+            driveController.button(button.buttonID).whileTrue(command);
+            return;
+        }
+
+        float pressThreshold = 0.5f;
+        if (button == Button.LT_Button7){
+            driveController.axisGreaterThan(2, pressThreshold).whileTrue(command);
+        }else if (button == Button.RT_Button8){
+            driveController.axisGreaterThan(3, pressThreshold).whileTrue(command);
+        }else {
+            driveController.button(button.buttonID).whileTrue(command);
+        }
+    }
+
 
     public Translation2d getControllerXYAxes(){
         return new Translation2d(driveController.getRawAxis(0), -driveController.getRawAxis(1));
