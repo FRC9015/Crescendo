@@ -3,6 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.Constants;
+
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.util.Units;
 
 
@@ -24,24 +28,37 @@ public final class Constants {
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
 		public static final double slewRateLimit = 50;
 		public static final double dtSeconds = 0.02;
-
-		
 	}
 
 	public static class ShooterConstants {
 
 	}
 
+	public static class IntakeConstants {
+
+	}
+
+	public static class LEDConstants {
+
+	}
 	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
+	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
+			new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
+			SwerveConstants.maxSpeed, // Max module speed, in m/s
+			Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
+			new ReplanningConfig() // Default path replanning config. See the API for the options here
+			);
+
 	
 	public static class PigeonConstants {
 		public static final int pigeonID = 23;
 	}
 
-	public static class PIDConstants {
+	public static class SwervePIDControllerConstants {
 		public static final double driveP = 1.5;
 		public static final double driveI = 0;
 		public static final double driveD = 0;

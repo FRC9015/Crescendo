@@ -4,12 +4,22 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
@@ -32,11 +42,16 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
+	SendableChooser<Command> pathChooser = new SendableChooser<>();
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-
+		Shuffleboard.getTab("Autonomous").add(pathChooser);
+		
+		pathChooser.addOption("Path 1", SWERVE.followPathCommandAuto("Example Path"));
+		pathChooser.addOption("Path 2", SWERVE.followPathCommandAuto("New Path"));
 
 	}
 
@@ -58,4 +73,8 @@ public class RobotContainer {
 				new InputManager.ButtonMap(InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry), false)
 		);
 	}
+
+	public Command getAutonomousCommand() {
+		return pathChooser.getSelected();
+	  }
 }

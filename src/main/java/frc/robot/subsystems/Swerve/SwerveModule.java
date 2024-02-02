@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
-import static frc.robot.Constants.Constants.PIDConstants.*;
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static java.lang.Math.*;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -22,7 +22,6 @@ public class SwerveModule {
 
 	private RelativeEncoder driveEncoder;
 	private SwerveModuleState targetState;
-
 	private PIDController drivePID, turnPPID;
 	private String name;
 	private double kV = 3;
@@ -32,10 +31,11 @@ public class SwerveModule {
 		drive = new CANSparkMax(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
+
+		// TODO: Look into individually tuning these modules
 		drivePID = new PIDController(driveP, driveI, driveD);
 		turnPPID = new PIDController(turnP, turnI, turnD); 
 
-        
 		turnPPID.enableContinuousInput(-PI, PI);
 		encoderOffset = config.offset;
 		drive.restoreFactoryDefaults();
@@ -59,8 +59,6 @@ public class SwerveModule {
 		turn.burnFlash();
 	}
 
-
-
 	public Rotation2d getDirection() {
 		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
 				.minus(encoderOffset);
@@ -83,7 +81,7 @@ public class SwerveModule {
 	public SwerveModuleState getMeasuredState() {
 		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection()); 
 	}
-	
+
 	public void fixOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
 				+ getDirection().plus(encoderOffset).getRotations());
@@ -99,4 +97,6 @@ public class SwerveModule {
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
 	}
+
+	
 }
