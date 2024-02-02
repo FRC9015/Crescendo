@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDrive;
@@ -53,8 +55,7 @@ public class RobotContainer {
 		InputManager.getInstance().init(
 				new InputManager.ButtonMap(InputManager.Button.A_Button1, SWERVE.printOffsets(), false),
 				new InputManager.ButtonMap(InputManager.Button.X_Button3, new InstantCommand(PIGEON::zeroYaw), false),
-				new InputManager.ButtonMap(InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry), false),
-				new InputManager.ButtonMap(InputManager.Button.LT_Button7, new InstantCommand(() -> System.out.println("Yipeee!")), false)
+				new InputManager.ButtonMap(InputManager.Button.B_Button2, new InstantCommand(POSE_ESTIMATOR::resetOdometry), false)
 		);
 	}
 }
