@@ -45,7 +45,12 @@ public class InputManager {
         LB_Button5(5),
         RB_Button6(6),
         LT_Button7(7),
-        RT_Button8(8);
+        RT_Button8(8),
+        Shoot_Button(11),
+        Intake_Button(12),
+        Aim_Lock_Button(13),
+        Pivot_Shooter_Button(14),
+        Pivot_Amp_Button(15);
 
         public final int buttonID;
 
