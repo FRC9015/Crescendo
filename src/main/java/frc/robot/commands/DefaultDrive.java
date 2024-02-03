@@ -37,7 +37,7 @@ public class DefaultDrive extends Command {
 		double rotationalVelocity = InputManager.getInstance().getControllerRotationalAxis();
 		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
 		double speed = Math.hypot(xVelocity, yVelocity);
-		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
+		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.15);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 		

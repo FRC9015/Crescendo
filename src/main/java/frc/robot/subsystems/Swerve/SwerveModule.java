@@ -97,6 +97,14 @@ public class SwerveModule {
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
 	}
+	public void drivePID(double current,double target){
+		drive.setVoltage(drivePID.calculate(current, target));
+
+	}
+	public void turnPID(){
+		turn.setVoltage(turnPPID.calculate(getPosition().distanceMeters));
+	}
 
 	
 }
+

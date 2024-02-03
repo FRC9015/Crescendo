@@ -22,6 +22,8 @@ public final class Constants {
 	
 	public static class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
+
+		public static final double JOYSTICK_DEADZONE = 0.15;
 	}
 
 	public static class SwerveConstants {
@@ -44,8 +46,9 @@ public final class Constants {
 	public static class LEDConstants {
 
 	}
-	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
-	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
+
+	public static final double robotWidth = Units.inchesToMeters(24); 
+	public static final double robotLength = Units.inchesToMeters(24); 
 	public static final double wheelRatio = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(

@@ -23,9 +23,18 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+
+import frc.robot.LimelightHelpers;
+import frc.robot.RobotSelf.RobotSelves;
+import frc.robot.commands.FollowTag;
 import frc.robot.Constants.SwerveModuleConfiguration;
+import org.littletonrobotics.junction.Logger;
+import frc.robot.Constants.MechanicalConstants.DriveTrainConstants;
+import frc.robot.Constants.MechanicalConstants;
 
 import java.util.Map;
+import frc.robot.subsystems.Pigeon;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
 import static frc.robot.Constants.Constants.robotLength;
@@ -209,12 +218,19 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void periodic() {
 
 		//if statment is so that the telop wont run if selfdrive is on.
-		for (SwerveModule module : modules) {
-			module.teleop();
+		if(!RobotSelves.getAmpSelf() && !RobotSelves.getSpeakerSelf()){
+			for (SwerveModule module : modules) {
+				module.teleop();
+			}
 		}
+		
 		//TODO: Add all data visualization to one subsystem
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
+	}
+
+	public void getOffsets() {
+		for (SwerveModule module : modules) module.fixOffset();
 	}
 
 	public Command printOffsets() {
@@ -232,10 +248,10 @@ public class SwerveSubsystem extends SubsystemBase {
 	public double getAngularMultiplier(){
 		return angularMultiplier;
 	}
-
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
 
+	
 }
 	

@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
+import static frc.robot.RobotContainer.inputManager;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -15,8 +20,11 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.SelfDrive.AmpSelfDrive;
+import frc.robot.subsystems.SelfDrive.SpeakerSelfDrive;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.InputManager;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,12 +38,17 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 	public static final PoseEstimator POSE_ESTIMATOR =
-			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
+		new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
+	public static final InputManager inputManager = InputManager.getInstance();
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	SendableChooser<Command> pathChooser = new SendableChooser<>();
+	
+	private final AmpSelfDrive AmpSelfDrive = new AmpSelfDrive(inputManager.getDriverController(), LIMELIGHT_INTERFACE, SWERVE,PIGEON);
+	private final SpeakerSelfDrive SpeakerSelfDrive = new SpeakerSelfDrive(inputManager.getDriverController(), LIMELIGHT_INTERFACE, SWERVE);
+	
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
