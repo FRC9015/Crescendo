@@ -3,6 +3,9 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.Constants.Constants.OperatorConstants;
 
@@ -26,12 +29,11 @@ public class InputManager {
          * Creates the ButtonMap
          * @param button The button on the controller as a {@link Button}
          * @param command The command mapped to the button.
-         * @param whileHeld Will the command run when the button is held. If false will only work on press.
          */
-        public ButtonMap(Button button, Command command, boolean whileHeld){
+        public ButtonMap(Button button, Command command){
             this.button = button;
             this.command = command;
-            this.whileHeld = whileHeld;
+            whileHeld = !(command instanceof InstantCommand);
         }
     }
 
