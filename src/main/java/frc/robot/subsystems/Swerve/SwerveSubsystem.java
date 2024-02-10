@@ -43,7 +43,7 @@ public class SwerveSubsystem extends SubsystemBase {
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 
 	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
-		.add("Max Angular Speed", 0.5)
+		.add("Max Angular Speed", 0.25)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 
@@ -204,11 +204,10 @@ public class SwerveSubsystem extends SubsystemBase {
 		);
 	}
 
-
 	@Override
 	public void periodic() {
 
-		//if statment is so that the telop wont run if selfdrive is on.
+		//if statement is so that the teleop wont run if the Self Drive is on.
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}

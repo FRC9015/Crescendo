@@ -19,11 +19,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
 	
-	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(slewRateLimit);
-	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(slewRateLimit);
-	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(slewRateLimit);
+	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(driveSlewRateLimit);
+	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(driveSlewRateLimit);
+	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(turningSlewRateLimit);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-
     public DefaultDrive() {
 		addRequirements(SWERVE);
 	}
@@ -35,9 +34,9 @@ public class DefaultDrive extends Command {
 		double xVelocity = moveVelocity.getX();
 		double yVelocity = moveVelocity.getY();
 		double rotationalVelocity = InputManager.getInstance().getControllerRotationalAxis();
-		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
+		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.15);
 		double speed = Math.hypot(xVelocity, yVelocity);
-		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
+		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.15);
 		double velocityDir = Math.atan2(yVelocity, xVelocity);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 		

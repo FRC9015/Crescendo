@@ -1,11 +1,18 @@
 package frc.robot.Constants;
 import edu.wpi.first.math.geometry.Rotation2d;
 
+/* When determining which module is which, begin with the limelight side facing forward.
+TOP LEFT: NW
+TOP RIGHT: NE
+BOTTOM RIGHT: SE
+BOTTOM LEFT: SW
+ */
+
 public enum SwerveModuleConfiguration {
-	NW(27, 60, 10, 0.3447265625), //TODO Change this ID Back to 15 on The Robot and Update it Here
-	NE(13, 16, 6, 0.32470703125),
-	SW(39, 19, 17, 0.6 - 0.2495117),
-	SE(34, 9, 8, 0.4 - 0.15332);
+	NW(31, 21, 11, 0), //TODO Change this ID Back to 15 on The Robot and Update it Here
+	NE(32, 22, 12, 0),
+	SE(33, 23, 13, 0),
+	SW(34, 24, 14, 0);
 	public int ENCODER, TURN_MOTOR, DRIVE_MOTOR;
 	public Rotation2d offset;
 
