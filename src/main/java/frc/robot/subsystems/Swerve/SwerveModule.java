@@ -5,7 +5,7 @@ import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static java.lang.Math.*;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
@@ -16,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 public class SwerveModule {
-	private CANSparkMax turn, drive;
+	private CANSparkFlex turn, drive;
 	private CANcoder encoder;
 	private Rotation2d encoderOffset;
 
@@ -27,8 +27,8 @@ public class SwerveModule {
 	private double kV = 3;
 
 	public SwerveModule(SwerveModuleConfiguration config, String nameString) {
-		turn = new CANSparkMax(config.TURN_MOTOR, MotorType.kBrushless);
-		drive = new CANSparkMax(config.DRIVE_MOTOR, MotorType.kBrushless);
+		turn = new CANSparkFlex(config.TURN_MOTOR, MotorType.kBrushless);
+		drive = new CANSparkFlex(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
 

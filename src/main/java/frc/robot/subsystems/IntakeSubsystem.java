@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,10 +11,10 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     
-    private CANSparkMax[] intakeMotors = new CANSparkMax[]{
-        new CANSparkMax(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
+    private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
+        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
     };
 
     public boolean isReadytoIntake() {
@@ -34,21 +34,15 @@ public class IntakeSubsystem extends SubsystemBase {
         );
     }
 
-    public Command stopIntake(){
-        return new InstantCommand(
-            this::stopIntakeMotors
-        );
-    }
-
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = 0.3;
-        for (CANSparkMax motor:intakeMotors){
+        double motorSpeed = 0.4;
+        for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
     }
 
     private void stopIntakeMotors(){
-        for (CANSparkMax motor:intakeMotors){
+        for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
     }
@@ -64,6 +58,6 @@ public class IntakeSubsystem extends SubsystemBase {
       // This method will be called once per scheduler run during simulation
     }
 
-    }
+}
 
 

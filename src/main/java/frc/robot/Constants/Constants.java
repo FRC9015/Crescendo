@@ -9,6 +9,8 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.util.Units;
 
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -25,41 +27,44 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double maxSpeed = Units.feetToMeters(16.6);
+		public static final double maxSpeed = Units.feetToMeters(19.3);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
-		public static final double slewRateLimit = 50;
+		public static final double driveSlewRateLimit = 15;
+		public static final double turningSlewRateLimit = 20;
 		public static final double dtSeconds = 0.02;
 	}
 
-	public static class ShooterConstants {
-	
+	public static class PigeonConstants {
+		public static final int pigeonID = 30;
 	}
 
 	public static class IntakeConstants {
-		public static final int intakeMotor1ID = 41;
-		public static final int intakeMotor2ID = 42;
-		public static final int intakeMotor3ID = 43;
+		public static final int intakeMotor1ID = 40;
+		public static final int intakeMotor2ID = 41;
+		public static final int intakeMotor3ID = 42;
 	}
 
+	public static class ShooterConstants {
+		public static final int pivotMotor = 50;
+		public static final int shooterMotor1ID = 51;
+		public static final int shooterMotor2ID = 52;
+		public static final int shooterMotor3ID = 53;
+		public static final int shooterMotor4ID = 54;
+	}
 	public static class LEDConstants {
 
 	}
-	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
-	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
+	public static final double robotWidth = Units.inchesToMeters(26); // TODO: This must be tuned to specific robot
+	public static final double robotLength = Units.inchesToMeters(26); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-			new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
+			new PIDConstants(driveP, driveI, driveD), // Translation PID constants
+			new PIDConstants(turnP, turnI, turnD), // Rotation PID constants
 			SwerveConstants.maxSpeed, // Max module speed, in m/s
-			Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
+			Units.inchesToMeters(12), //TODO Change this to competition robot radius Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
 			);
-
-	
-	public static class PigeonConstants {
-		public static final int pigeonID = 23;
-	}
 
 	public static class SwervePIDControllerConstants {
 		public static final double driveP = 1.5;
