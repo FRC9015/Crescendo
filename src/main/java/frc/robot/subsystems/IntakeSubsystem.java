@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
         new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
     };
 
-    public boolean isReadytoIntake() {
+    public boolean isReadyToIntake() {
         // This function determines whether the robot is ready to intake a note.
         return false;
     }
