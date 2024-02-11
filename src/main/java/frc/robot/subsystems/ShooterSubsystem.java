@@ -46,8 +46,6 @@ public class ShooterSubsystem extends SubsystemBase {
         return new InstantCommand();
 
     }
-
-
   
     @Override
     public void periodic() {

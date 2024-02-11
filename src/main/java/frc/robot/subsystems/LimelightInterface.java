@@ -10,11 +10,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
     
 public class LimelightInterface extends SubsystemBase{
     
-    private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
-    
-    
-    
-    private static boolean tag = false;
+    private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
+
     //takes the X,Y, and area values from the limelight networktable
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
@@ -85,12 +83,6 @@ public class LimelightInterface extends SubsystemBase{
     }
     
     public boolean tagCheck(){
-        if(getArea() > 0.1){
-            tag = true;
-        }else{
-            tag = false;
-        }
-        return tag;
+        return getArea() > 0.1;
     }
-
 }

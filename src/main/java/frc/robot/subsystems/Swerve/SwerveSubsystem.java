@@ -12,7 +12,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,6 +27,7 @@ import frc.robot.Constants.SwerveModuleConfiguration;
 import java.util.Map;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static frc.robot.Constants.Constants.robotLength;
 import static frc.robot.Constants.Constants.robotWidth;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
@@ -37,12 +37,13 @@ public class SwerveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("xVelocity Graph", xVelocity);
 		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
 	}
-	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
+
+	private final SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Speed", 0.5)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
 
-	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
+	private final SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
 		.add("Max Angular Speed", 0.25)
 		.withWidget(BuiltInWidgets.kNumberSlider)
 		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
@@ -50,14 +51,14 @@ public class SwerveSubsystem extends SubsystemBase {
 	private double speedMultiplier;
 	private double angularMultiplier;
 
-	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+	private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
 			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
 			new Translation2d(-robotLength / 2, -robotWidth / 2), // SE
 			new Translation2d(-robotLength / 2, robotWidth / 2) // SW
 			);
 
-	private SwerveModule[] modules = new SwerveModule[] {
+	private final SwerveModule[] modules = new SwerveModule[] {
 		new SwerveModule(SwerveModuleConfiguration.NW, "NW"),
 		new SwerveModule(SwerveModuleConfiguration.NE, "NE"),
 		new SwerveModule(SwerveModuleConfiguration.SE, "SE"),
@@ -91,11 +92,8 @@ public class SwerveSubsystem extends SubsystemBase {
 				// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
 				var alliance = DriverStation.getAlliance();
-				if (alliance.isPresent()) {
-					return alliance.get() == DriverStation.Alliance.Red;
-				}
-				return false;
-			},
+                return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
+            },
 			this
     );
 	}
@@ -153,11 +151,11 @@ public class SwerveSubsystem extends SubsystemBase {
 				() -> this.getChassisSpeedsTeleop(xVelocity,yVelocity,rotationalVelocity),// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
+                        new PIDConstants(driveP, driveI, driveD), // Translation PID constants
+                        new PIDConstants(turnP, turnI, turnD), // Rotation PID constants
                         SwerveConstants.maxSpeed, // Max module speed, in m/s
-                        Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                        SwerveConstants.driveBaseRadius, // Drive base radius in meters. Distance from robot center to the furthest module.
+                        new ReplanningConfig() // Default path re-planning config. See the API for the options here
                 ),
                 () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -165,10 +163,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
                     var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
+                    return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
                 },
                 this // Reference to this subsystem to set requirements
         );
@@ -183,11 +178,11 @@ public class SwerveSubsystem extends SubsystemBase {
 				this::getChassisSpeedsAuto,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
 				this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
 				new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-						new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
-						new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
+						new PIDConstants(driveP, driveI, driveD), // Translation PID constants
+						new PIDConstants(turnP, turnI, turnD), // Rotation PID constants
 						SwerveConstants.maxSpeed, // Max module speed, in m/s
-						Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
-						new ReplanningConfig() // Default path replanning config. See the API for the options here
+						SwerveConstants.driveBaseRadius, // Drive base radius in meters. Distance from robot center to the furthest module.
+						new ReplanningConfig() // Default path re-planning config. See the API for the options here
 				),
 				() -> {
 					// Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -195,11 +190,8 @@ public class SwerveSubsystem extends SubsystemBase {
 					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
 					var alliance = DriverStation.getAlliance();
-					if (alliance.isPresent()) {
-						return alliance.get() == DriverStation.Alliance.Red;
-					}
-					return false;
-				},
+                    return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
+                },
 				this // Reference to this subsystem to set requirements
 		);
 	}
@@ -207,7 +199,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 
-		//if statement is so that the teleop wont run if the Self Drive is on.
+		//if statement is so that the teleop won't run if the Self Drive is on.
 		for (SwerveModule module : modules) {
 			module.teleop();
 		}
@@ -235,6 +227,5 @@ public class SwerveSubsystem extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics(){
 		return kinematics;
 	}
-
 }
 	

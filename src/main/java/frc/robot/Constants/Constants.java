@@ -23,7 +23,7 @@ import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 public final class Constants {
 	
 	public static class OperatorConstants {
-		public static final int kDriverControllerPort = 0;
+		public static final int DRIVER_CONTROLLER_PORT = 0;
 	}
 
 	public static class SwerveConstants {
@@ -32,6 +32,7 @@ public final class Constants {
 		public static final double driveSlewRateLimit = 15;
 		public static final double turningSlewRateLimit = 20;
 		public static final double dtSeconds = 0.02;
+		public static final double driveBaseRadius = Units.inchesToMeters(12);
 	}
 
 	public static class PigeonConstants {
@@ -46,10 +47,10 @@ public final class Constants {
 
 	public static class ShooterConstants {
 		public static final int pivotMotor = 50;
-		public static final int shooterMotor1ID = 51;
-		public static final int shooterMotor2ID = 52;
-		public static final int shooterMotor3ID = 53;
-		public static final int shooterMotor4ID = 54;
+		public static final int speakerShooterMotor1ID = 51;
+		public static final int speakerShooterMotor2ID = 52;
+		public static final int ampShooterMotor1ID = 53;
+		public static final int ampShooterMotor2ID = 54;
 	}
 	public static class LEDConstants {
 
@@ -63,7 +64,7 @@ public final class Constants {
 			new PIDConstants(turnP, turnI, turnD), // Rotation PID constants
 			SwerveConstants.maxSpeed, // Max module speed, in m/s
 			Units.inchesToMeters(12), //TODO Change this to competition robot radius Drive base radius in meters. Distance from robot center to furthest module.
-			new ReplanningConfig() // Default path replanning config. See the API for the options here
+			new ReplanningConfig() // Default path re-planning config. See the API for the options here
 			);
 
 	public static class SwervePIDControllerConstants {
