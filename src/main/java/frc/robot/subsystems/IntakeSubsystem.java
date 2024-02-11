@@ -4,28 +4,17 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     
-    private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
+    private final CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
         new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
         new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
     };
-
-    public boolean isReadyToIntake() {
-        // This function determines whether the robot is ready to intake a note.
-        return false;
-    }
-
-    public boolean isReadyToHandoff() {
-        // This function determines whether the robot is ready to complete the hand off.
-        return false;
-    }
 
     public Command intakeNote(){
         return new StartEndCommand(

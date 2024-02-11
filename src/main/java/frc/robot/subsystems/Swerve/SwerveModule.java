@@ -24,9 +24,8 @@ public class SwerveModule {
 	private SwerveModuleState targetState;
 	private PIDController drivePID, turnPPID;
 	private String name;
-	private double kV = 3;
 
-	public SwerveModule(SwerveModuleConfiguration config, String nameString) {
+    public SwerveModule(SwerveModuleConfiguration config, String nameString) {
 		turn = new CANSparkFlex(config.TURN_MOTOR, MotorType.kBrushless);
 		drive = new CANSparkFlex(config.DRIVE_MOTOR, MotorType.kBrushless);
 		name = nameString;
@@ -94,7 +93,8 @@ public class SwerveModule {
 		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
 				* targetState.speedMetersPerSecond;
 
-		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
+        double kV = 3;
+        drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
 		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
 	}
 

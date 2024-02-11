@@ -13,8 +13,8 @@ public enum SwerveModuleConfiguration {
 	NE(32, 22, 12, 0),
 	SE(33, 23, 13, 0),
 	SW(34, 24, 14, 0);
-	public int ENCODER, TURN_MOTOR, DRIVE_MOTOR;
-	public Rotation2d offset;
+	public final int ENCODER, TURN_MOTOR, DRIVE_MOTOR;
+	public final Rotation2d offset;
 
 	SwerveModuleConfiguration(int enc, int tm, int dm, double offset_rot) {
 		ENCODER = enc;

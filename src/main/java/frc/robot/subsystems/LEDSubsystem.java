@@ -12,17 +12,17 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
-  /** Creates a new LEDS. */
-private AddressableLED m_LED = new AddressableLED(0);//port number needs to be changed
-private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(1);//port number needs to be changed
+  /** Creates new LEDs. */
+private final AddressableLED lED = new AddressableLED(0);//port number needs to be changed
+private final AddressableLEDBuffer lEDBuffer = new AddressableLEDBuffer(1);//port number needs to be changed
 
 
   public LEDSubsystem() 
   {
     
-    m_LED.setLength(m_LEDBuffer.getLength());
-    m_LED.setData(m_LEDBuffer);
-    m_LED.start();
+    lED.setLength(lEDBuffer.getLength());
+    lED.setData(lEDBuffer);
+    lED.start();
   }
 
   @Override
@@ -32,18 +32,18 @@ private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(1);//port nu
 
   }
   public void startLEDS(){
-    m_LED.start();
+    lED.start();
   }
   public void endLEDS(){
-    m_LED.stop();
+    lED.stop();
   }
   
   public void SetLEDsPurple()
   { 
     System.out.println("setting to purple");
-    for(int i = 0; i < m_LEDBuffer.getLength(); i++)
+    for(int i = 0; i < lEDBuffer.getLength(); i++)
     {
-      m_LEDBuffer.setLED(i, Color.kPurple);
+      lEDBuffer.setLED(i, Color.kPurple);
     }
     System.out.println("done");
 
@@ -53,9 +53,9 @@ private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(1);//port nu
   public void SetLEDsRed()
   {
     System.out.println("setting to red");
-    for(int i = 0; i < m_LEDBuffer.getLength(); i++)
+    for(int i = 0; i < lEDBuffer.getLength(); i++)
     {
-      m_LEDBuffer.setRGB(i, 255, 0, 0);
+      lEDBuffer.setRGB(i, 255, 0, 0);
     }
     System.out.println("done");
   }

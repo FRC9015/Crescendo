@@ -4,8 +4,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.Constants.Constants.OperatorConstants;
 
@@ -52,7 +50,7 @@ public class InputManager {
         Pivot_Shooter_Button(14),
         Pivot_Amp_Button(15);
 
-        public final int buttonID;
+        public int buttonID;
 
         Button(int id){
             buttonID = id;
@@ -64,7 +62,7 @@ public class InputManager {
     private boolean hasBeenInitialized;
 
     private InputManager(){
-        driveController = new CommandGenericHID(OperatorConstants.kDriverControllerPort);
+        driveController = new CommandGenericHID(OperatorConstants.DRIVER_CONTROLLER_PORT);
     }
 
     public static InputManager getInstance(){

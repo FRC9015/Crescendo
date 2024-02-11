@@ -16,15 +16,15 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class PoseEstimator extends SubsystemBase{
 
     private GenericEntry currentPos = Shuffleboard.getTab("swerve").add("curr_pos",new double[3]).getEntry();
-    private SimpleWidget visionMeasurementToggle =
+    private final SimpleWidget visionMeasurementToggle =
             Shuffleboard.getTab("swerve")
                     .add("Add Vision Measurement", false)
                     .withWidget(BuiltInWidgets.kToggleButton);
     private boolean addVisionMeasurement;
-    private final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
-    private final SwerveSubsystem swerveSubsystem;
-    private final Pigeon pigeon;
-    private Field2d field = new Field2d();
+    private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
+    private SwerveSubsystem swerveSubsystem;
+    private Pigeon pigeon;
+    private final Field2d field = new Field2d();
 
     private Pose2d originPose;
 
