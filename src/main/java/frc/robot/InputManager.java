@@ -1,12 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Constants.OperatorConstants;
 
 /**
@@ -16,27 +12,6 @@ import frc.robot.Constants.Constants.OperatorConstants;
  * - Matthew
  */
 public class InputManager {
-
-    /**
-     * This struct is used to handle Button Mapping on the controller.
-     */
-    public static class ButtonMap{
-        public Button button;
-        public Command command;
-        public boolean whileHeld;
-
-        /**
-         * Creates the ButtonMap
-         * @param button The button on the controller as a {@link Button}
-         * @param command The command mapped to the button.
-         */
-        public ButtonMap(Button button, Command command){
-            this.button = button;
-            this.command = command;
-            whileHeld = !(command instanceof InstantCommand);
-        }
-    }
-
     public enum Button{
         A_Button1(1),
         B_Button2(2),
@@ -61,10 +36,11 @@ public class InputManager {
 
     private static InputManager Instance;
     private CommandGenericHID driveController;
-    private boolean hasBeenInitialized;
+    private CommandGenericHID operatorController;
 
     private InputManager(){
-        driveController = new CommandGenericHID(OperatorConstants.kDriverControllerPort);
+        driveController = new CommandGenericHID(OperatorConstants.driverControllerPort);
+        operatorController = new CommandGenericHID(OperatorConstants.operatorControllerPort);
     }
 
     public static InputManager getInstance(){
@@ -75,74 +51,57 @@ public class InputManager {
         return Instance;
     }
 
-    /**
-     * Initializes the Controls for the buttons on the controller.
-     * You can pass in as many {@link ButtonMap}s as you want and any button not inputted
-     * will be mapped to nothing and won't do anything. This works for both press and hold
-     * commands on the controller.
-     * @param controls The controls you want to map onto the controller as {@link ButtonMap}s.
-     */
-    public void init(ButtonMap... controls){
-        if (hasBeenInitialized){
-            System.err.println("Controls have already been initialized!");
-            return;
+    public Trigger getDriverButton(Button button){
+        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad) {
+            return driveController.button(button.buttonID);
         }
 
-        for (ButtonMap buttonMap : controls){
-            if (buttonMap.whileHeld){
-                setButtonCommandHold(buttonMap.button, buttonMap.command);
-            }else {
-                setButtonCommandPressed(buttonMap.button, buttonMap.command);
-            }
-        }
-
-        hasBeenInitialized = true;
-    }
-// TODO Operator Controller
-    private void setButtonCommandPressed(Button button, Command command){
-        // TODO Check if this code works on real robot
-        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad){
-            driveController.button(button.buttonID).onTrue(command);
-            return;
-        }
-
-        float pressThreshold = 0.5f;
-        if (button == Button.LT_Button7){
-            driveController.axisGreaterThan(2, pressThreshold).onTrue(command);
-        }else if (button == Button.RT_Button8){
-            driveController.axisGreaterThan(3, pressThreshold).onTrue(command);
-        }else {
-            driveController.button(button.buttonID).onTrue(command);
-        }
+        double pressThreshold = 0.1;
+        return switch (button) {
+            case LT_Button7 -> driveController.axisGreaterThan(2, pressThreshold);
+            case RT_Button8 -> driveController.axisGreaterThan(3, pressThreshold);
+            default -> driveController.button(button.buttonID);
+        };
     }
 
-    private void setButtonCommandHold(Button button, Command command){
-        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad){
-            driveController.button(button.buttonID).whileTrue(command);
-            return;
+    public Trigger getOperatorButton(Button button){
+        if (operatorController.getHID().getType() != GenericHID.HIDType.kXInputGamepad) {
+            return operatorController.button(button.buttonID);
         }
 
-        float pressThreshold = 0.5f;
-        if (button == Button.LT_Button7){
-            driveController.axisGreaterThan(2, pressThreshold).whileTrue(command);
-        }else if (button == Button.RT_Button8){
-            driveController.axisGreaterThan(3, pressThreshold).whileTrue(command);
-        }else {
-            driveController.button(button.buttonID).whileTrue(command);
+        double pressThreshold = 0.1;
+        return switch (button) {
+            case LT_Button7 -> operatorController.axisGreaterThan(2, pressThreshold);
+            case RT_Button8 -> operatorController.axisGreaterThan(3, pressThreshold);
+            default -> operatorController.button(button.buttonID);
+        };
+    }
+
+    public double[] getDriverXYZAxes(){
+        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad) {
+            return new double[]{
+                    driveController.getRawAxis(0),
+                    driveController.getRawAxis(1),
+                    driveController.getRawAxis(2)};
         }
+
+        return new double[]{
+                driveController.getRawAxis(0),
+                driveController.getRawAxis(1),
+                driveController.getRawAxis(4)};
     }
 
-
-    public Translation2d getControllerXYAxes(){
-        return new Translation2d(driveController.getRawAxis(0), -driveController.getRawAxis(1));
-    }
-
-    public double getControllerRotationalAxis(){
-        if (driveController.getHID().getType() == GenericHID.HIDType.kXInputGamepad){
-            return -driveController.getRawAxis(4);
-        } else{
-            return -driveController.getRawAxis(2);
+    public double[] getOperatorXYZAxes(){
+        if (operatorController.getHID().getType() != GenericHID.HIDType.kXInputGamepad) {
+            return new double[]{
+                    operatorController.getRawAxis(0),
+                    operatorController.getRawAxis(1),
+                    operatorController.getRawAxis(2)};
         }
+
+        return new double[]{
+                operatorController.getRawAxis(0),
+                operatorController.getRawAxis(1),
+                operatorController.getRawAxis(4)};
     }
-    
 }
