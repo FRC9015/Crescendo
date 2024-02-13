@@ -31,24 +31,24 @@ public class DefaultDrive extends Command {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Translation2d moveVelocity = InputManager.getInstance().getControllerXYAxes();
-		double xVelocity = moveVelocity.getX();
-		double yVelocity = moveVelocity.getY();
-		double rotationalVelocity = InputManager.getInstance().getControllerRotationalAxis();
-		rotationalVelocity = MathUtil.applyDeadband(rotationalVelocity, 0.1);
-		double speed = Math.hypot(xVelocity, yVelocity);
-		double deadbandSpeed = MathUtil.applyDeadband(speed, 0.1);
-		double velocityDir = Math.atan2(yVelocity, xVelocity);
+		double[] inputXYZ = InputManager.getInstance().getDriverXYZAxes();
+		double inputX = inputXYZ[0];
+		double inputY = inputXYZ[1];
+		double inputZ = inputXYZ[2];
+		inputZ = MathUtil.applyDeadband(inputZ, 0.15);
+		double inputMagnitude = Math.hypot(inputX, inputY);
+		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.15);
+		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
-		
-		xVelocity = xVelocityFilter.calculate(cos(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
-		
-		yVelocity = yVelocityFilter.calculate(sin(velocityDir) * deadbandSpeed * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
-		
-		rotationalVelocity = rotationalVelocityFilter.calculate(rotationalVelocity * angularSpeed * SWERVE.getAngularMultiplier());
 
-		SWERVE.drive(xVelocity, yVelocity, rotationalVelocity);
-		
+		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
+
+		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
+
+		double rotationalVelocity = rotationalVelocityFilter.calculate(inputZ * angularSpeed * SWERVE.getAngularMultiplier());
+
+		SWERVE.drive(-yVelocity, -xVelocity, -rotationalVelocity);
+
 		SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
 	}
 	
