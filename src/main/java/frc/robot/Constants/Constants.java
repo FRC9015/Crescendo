@@ -21,7 +21,13 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 	
 	public static class OperatorConstants {
-		public static final int kDriverControllerPort = 0;
+		public static final int driverControllerPort = 0;
+		public static final int operatorControllerPort = 1;
+	}
+
+	public static class InputConstants{
+		public static String triggerPressThresholdKey = "PressThreshold";
+		public static double defaultTriggerPressThreshold = 0.1;
 	}
 
 	public static class SwerveConstants {
