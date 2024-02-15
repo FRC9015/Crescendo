@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -40,6 +38,14 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
+
+		Command swerveDriveCommand = SWERVE.driveCommand(
+				() -> -InputManager.getInstance().getDriverXYZAxes()[1],
+				() -> -InputManager.getInstance().getDriverXYZAxes()[0],
+				() -> -InputManager.getInstance().getDriverXYZAxes()[2]
+		);
+
+		SWERVE.setDefaultCommand(swerveDriveCommand);
 	}
 
 	/**
@@ -52,8 +58,6 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		SWERVE.setDefaultCommand(new DefaultDrive());
-
 		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
 
 		InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(() -> System.out.println("Press Works")));

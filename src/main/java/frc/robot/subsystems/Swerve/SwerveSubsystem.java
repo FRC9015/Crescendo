@@ -1,19 +1,6 @@
 package frc.robot.subsystems.Swerve;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -21,7 +8,6 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -30,10 +16,8 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
-import static frc.robot.Constants.Constants.robotLength;
-import static frc.robot.Constants.Constants.robotWidth;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class SwerveSubsystem extends SubsystemBase {
 	public void velocityGraphUpdate(double xVelocity, double yVelocity){
@@ -53,19 +37,37 @@ public class SwerveSubsystem extends SubsystemBase {
 	private double speedMultiplier;
 	private double angularMultiplier;
 
+	private SwerveDrive swerveDrive;
+
 	public SwerveSubsystem() {
 		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
 
 		File directory = new File(Filesystem.getDeployDirectory(),"swerve");
 
         try {
-            SwerveDrive swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.maxSpeed);
+			swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.maxSpeed);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 	}
 
-	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
+	/**
+	 * Command to drive the robot using translative values and heading as angular velocity.
+	 *
+	 * @param translationX     Translation in the X direction.
+	 * @param translationY     Translation in the Y direction.
+	 * @param angularRotationX Rotation of the robot to set
+	 * @return Drive command.
+	 */
+	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+		return run(() -> {
+			// Make the robot move
+			swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumVelocity(),
+							translationY.getAsDouble() * swerveDrive.getMaximumVelocity()),
+					angularRotationX.getAsDouble() * swerveDrive.getMaximumAngularVelocity(),
+					true,
+					false);
+		});
 	}
 
 	@Override
