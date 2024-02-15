@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -24,7 +25,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
+import swervelib.SwerveDrive;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
@@ -79,7 +85,17 @@ public class SwerveSubsystem extends SubsystemBase {
 	  }
 
 	public SwerveSubsystem() {
-		AutoBuilder.configureHolonomic(
+		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+
+		File directory = new File(Filesystem.getDeployDirectory(),"swerve");
+
+        try {
+            SwerveDrive swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.maxSpeed);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AutoBuilder.configureHolonomic(
 			this::getCurrentPose, 
 			this::resetOdom, 
 			this::getChassisSpeedsAuto, 
@@ -215,14 +231,6 @@ public class SwerveSubsystem extends SubsystemBase {
 		//TODO: Add all data visualization to one subsystem
 		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
 		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
-	}
-
-	public Command printOffsets() {
-		return new InstantCommand(() -> {
-			for (SwerveModule module : modules){
-				module.printOffset();
-			}
-		}, this);
 	}
 
 	public double getSpeedMultiplier(){
