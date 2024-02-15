@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -30,8 +29,6 @@ public class RobotContainer {
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
-	public static final PoseEstimator POSE_ESTIMATOR =
-			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
@@ -43,10 +40,6 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
-		
-		pathChooser.addOption("Path 1", SWERVE.followPathCommandAuto("Example Path"));
-		pathChooser.addOption("Path 2", SWERVE.followPathCommandAuto("New Path"));
-
 	}
 
 	/**
@@ -62,7 +55,6 @@ public class RobotContainer {
 		SWERVE.setDefaultCommand(new DefaultDrive());
 
 		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 
 		InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(() -> System.out.println("Press Works")));
 		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(new RunCommand(() -> System.out.println("Hold Works")));
