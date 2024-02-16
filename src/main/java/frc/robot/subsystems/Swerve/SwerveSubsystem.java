@@ -40,7 +40,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
-		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.MACHINE;
 
 		File directory = new File(Filesystem.getDeployDirectory(),"swerve");
 
@@ -49,6 +49,9 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+		swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
+		swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
 	}
 
 	/**
@@ -62,9 +65,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
 		return run(() -> {
 			// Make the robot move
-			swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumVelocity(),
-							translationY.getAsDouble() * swerveDrive.getMaximumVelocity()),
-					angularRotationX.getAsDouble() * swerveDrive.getMaximumAngularVelocity(),
+			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
+							Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
 					true,
 					false);
 		});

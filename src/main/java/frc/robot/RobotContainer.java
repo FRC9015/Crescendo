@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,9 +41,9 @@ public class RobotContainer {
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
 
 		Command swerveDriveCommand = SWERVE.driveCommand(
-				() -> -InputManager.getInstance().getDriverXYZAxes()[1],
-				() -> -InputManager.getInstance().getDriverXYZAxes()[0],
-				() -> -InputManager.getInstance().getDriverXYZAxes()[2]
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[0], 0.15),
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[2], 0.15)
 		);
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
