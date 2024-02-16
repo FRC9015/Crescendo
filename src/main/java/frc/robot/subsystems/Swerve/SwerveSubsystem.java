@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 public class SwerveSubsystem extends SubsystemBase {
 	public void velocityGraphUpdate(double xVelocity, double yVelocity){
@@ -64,6 +63,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	 */
 	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
 		return run(() -> {
+
 			// Make the robot move
 			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
 							Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
