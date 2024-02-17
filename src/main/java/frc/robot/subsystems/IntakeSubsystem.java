@@ -10,13 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    
+    public IntakeSubsystem(){
+        intakeMotors[4].setInverted(true);
+    }
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
-        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.ampMotor1ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.ampMotor2ID, MotorType.kBrushless)
+            new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+            new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
+            new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
+            new CANSparkFlex(IntakeConstants.ampMotor1ID, MotorType.kBrushless),
+            new CANSparkFlex(IntakeConstants.ampMotor2ID, MotorType.kBrushless)
     };
 
     public boolean isReadytoIntake() {
