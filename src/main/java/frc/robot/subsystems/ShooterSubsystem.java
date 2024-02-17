@@ -1,53 +1,66 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkFlex;
+import frc.robot.Constants.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-    /**
-     * Example command factory method.
-     *
-     * @return a command
-     */
-    public Command shootDisk() {
-      // Inline construction of command goes here.
-      // Subsystem::RunOnce implicitly requires `this` subsystem.
-      return runOnce(
-          () -> {
-            /* one-time action goes here */
-          });
-    }
-  
-    /**
-     * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-     *
-     * @return value of some boolean subsystem state, such as a digital sensor.
-     */
-    public boolean exampleCondition() {
-      // Query some boolean state, such as a digital sensor.
-      return false;
+    private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID, MotorType.kBrushless);
+    private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID, MotorType.kBrushless);
+
+    private final CANSparkFlex ampShooterMotorTop = new CANSparkFlex(ShooterConstants.ampShooterMotor1ID,MotorType.kBrushless);
+    private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,MotorType.kBrushless);
+    private final CANSparkFlex pivotMotor = new CANSparkFlex(ShooterConstants.pivotMotor1ID,MotorType.kBrushless);
+
+    public Command shootNoteToSpeaker() {
+        //TODO change this into a Sequential Command. We should set the first command in the sequence to set the pivot angle.
+        return this.startEnd(
+                this::setSpeakerShooterMotorSpeeds,
+                this::stopSpeakerShooterMotors
+        );
     }
 
-    public Command resetShooter() {
-        //does nothing, needs to be changed later
-        return new InstantCommand();
-    }
-
-    public Command pivotShooter() {
-        //does nothing, needs to be changed later
-        return new InstantCommand();
-
-    }
-
-    public Command shootNote() {
-        //does nothing, needs to be changed later
-        return new InstantCommand();
-
+    public Command shootNoteToAmp() {
+        return this.startEnd(
+                this::setAmpShooterMotorSpeeds,
+                this::stopAmpShooterMotorSpeeds
+        );
     }
 
 
+
+    private void setSpeakerShooterMotorSpeeds(){
+        double motorSpeed = 0.65;//needs to be tuned
+        speakerMotorTop.set(0.6);
+        speakerMotorBottom.set(0.40);
+    }
+    private void stopSpeakerShooterMotors() {
+        speakerMotorTop.stopMotor();
+        speakerMotorBottom.stopMotor();
+    }
+
+    private void setAmpShooterMotorSpeeds() {
+        double motorSpeed = 0.5;//needs to be tuned
+        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorBottom.set(motorSpeed);
+    }
+
+    private void stopAmpShooterMotorSpeeds() {
+        ampShooterMotorTop.stopMotor();
+        ampShooterMotorBottom.stopMotor();
+    }
+
+    private void setPivotMotorSpeeds() {
+        double motorSpeed = 0.3;//needs to be tuned
+        pivotMotor.set(motorSpeed);
+    }
+
+    private void stopPivotMotorSpeeds() {
+       pivotMotor.stopMotor();
+    }
   
     @Override
     public void periodic() {

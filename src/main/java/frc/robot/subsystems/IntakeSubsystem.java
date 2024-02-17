@@ -10,15 +10,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    public IntakeSubsystem(){
-        intakeMotors[4].setInverted(true);
-    }
+    
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
-            new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-            new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-            new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
-            new CANSparkFlex(IntakeConstants.ampMotor1ID, MotorType.kBrushless),
-            new CANSparkFlex(IntakeConstants.ampMotor2ID, MotorType.kBrushless)
+        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
     };
 
     public boolean isReadytoIntake() {
@@ -32,9 +27,15 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command intakeNote(){
-        return new StartEndCommand(
+        return this.startEnd(
             this::setIntakeMotorSpeeds,
             this::stopIntakeMotors
+        );
+    }
+    public Command outtakeNote(){
+        return this.startEnd(
+                this::setReverseIntakeMotorSpeeds,
+                this::stopIntakeMotors
         );
     }
 
@@ -45,17 +46,23 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = 0.3;
+        double motorSpeed = -0.5;
         for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
     }
-
+    private void setReverseIntakeMotorSpeeds(){
+        double motorSpeed = 0.45;
+        for(CANSparkFlex motor:intakeMotors){
+            motor.set(motorSpeed);
+        }
+    }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
     }
+
 
     @Override
     public void periodic() {

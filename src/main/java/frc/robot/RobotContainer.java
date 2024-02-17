@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -27,6 +28,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
@@ -59,13 +61,12 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
+		//InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
 
-		InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(() -> System.out.println("Press Works")));
-		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(new RunCommand(() -> System.out.println("Hold Works")));
-		InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3)
-				.and(InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4))
-				.onTrue(new InstantCommand(() -> System.out.println("Multiple Press Works")));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 	}
 
 	public Command getAutonomousCommand() {
