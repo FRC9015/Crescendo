@@ -190,6 +190,25 @@ public class SwerveSubsystem extends SubsystemBase {
 		});
 	}
 
+	public Command followPathCommandManual(String fileString) {
+		PathPlannerPath path = PathPlannerPath.fromPathFile(fileString);
+
+		return new FollowPathHolonomic(
+				path,
+				this::getPose,
+				this::getRobotVelocity,
+				this::setChassisSpeeds,
+				new HolonomicPathFollowerConfig(
+						new PIDConstants(0, 01, 0.1), // Translation PID constants
+						new PIDConstants(0.01, 0.0, 0.001), // Rotation PID constants
+						SwerveConstants.maxSpeed, // Max module speed, in m/s
+						swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters. Distance from robot center to furthest module.
+						new ReplanningConfig() // Default path replanning config. See the API for the options here
+				),
+				() -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue),
+				this);
+	}
+
 	@Override
 	public void periodic() {
 		//TODO: Add all data visualization to one subsystem
