@@ -35,13 +35,15 @@ public final class Constants {
 	}
 
 	public static class ShooterConstants {
-	
+		public static final int pivotMotorID = 50;
 	}
 
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;
 		public static final int intakeMotor2ID = 42;
 		public static final int intakeMotor3ID = 43;
+		public static final int ampMotor1ID = 44;
+		public static final int ampMotor2ID = 45;
 	}
 
 	public static class LEDConstants {
