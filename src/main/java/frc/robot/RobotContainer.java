@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,6 +27,7 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
+	SendableChooser<Command> pathAndautoChooser;
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
@@ -32,13 +35,16 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
-	SendableChooser<Command> pathChooser = new SendableChooser<>();
+
+
+
+
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
+		Shuffleboard.getTab("Autonomous").add(pathAndautoChooser);
 
 		Command swerveDriveCommand = SWERVE.driveCommand(
 				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
@@ -47,6 +53,12 @@ public class RobotContainer {
 		);
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
+
+		pathAndautoChooser = AutoBuilder.buildAutoChooser();
+
+		pathAndautoChooser.addOption("Run Straight Path", followPath("Straight Path"));
+		pathAndautoChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
+
 	}
 
 	/**
@@ -68,7 +80,12 @@ public class RobotContainer {
 				.onTrue(new InstantCommand(() -> System.out.println("Multiple Press Works")));
 	}
 
+	public Command followPath(String wantedPath) {
+		PathPlannerPath path = PathPlannerPath.fromPathFile(wantedPath);
+		return AutoBuilder.followPath(path);
+	}
+
 	public Command getAutonomousCommand() {
-		return pathChooser.getSelected();
+		return pathAndautoChooser.getSelected();
 	  }
 }

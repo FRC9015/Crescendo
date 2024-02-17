@@ -48,8 +48,8 @@ public final class Constants {
 
 	}
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-			new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
+			new PIDConstants(0, 01, 0.1), // Translation PID constants
+			new PIDConstants(0.01, 0.0, 0.001), // Rotation PID constants
 			SwerveConstants.maxSpeed, // Max module speed, in m/s
 			Units.feetToMeters(1), // Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
