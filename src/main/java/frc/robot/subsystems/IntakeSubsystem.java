@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,10 +11,12 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     
-    private CANSparkMax[] intakeMotors = new CANSparkMax[]{
-        new CANSparkMax(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
+    private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
+        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.ampMotor1ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.ampMotor2ID, MotorType.kBrushless)
     };
 
     public boolean isReadytoIntake() {
@@ -48,7 +50,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void stopIntakeMotors(){
-        for (CANSparkMax motor:intakeMotors){
+        for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
     }
