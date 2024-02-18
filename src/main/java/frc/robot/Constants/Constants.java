@@ -27,33 +27,32 @@ public final class Constants {
 
 	public static class InputConstants{
 		public static String triggerPressThresholdKey = "PressThreshold";
-		public static double defaultTriggerPressThreshold = 0.1;
+		public static double defaultTriggerPressThreshold = 0.15;
 	}
 
 	public static class SwerveConstants {
-		public static final double maxSpeed = Units.feetToMeters(16.6);
-		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
-		public static final double slewRateLimit = 50;
-		public static final double dtSeconds = 0.02;
+		public static final double maxSpeed = Units.feetToMeters(10);
 	}
 
 	public static class ShooterConstants {
-	
+		public static final int speakerShooterMotorTopID = 51;
+		public static final int speakerShooterMotor2ID = 52;
+
+		public static final int ampShooterMotor1ID = 61;
+		public static final int ampShooterMotor2ID = 62;
+
+		public static final int pivotMotor1ID = 71;
 	}
 
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;
 		public static final int intakeMotor2ID = 42;
-		public static final int intakeMotor3ID = 43;
+
 	}
 
 	public static class LEDConstants {
 
 	}
-	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
-	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
-	public static final double wheelRatio = Units.inchesToMeters(2);
-	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
 			new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
 			new PIDConstants(3, 0.0, 0.0), // Rotation PID constants
@@ -64,16 +63,6 @@ public final class Constants {
 
 	
 	public static class PigeonConstants {
-		public static final int pigeonID = 23;
-	}
-
-	public static class SwervePIDControllerConstants {
-		public static final double driveP = 1.5;
-		public static final double driveI = 0;
-		public static final double driveD = 0;
-
-		public static final double turnP = 2.5;
-		public static final double turnI = 0;
-		public static final double turnD = 0;
+		public static final int pigeonID = 30; //TODO Remove this Later for YAGSL Json Instance
 	}
 }

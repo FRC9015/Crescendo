@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,10 +12,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -29,9 +28,8 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
-	public static final PoseEstimator POSE_ESTIMATOR =
-			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
@@ -43,10 +41,14 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
-		
-		pathChooser.addOption("Path 1", SWERVE.followPathCommandAuto("Example Path"));
-		pathChooser.addOption("Path 2", SWERVE.followPathCommandAuto("New Path"));
 
+		Command swerveDriveCommand = SWERVE.driveCommand( //TODO Add slew rate limiting to inputs
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[0], 0.15),
+				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[2], 0.15)
+		);
+
+		SWERVE.setDefaultCommand(swerveDriveCommand);
 	}
 
 	/**
@@ -59,16 +61,12 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		SWERVE.setDefaultCommand(new DefaultDrive());
+		//InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
 
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(POSE_ESTIMATOR::resetOdometry));
-
-		InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(() -> System.out.println("Press Works")));
-		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(new RunCommand(() -> System.out.println("Hold Works")));
-		InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3)
-				.and(InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4))
-				.onTrue(new InstantCommand(() -> System.out.println("Multiple Press Works")));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 	}
 
 	public Command getAutonomousCommand() {

@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,10 +11,9 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     
-    private CANSparkMax[] intakeMotors = new CANSparkMax[]{
-        new CANSparkMax(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-        new CANSparkMax(IntakeConstants.intakeMotor3ID, MotorType.kBrushless),
+    private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
+        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
     };
 
     public boolean isReadytoIntake() {
@@ -28,9 +27,15 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command intakeNote(){
-        return new StartEndCommand(
+        return this.startEnd(
             this::setIntakeMotorSpeeds,
             this::stopIntakeMotors
+        );
+    }
+    public Command outtakeNote(){
+        return this.startEnd(
+                this::setReverseIntakeMotorSpeeds,
+                this::stopIntakeMotors
         );
     }
 
@@ -41,24 +46,30 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = 0.3;
-        for (CANSparkMax motor:intakeMotors){
+        double motorSpeed = -0.5;
+        for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
     }
-
+    private void setReverseIntakeMotorSpeeds(){
+        double motorSpeed = 0.45;
+        for(CANSparkFlex motor:intakeMotors){
+            motor.set(motorSpeed);
+        }
+    }
     private void stopIntakeMotors(){
-        for (CANSparkMax motor:intakeMotors){
+        for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
     }
+
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
 
     }
-  
+
     @Override
     public void simulationPeriodic() {
       // This method will be called once per scheduler run during simulation
