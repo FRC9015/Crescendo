@@ -6,8 +6,10 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,6 +30,7 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
+	private final Field2d pathField;
 	SendableChooser<Command> pathAndautoChooser = new SendableChooser<>();
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
@@ -55,7 +58,7 @@ public class RobotContainer {
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
 
-		pathAndautoChooser = AutoBuilder.buildAutoChooser();
+		pathAndautoChooser = AutoBuilder.buildAutoChooser();//might look for stuff in the folder; try deleting if no work.
 
 		pathAndautoChooser.addOption("Run Straight Path", followPath("Straight Path"));
 		pathAndautoChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
@@ -63,6 +66,28 @@ public class RobotContainer {
 		Shuffleboard.getTab("Autonomous").add(pathAndautoChooser);
 
 		SmartDashboard.putData("Path Chooser", pathAndautoChooser);
+
+		pathField = new Field2d();
+
+		SmartDashboard.putData("Field", pathField);
+
+		// Logging callback for current robot pose
+		PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+			// Do whatever you want with the pose here
+			pathField.setRobotPose(pose);
+		});
+
+		// Logging callback for target robot pose
+		PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+			// Do whatever you want with the pose here
+			pathField.getObject("target pose").setPose(pose);
+		});
+
+		// Logging callback for the active path, this is sent as a list of poses
+		PathPlannerLogging.setLogActivePathCallback((poses) -> {
+			// Do whatever you want with the poses here
+			pathField.getObject("path").setPoses(poses);
+		});
 
 	}
 
