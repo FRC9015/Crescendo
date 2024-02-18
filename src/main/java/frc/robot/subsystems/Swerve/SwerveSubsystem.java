@@ -19,23 +19,6 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 public class SwerveSubsystem extends SubsystemBase {
-	public void velocityGraphUpdate(double xVelocity, double yVelocity){
-		SmartDashboard.putNumber("xVelocity Graph", xVelocity);
-		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
-	}
-	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
-		.add("Max Speed", 0.5)
-		.withWidget(BuiltInWidgets.kNumberSlider)
-		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
-
-	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
-		.add("Max Angular Speed", 0.5)
-		.withWidget(BuiltInWidgets.kNumberSlider)
-		.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
-
-	private double speedMultiplier;
-	private double angularMultiplier;
-
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
@@ -75,18 +58,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		//TODO: Add all data visualization to one subsystem
-		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
-		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
 	}
-
-	public double getSpeedMultiplier(){
-		return speedMultiplier;
-	}
-
-	public double getAngularMultiplier(){
-		return angularMultiplier;
-	}
-
 }
 	
