@@ -34,8 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private void setSpeakerShooterMotorSpeeds(){
         double motorSpeed = 0.65;//needs to be tuned
-        speakerMotorTop.set(0.6);
-        speakerMotorBottom.set(0.40);
+        speakerMotorTop.set(0.60);
+        speakerMotorBottom.set(0.60);
     }
     private void stopSpeakerShooterMotors() {
         speakerMotorTop.stopMotor();
