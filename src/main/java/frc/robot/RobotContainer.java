@@ -28,7 +28,7 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	SendableChooser<Command> pathAndautoChooser;
+	SendableChooser<Command> pathAndautoChooser = new SendableChooser<>();
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
@@ -45,7 +45,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-		Shuffleboard.getTab("Autonomous").add(pathAndautoChooser);
+
 
 		Command swerveDriveCommand = SWERVE.driveCommand(
 				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
@@ -59,6 +59,8 @@ public class RobotContainer {
 
 		pathAndautoChooser.addOption("Run Straight Path", followPath("Straight Path"));
 		pathAndautoChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
+
+		Shuffleboard.getTab("Autonomous").add(pathAndautoChooser);
 
 		SmartDashboard.putData("Path Chooser", pathAndautoChooser);
 
