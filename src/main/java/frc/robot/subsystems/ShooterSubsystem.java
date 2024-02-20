@@ -2,6 +2,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkFlex;
@@ -13,7 +15,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkFlex ampShooterMotorTop = new CANSparkFlex(ShooterConstants.ampShooterMotor1ID,MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,MotorType.kBrushless);
-    private final CANSparkFlex pivotMotor = new CANSparkFlex(ShooterConstants.pivotMotor1ID,MotorType.kBrushless);
+
 
     public Command shootNoteToSpeaker() {
         //TODO change this into a Sequential Command. We should set the first command in the sequence to set the pivot angle.
@@ -29,7 +31,6 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopAmpShooterMotorSpeeds
         );
     }
-
 
 
     private void setSpeakerShooterMotorSpeeds(){
@@ -53,15 +54,6 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.stopMotor();
     }
 
-    private void setPivotMotorSpeeds() {
-        double motorSpeed = 0.3;//needs to be tuned
-        pivotMotor.set(motorSpeed);
-    }
-
-    private void stopPivotMotorSpeeds() {
-       pivotMotor.stopMotor();
-    }
-  
     @Override
     public void periodic() {
       // This method will be called once per scheduler run

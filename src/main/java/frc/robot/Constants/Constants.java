@@ -38,11 +38,15 @@ public final class Constants {
 		public static final int speakerShooterMotorTopID = 51;
 		public static final int speakerShooterMotor2ID = 52;
 
-		public static final int ampShooterMotor1ID = 61;
-		public static final int ampShooterMotor2ID = 62;
+		public static final int ampShooterMotor1ID = 53;
+		public static final int ampShooterMotor2ID = 54;
 
-		public static final int pivotMotor1ID = 71;
+
 	}
+
+	public static class PivotConstants {
+		public static final int pivotMotor1ID = 61;
+		public static final int pivotMotor2ID = 62;	}
 
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;

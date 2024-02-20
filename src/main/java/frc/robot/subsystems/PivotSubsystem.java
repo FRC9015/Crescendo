@@ -1,0 +1,51 @@
+package frc.robot.subsystems;
+
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import com.revrobotics.CANSparkFlex;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
+import frc.robot.Constants.Constants.PivotConstants;
+
+
+
+public class PivotSubsystem extends ProfiledPIDSubsystem {
+    private final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+    private final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
+    private final ArmFeedforward pivotFeedForward =
+            new ArmFeedforward(
+                    1,1.26,0.15,0.02);  //kSVolts, kGVolts, kVVoltSecondPerRad, kAVoltSecondSquaredPerRad
+
+    public PivotSubsystem(){
+        super(
+                new ProfiledPIDController(
+                        0,
+                        0,
+                        0,
+                        new TrapezoidProfile.Constraints(
+                                0, //kMaxVelocityRadPerSecond,
+                                0 //kMaxAccelerationRadPerSecSquared)),
+                )));
+
+        pivotEncoder.setPositionConversionFactor(1.0/9);
+        // Start arm at rest in neutral position
+        setGoal(0); //TODO Add Pivot Encoder Offset in Radians
+
+    }
+    @Override
+    public void useOutput(double output, TrapezoidProfile.State setpoint) {
+        // Calculate the feedforward from the setpoint
+        double feedforward = pivotFeedForward.calculate(setpoint.position, setpoint.velocity);
+        // Add the feedforward to the PID output to get the motor output
+        pivotMotor1.setVoltage(output + feedforward);
+        pivotMotor2.setVoltage(output + feedforward);
+    }
+
+    @Override
+    public double getMeasurement() {
+        return pivotEncoder.getPosition() + 0;  //TODO Find the Pivot Encoder Offset
+    }
+}
