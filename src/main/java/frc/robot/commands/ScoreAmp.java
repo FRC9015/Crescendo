@@ -13,4 +13,9 @@ public class ScoreAmp extends Command {
         new WaitCommand(0.6); //TODO needs to be tuned based on how long the pivot takes to get to goal
         SHOOTER.shootNoteToAmp();
     }
+    @Override
+    public void end(boolean interrupted){
+        PIVOT.setGoal(0);
+        PIVOT.enable();
+    }
 }
