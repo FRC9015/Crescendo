@@ -32,6 +32,12 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
+    public Command ampIntake(){
+        return this.startEnd(
+                this::setAmpIntakeSpeeds,
+                this::stopAmpShooterMotorSpeeds
+        );
+    }
 
     private void setSpeakerShooterMotorSpeeds(){
         double motorSpeed = 0.65;//needs to be tuned
@@ -54,6 +60,11 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.stopMotor();
     }
 
+    private void setAmpIntakeSpeeds(){
+        double motorSpeed = 0.3; //needs to be tuned
+        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorBottom.set(motorSpeed);
+    }
     @Override
     public void periodic() {
       // This method will be called once per scheduler run

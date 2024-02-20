@@ -8,15 +8,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Pigeon;
-import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.Handoff;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +26,7 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
+	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
@@ -63,7 +60,7 @@ public class RobotContainer {
 	private void configureBindings() {
 		//InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.intakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff());
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());

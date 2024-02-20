@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -31,6 +32,10 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
                 )));
 
         pivotEncoder.setPositionConversionFactor(1.0/9);
+        pivotMotor1.setSmartCurrentLimit(40);
+        pivotMotor2.setSmartCurrentLimit(40);
+        pivotMotor1.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward,180); //TODO tune
+        pivotMotor2.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse,-90); //TODO tune
         // Start arm at rest in neutral position
         setGoal(0); //TODO Add Pivot Encoder Offset in Radians
 
