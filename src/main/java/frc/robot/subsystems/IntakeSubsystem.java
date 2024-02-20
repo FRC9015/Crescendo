@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem(){
         for (CANSparkFlex motor:intakeMotors){
-            motor.setSmartCurrentLimit(20);
+            motor.setSmartCurrentLimit(30);
         }
     }
 

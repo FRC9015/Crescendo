@@ -19,8 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(){
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
-        ampShooterMotorTop.setSmartCurrentLimit(25);
-        ampShooterMotorBottom.setSmartCurrentLimit(25);
+        ampShooterMotorTop.setSmartCurrentLimit(30);
+        ampShooterMotorBottom.setSmartCurrentLimit(30);
         pivotMotor.setSmartCurrentLimit(40);
     }
     public Command shootNoteToSpeaker() {
