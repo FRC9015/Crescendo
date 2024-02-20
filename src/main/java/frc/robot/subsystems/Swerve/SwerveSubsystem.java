@@ -2,6 +2,7 @@ package frc.robot.subsystems.Swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -12,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -208,6 +210,20 @@ public class SwerveSubsystem extends SubsystemBase {
 				() -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue),
 				this);
 	}
+
+	//The below code and command auto-generates a path to a specific point using PathPlanner. This will be useful for autonomous routines when picking up notes
+	Pose2d targetPose = new Pose2d(2.5, 5, Rotation2d.fromDegrees(180));
+
+	// Create the constraints to use while pathfinding
+	PathConstraints constraints = new PathConstraints(
+			3.0, 3.0,
+			Units.degreesToRadians(540), Units.degreesToRadians(720));
+	Command pathfindingCommandtoFirstNote = AutoBuilder.pathfindToPose(
+			targetPose,
+			constraints,
+			0.0, // Goal end velocity in meters/sec
+			0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+	);
 
 	@Override
 	public void periodic() {
