@@ -16,7 +16,6 @@ public class Handoff extends Command {
         new WaitCommand(0.6); //Tune value
         INTAKE.intakeNote();
         SHOOTER.ampIntake();
-
     }
 
 }
