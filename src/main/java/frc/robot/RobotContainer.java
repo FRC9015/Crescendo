@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Handoff;
+import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -63,7 +64,7 @@ public class RobotContainer {
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff());
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(new ScoreAmp());
 	}
 
 	public Command getAutonomousCommand() {
