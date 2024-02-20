@@ -10,11 +10,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    
+
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
         new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
     };
+
+    public IntakeSubsystem(){
+        for (CANSparkFlex motor:intakeMotors){
+            motor.setSmartCurrentLimit(20);
+        }
+    }
 
     public boolean isReadytoIntake() {
         // This function determines whether the robot is ready to intake a note.
