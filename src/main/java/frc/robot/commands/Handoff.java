@@ -1,21 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import static frc.robot.RobotContainer.INTAKE;
+import static frc.robot.RobotContainer.PIVOT;
+import static frc.robot.RobotContainer.SHOOTER;
+
+
 
 public class Handoff extends Command {
-    private IntakeSubsystem Intake;
-    private ShooterSubsystem Shooter;
-    private PivotSubsystem Pivot;
-
     @Override
     public void execute(){
-        Intake.intakeNote();
-        Pivot.setGoal(0); //TODO Make this the Encoder's offset
-        Pivot.enable();
-        Shooter.ampIntake();
+        PIVOT.setGoal(0); //TODO Make this the Encoder's offset
+        PIVOT.enable();
+        new WaitCommand(0.6); //Tune value
+        INTAKE.intakeNote();
+        SHOOTER.ampIntake();
+
     }
 
 }
