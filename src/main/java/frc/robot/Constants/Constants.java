@@ -31,17 +31,23 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double maxSpeed = Units.feetToMeters(10);
+		public static final double maxSpeed = Units.feetToMeters(19.3);
 	}
 
 	public static class ShooterConstants {
-	
+
+		public static final int speakerShooterMotorTopID = 51;
+		public static final int speakerShooterMotor2ID = 52;
+
+		public static final int ampShooterMotor1ID = 53;
+		public static final int ampShooterMotor2ID = 54;
+		public static final int pivotMotor1ID = 55;
 	}
 
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;
 		public static final int intakeMotor2ID = 42;
-		public static final int intakeMotor3ID = 43;
+
 	}
 
 	public static class LEDConstants {
@@ -51,6 +57,6 @@ public final class Constants {
 
 	
 	public static class PigeonConstants {
-		public static final int pigeonID = 30;
+		public static final int pigeonID = 30; //TODO Remove this Later for YAGSL Json Instance
 	}
 }
