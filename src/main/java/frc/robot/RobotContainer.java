@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.MathUtil;
@@ -49,6 +50,9 @@ public class RobotContainer {
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
+		NamedCommands.registerCommand("shootNote", SHOOTER.shootNoteToSpeaker());
+		NamedCommands.registerCommand("intakeNote", INTAKE.intakeNote());
+		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		configureBindings();
 
 
