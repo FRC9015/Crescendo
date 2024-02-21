@@ -61,10 +61,9 @@ public class RobotContainer {
 	private void configureBindings() {
 		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff());
-
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(new ScoreAmp());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(SHOOTER.shootNoteToSpeaker());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(new ScoreAmp());
 	}
 
 	public Command getAutonomousCommand() {
