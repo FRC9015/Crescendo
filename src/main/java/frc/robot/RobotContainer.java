@@ -32,7 +32,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final Field2d pathField;
-	SendableChooser<Command> pathAndautoChooser = new SendableChooser<>();
+	SendableChooser<Command> autoChooser = new SendableChooser<>();
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
@@ -60,14 +60,14 @@ public class RobotContainer {
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
 
-		pathAndautoChooser = AutoBuilder.buildAutoChooser();//might look for stuff in the folder; try deleting if no work.
+		autoChooser = AutoBuilder.buildAutoChooser();//might look for stuff in the folder; try deleting if no work.
 
-		pathAndautoChooser.addOption("Run Straight Path", followPath("Straight Path"));
-		pathAndautoChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
+		autoChooser.addOption("Run Straight Path", followPath("Straight Path"));
+		autoChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
 
-		Shuffleboard.getTab("Autonomous").add(pathAndautoChooser);
+		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
-		SmartDashboard.putData("Path Chooser", pathAndautoChooser);
+		SmartDashboard.putData("Path Chooser", autoChooser);
 
 		pathField = new Field2d();
 
@@ -117,6 +117,6 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return pathAndautoChooser.getSelected();
+		return autoChooser.getSelected();
 	  }
 }
