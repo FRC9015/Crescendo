@@ -34,24 +34,6 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 public class SwerveSubsystem extends SubsystemBase {
-	public void velocityGraphUpdate(double xVelocity, double yVelocity) {
-		SmartDashboard.putNumber("xVelocity Graph", xVelocity);
-		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
-	}
-
-	private SimpleWidget speedMultiplierWidget = Shuffleboard.getTab("Drive")
-			.add("Max Speed", 0.5)
-			.withWidget(BuiltInWidgets.kNumberSlider)
-			.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
-
-	private SimpleWidget angularMultiplierWidget = Shuffleboard.getTab("Drive")
-			.add("Max Angular Speed", 0.5)
-			.withWidget(BuiltInWidgets.kNumberSlider)
-			.withProperties(Map.of("min", 0, "max", 1)); // specify widget properties here
-
-	private double speedMultiplier;
-	private double angularMultiplier;
-
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
@@ -65,9 +47,8 @@ public class SwerveSubsystem extends SubsystemBase {
 			throw new RuntimeException(e);
 		}
 
-		swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
+		swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via angle.
 		swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-		setupPathPlanner();
 	}
 
 	public SwerveDriveKinematics getKinematics() {
@@ -210,35 +191,5 @@ public class SwerveSubsystem extends SubsystemBase {
 				() -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue),
 				this);
 	}
-
-	//The below code and command auto-generates a path to a specific point using PathPlanner. This will be useful for autonomous routines when picking up notes
-	Pose2d targetPose = new Pose2d(2.5, 5, Rotation2d.fromDegrees(180));
-
-	// Create the constraints to use while pathfinding
-	PathConstraints constraints = new PathConstraints(
-			3.0, 3.0,
-			Units.degreesToRadians(540), Units.degreesToRadians(720));
-	Command pathfindingCommandtoFirstNote = AutoBuilder.pathfindToPose(
-			targetPose,
-			constraints,
-			0.0, // Goal end velocity in meters/sec
-			0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-	);
-
-	@Override
-	public void periodic() {
-		//TODO: Add all data visualization to one subsystem
-		speedMultiplier = speedMultiplierWidget.getEntry().get().getDouble(); 
-		angularMultiplier = angularMultiplierWidget.getEntry().get().getDouble();
-	}
-
-	public double getSpeedMultiplier(){
-		return speedMultiplier;
-	}
-
-	public double getAngularMultiplier(){
-		return angularMultiplier;
-	}
-
 }
 	

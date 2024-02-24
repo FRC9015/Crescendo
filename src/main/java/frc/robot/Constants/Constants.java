@@ -45,7 +45,7 @@ public final class Constants {
 	}
 
 	public static class IntakeConstants {
-		public static final int intakeMotor1ID = 41;
+		public static final int intakeMotor1ID = 57;
 		public static final int intakeMotor2ID = 42;
 
 	}

@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Pigeon;
@@ -52,8 +50,8 @@ public class RobotContainer {
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
-		NamedCommands.registerCommand("shootNote", SHOOTER.shootNoteToSpeaker());
-		NamedCommands.registerCommand("intakeNote", INTAKE.intakeNote());
+		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
+		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		configureBindings();
 
@@ -65,10 +63,11 @@ public class RobotContainer {
 		);
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
+		SWERVE.setupPathPlanner();
 
 		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
 
-		pathChooser.addOption("Run Straight Path", followPath("Straight Path"));
+		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
 		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
 
 		Shuffleboard.getTab("Autonomous").add(pathChooser);
@@ -125,6 +124,6 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return pathChooser.getSelected();
+		return autoChooser.getSelected();
 	  }
 }

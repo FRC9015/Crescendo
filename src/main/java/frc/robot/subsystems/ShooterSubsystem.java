@@ -2,8 +2,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import com.revrobotics.CANSparkFlex;
 import frc.robot.Constants.Constants.ShooterConstants;
 
@@ -28,6 +27,14 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.startEnd(
                 this::setSpeakerShooterMotorSpeeds,
                 this::stopSpeakerShooterMotors
+        );
+    }
+
+    public Command autoShootNoteToSpeaker(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setSpeakerShooterMotorSpeeds),
+                new WaitCommand(3),
+                new InstantCommand(this::stopSpeakerShooterMotors)
         );
     }
 
