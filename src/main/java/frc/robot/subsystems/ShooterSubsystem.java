@@ -20,14 +20,12 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
-    private final CANSparkFlex pivotMotor = new CANSparkFlex(ShooterConstants.pivotMotor1ID, MotorType.kBrushless);
 
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
         ampShooterMotorTop.setSmartCurrentLimit(30);
         ampShooterMotorBottom.setSmartCurrentLimit(30);
-        pivotMotor.setSmartCurrentLimit(40);
     }
 
     public Command shootNoteToSpeaker() {
@@ -78,14 +76,6 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.stopMotor();
     }
 
-    private void setPivotMotorSpeeds() {
-        double motorSpeed = 0.3;// needs to be tuned
-        pivotMotor.set(motorSpeed);
-    }
-
-    private void stopPivotMotorSpeeds() {
-        pivotMotor.stopMotor();
-    }
 
     @Override
     public void periodic() {
