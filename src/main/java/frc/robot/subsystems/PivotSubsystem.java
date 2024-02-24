@@ -15,7 +15,7 @@ import frc.robot.Constants.Constants.PivotConstants;
 
 public class PivotSubsystem extends ProfiledPIDSubsystem {
     private final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-    //private final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
     private final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
     private final ArmFeedforward pivotFeedForward =
             new ArmFeedforward(
@@ -30,13 +30,13 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
                         new TrapezoidProfile.Constraints(
                                 0, //kMaxVelocityRadPerSecond,
                                 0 //kMaxAccelerationRadPerSecSquared)),
-                        )));
+                )));
 
         pivotEncoder.setPositionConversionFactor(1.0/9);
         pivotMotor1.setSmartCurrentLimit(40);
-        //pivotMotor2.setSmartCurrentLimit(40);
+        pivotMotor2.setSmartCurrentLimit(40);
         pivotMotor1.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward,180); //TODO tune
-        //pivotMotor2.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse,-90); //TODO tune
+        pivotMotor2.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse,-90); //TODO tune
         // Start arm at rest in neutral position
         setGoal(0); //TODO Add Pivot Encoder Offset in Radians
 
@@ -47,7 +47,7 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
         double feedforward = pivotFeedForward.calculate(setpoint.position, setpoint.velocity);
         // Add the feedforward to the PID output to get the motor output
         pivotMotor1.setVoltage(output + feedforward);
-        //pivotMotor2.setVoltage(output + feedforward);
+        pivotMotor2.setVoltage(output + feedforward);
     }
 
     @Override

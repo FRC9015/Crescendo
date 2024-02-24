@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -54,10 +56,17 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
-    private void setSpeakerShooterMotorSpeeds() {
-        double motorSpeed = 0.65;// needs to be tuned
-        speakerMotorTop.set(0.1);
-        speakerMotorBottom.set(0.1);
+    public Command ampIntake(){
+        return this.startEnd(
+                this::setAmpIntakeSpeeds,
+                this::stopAmpShooterMotorSpeeds
+        );
+    }
+
+    private void setSpeakerShooterMotorSpeeds(){
+        double motorSpeed = 0.65;//needs to be tuned
+        speakerMotorTop.set(0.60);
+        speakerMotorBottom.set(0.60);
     }
 
     private void stopSpeakerShooterMotors() {
@@ -76,6 +85,11 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.stopMotor();
     }
 
+    private void setAmpIntakeSpeeds(){
+        double motorSpeed = 0.3; //needs to be tuned
+        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorBottom.set(motorSpeed);
+    }
 
     @Override
     public void periodic() {
