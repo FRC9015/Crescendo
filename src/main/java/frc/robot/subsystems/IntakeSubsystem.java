@@ -52,7 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = -0.2;
+        double motorSpeed = -0.5;
         for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }

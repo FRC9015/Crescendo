@@ -2,7 +2,6 @@ package frc.robot.subsystems.Swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -13,16 +12,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -30,7 +23,6 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -47,8 +39,11 @@ public class SwerveSubsystem extends SubsystemBase {
 			throw new RuntimeException(e);
 		}
 
-		swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via angle.
-		swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+		swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via
+																						// angle.
+		swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for
+																																					// simulations since it causes discrepancies
+																																					// not seen in real life.
 	}
 
 	public SwerveDriveKinematics getKinematics() {
@@ -56,8 +51,10 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Resets odometry to the given pose. Gyro angle and module positions do not need to be reset when calling this
-	 * method.  However, if either gyro angle or module position is reset, this must be called in order for odometry to
+	 * Resets odometry to the given pose. Gyro angle and module positions do not
+	 * need to be reset when calling this
+	 * method. However, if either gyro angle or module position is reset, this must
+	 * be called in order for odometry to
 	 * keep working.
 	 *
 	 * @param initialHolonomicPose The pose to set the odometry to
@@ -67,7 +64,8 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Gets the current pose (position and rotation) of the robot, as reported by odometry.
+	 * Gets the current pose (position and rotation) of the robot, as reported by
+	 * odometry.
 	 *
 	 * @return The robot's pose
 	 */
@@ -94,7 +92,8 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
+	 * Resets the gyro angle to zero and resets odometry to the same position, but
+	 * facing toward 0.
 	 */
 	public void zeroGyro() {
 		swerveDrive.zeroGyro();
@@ -110,8 +109,10 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Gets the current yaw angle of the robot, as reported by the swerve pose estimator in the underlying drivebase.
-	 * Note, this is not the raw gyro reading, this may be corrected from calls to resetOdometry().
+	 * Gets the current yaw angle of the robot, as reported by the swerve pose
+	 * estimator in the underlying drivebase.
+	 * Note, this is not the raw gyro reading, this may be corrected from calls to
+	 * resetOdometry().
 	 *
 	 * @return The yaw angle
 	 */
@@ -123,7 +124,6 @@ public class SwerveSubsystem extends SubsystemBase {
 		return swerveDrive.getRobotVelocity();
 	}
 
-
 	public void setupPathPlanner() {
 		AutoBuilder.configureHolonomic(
 				this::getPose, // Robot pose supplier
@@ -134,11 +134,13 @@ public class SwerveSubsystem extends SubsystemBase {
 						new PIDConstants(0, 01, 0.1), // Translation PID constants
 						new PIDConstants(0.01, 0.0, 0.001), // Rotation PID constants
 						SwerveConstants.maxSpeed, // Max module speed, in m/s
-						swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters. Distance from robot center to furthest module.
+						swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters. Distance
+																																							// from robot center to furthest module.
 						new ReplanningConfig() // Default path replanning config. See the API for the options here
 				),
 				() -> {
-					// Boolean supplier that controls when the path will be mirrored for the red alliance
+					// Boolean supplier that controls when the path will be mirrored for the red
+					// alliance
 					// This will flip the path being followed to the red side of the field.
 					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 					var alliance = DriverStation.getAlliance();
@@ -148,25 +150,22 @@ public class SwerveSubsystem extends SubsystemBase {
 		);
 	}
 
-
-
-
-
-
 	/**
-	 * Command to drive the robot using translative values and heading as angular velocity.
+	 * Command to drive the robot using translative values and heading as angular
+	 * velocity.
 	 *
 	 * @param translationX     Translation in the X direction.
 	 * @param translationY     Translation in the Y direction.
 	 * @param angularRotationX Rotation of the robot to set
 	 * @return Drive command.
 	 */
-	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
+			DoubleSupplier angularRotationX) {
 		return run(() -> {
 
 			// Make the robot move
 			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
-							Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+					Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
 					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
 					true,
 					false);
@@ -185,11 +184,11 @@ public class SwerveSubsystem extends SubsystemBase {
 						new PIDConstants(0, 0.1, 0.1), // Translation PID constants
 						new PIDConstants(0.01, 0.0, 0.001), // Rotation PID constants
 						SwerveConstants.maxSpeed, // Max module speed, in m/s
-						swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters. Distance from robot center to furthest module.
+						swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters. Distance
+																																							// from robot center to furthest module.
 						new ReplanningConfig() // Default path replanning config. See the API for the options here
 				),
 				() -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue),
 				this);
 	}
 }
-	
