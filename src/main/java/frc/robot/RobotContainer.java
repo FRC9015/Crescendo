@@ -4,12 +4,16 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Pigeon;
@@ -26,6 +30,10 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
+	private final Field2d pathField;
+	private SendableChooser<Command> pathChooser = new SendableChooser<>();
+	private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
@@ -34,13 +42,21 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
-	SendableChooser<Command> pathChooser = new SendableChooser<>();
+
+
+
+
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
+		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
+		NamedCommands.registerCommand("intakeNote", INTAKE.intakeNote());
+		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
+		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
+		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
 		configureBindings();
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
+
 
 		Command swerveDriveCommand = SWERVE.driveCommand( //TODO Add slew rate limiting to inputs
 				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
@@ -49,6 +65,41 @@ public class RobotContainer {
 		);
 
 		SWERVE.setDefaultCommand(swerveDriveCommand);
+		SWERVE.setupPathPlanner();
+
+		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
+
+		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
+		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
+
+		Shuffleboard.getTab("Autonomous").add(pathChooser);
+		Shuffleboard.getTab("Autonomous").add(autoChooser);
+
+
+
+		pathField = new Field2d();
+
+		SmartDashboard.putData("Field", pathField);
+
+
+		// Logging callback for current robot pose
+		PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+			// Do whatever you want with the pose here
+			pathField.setRobotPose(pose);
+		});
+
+		// Logging callback for target robot pose
+		PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+			// Do whatever you want with the pose here
+			pathField.getObject("target pose").setPose(pose);
+		});
+
+		// Logging callback for the active path, this is sent as a list of poses
+		PathPlannerLogging.setLogActivePathCallback((poses) -> {
+			// Do whatever you want with the poses here
+			pathField.getObject("path").setPoses(poses);
+		});
+
 	}
 
 	/**
@@ -69,7 +120,12 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 	}
 
+	public Command followPath(String wantedPath) {
+		PathPlannerPath path = PathPlannerPath.fromPathFile(wantedPath);
+		return AutoBuilder.followPath(path);
+	}
+
 	public Command getAutonomousCommand() {
-		return pathChooser.getSelected();
+		return autoChooser.getSelected();
 	  }
 }

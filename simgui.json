@@ -1,9 +1,34 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Pigeon 2 (v6)[30]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Autonomous/SendableChooser[0]": "String Chooser",
-      "/Shuffleboard/swerve/Field": "Field2d"
+      "/Shuffleboard/swerve/Field": "Field2d",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Path Chooser": "String Chooser",
+      "/SmartDashboard/Pigeon 2 (v6) [30]": "Gyro"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Path Chooser": {
+          "open": true,
+          "string[]##v_/SmartDashboard/Path Chooser/options": {
+            "open": true
+          }
+        },
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {
