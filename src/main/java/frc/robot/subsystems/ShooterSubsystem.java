@@ -48,7 +48,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command shootNoteToAmp() {
         return this.startEnd(
                 this::setAmpShooterMotorSpeeds,
-                this::stopAmpShooterMotorSpeeds);
+                this::stopAmpShooterMotorSpeeds
+                );
     }
 
     public Command stopShooter() {

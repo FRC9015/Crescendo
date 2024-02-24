@@ -37,7 +37,7 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
-	public static final Pigeon PIGEON = new Pigeon();\
+	public static final Pigeon PIGEON = new Pigeon();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
@@ -118,12 +118,13 @@ public class RobotContainer {
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(PIVOT.raisePivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(PIVOT.raisePivot());
 
-		// InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
-		// InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(SHOOTER.shootNoteToSpeaker());
-		// InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(new ScoreAmp());
+		 InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.ampScoreCommand());
+		 InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(PIVOT.intakeCommand());
+		 InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(PIVOT.subWiffer());
+
 	}
 
 	public Command followPath(String wantedPath) {

@@ -6,8 +6,11 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANSparkFlex;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.Constants.Constants.PivotConstants;
 
@@ -24,9 +27,9 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
     public PivotSubsystem(){
         super(
                 new ProfiledPIDController(
+                        0.5,
                         0,
-                        0,
-                        0,
+                        0.32,
                         new TrapezoidProfile.Constraints(
                                 0, //kMaxVelocityRadPerSecond,
                                 0 //kMaxAccelerationRadPerSecSquared)),
@@ -73,14 +76,57 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
         );
     }
     private void movePivotUp(){
-        double motorSpeed = 0.2;
+        double motorSpeed = 1;
         pivotMotor1.set(motorSpeed);
+        pivotMotor2.set(-motorSpeed);
+        
     }
     private void stopPivot(){
         pivotMotor1.stopMotor();
+        pivotMotor2.stopMotor();
     }
     private void movePivotDown(){
-        double motorSpeed = -0.2;
+        double motorSpeed = -0.65;
         pivotMotor1.set(motorSpeed);
+        pivotMotor2.set(-motorSpeed);
+    }
+
+    private void resetPosition(){
+        setGoal(0);
+        enable();
+    }
+
+    public Command subWiffer(){
+        return new InstantCommand(this::resetPosition);
+    }
+
+    private void ampScore(){
+        setGoal(0);//change later
+        enable();
+    }
+    public Command ampScoreCommand(){
+        return new InstantCommand(this::ampScore);
+    }
+
+    private void flat(){
+        setGoal(0);//change later
+        enable();
+    }
+    public Command flatCommand(){
+        return new InstantCommand(this::flat);
+    }
+
+    private void intake(){
+        setGoal(0);//change later
+        enable();
+
+    }
+
+    public Command intakeCommand(){
+        return new InstantCommand(this::intake);
+    }
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("Pivot Position", pivotEncoder.getPosition());
     }
 }

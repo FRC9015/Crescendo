@@ -50,9 +50,9 @@ public final class Constants {
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;
 		public static final int intakeMotor2ID = 42;
+		public static final int handoffMotorID = 43;
 
 	}
-
 	public static class LEDConstants {
 
 	}
