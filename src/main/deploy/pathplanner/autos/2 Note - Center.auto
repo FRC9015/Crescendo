@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 1.35,
-      "y": 7.0
+      "y": 5.55
     },
-    "rotation": 45.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -45,6 +45,6 @@
       ]
     }
   },
-  "folder": "Comp Autos",
+  "folder": null,
   "choreoAuto": false
 }

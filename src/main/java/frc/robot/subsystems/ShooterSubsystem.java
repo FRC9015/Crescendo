@@ -44,13 +44,17 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopAmpShooterMotorSpeeds
         );
     }
-
+    public Command stopShooter(){
+        return this.runOnce(
+                this::stopSpeakerShooterMotors
+        );
+    }
 
 
     private void setSpeakerShooterMotorSpeeds(){
         double motorSpeed = 0.65;//needs to be tuned
-        speakerMotorTop.set(0.60);
-        speakerMotorBottom.set(0.60);
+        speakerMotorTop.set(0.1);
+        speakerMotorBottom.set(0.1);
     }
     private void stopSpeakerShooterMotors() {
         speakerMotorTop.stopMotor();
