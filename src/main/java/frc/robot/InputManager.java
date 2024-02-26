@@ -141,4 +141,12 @@ public class InputManager {
                 operatorController.getRawAxis(1),
                 operatorController.getRawAxis(4)};
     }
+
+    public Trigger getDriverPOV(int povValue){
+        return driveController.pov(povValue);
+    }
+
+    public Trigger getOperatorPOV(int povValue){
+        return operatorController.pov(povValue);
+    }
 }
