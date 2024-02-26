@@ -3,18 +3,21 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
+    private ShooterSubsystem shooter;
+
 
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
         new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
+        new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless)
+
     };
+
+
 
     public IntakeSubsystem(){
         for (CANSparkFlex motor:intakeMotors){
@@ -34,8 +37,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public Command intakeNote(){
         return this.startEnd(
-            this::setIntakeMotorSpeeds,
-            this::stopIntakeMotors
+           this::setIntakeMotorSpeeds,
+           this::stopIntakeMotors
         );
     }
     public Command outtakeNote(){
@@ -52,21 +55,24 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = -0.5;
+        double motorSpeed = -1;
         for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
+        
     }
     private void setReverseIntakeMotorSpeeds(){
-        double motorSpeed = 0.45;
+        double motorSpeed = 1;
         for(CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
+        
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
+        
     }
 
 

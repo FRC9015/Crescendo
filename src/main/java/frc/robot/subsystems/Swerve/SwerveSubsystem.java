@@ -25,11 +25,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
+
 public class SwerveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
-		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.NONE;
 
 		File directory = new File(Filesystem.getDeployDirectory(), "swerve");
 

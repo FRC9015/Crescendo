@@ -26,10 +26,5 @@
     },
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
-  "java.home": "~/wpilib/2024/jdk",
-  "java.jdt.ls.java.home": "~/wpilib/2024/jdk",
-  "terminal.integrated.env.osx": {
-    "JAVA_HOME": "~/wpilib/2024/jdk",
-    "PATH": "~/wpilib/2024/jdk/bin:${env:PATH}"
-  },
+  
 }

@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,14 +22,12 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
-    private final CANSparkFlex pivotMotor = new CANSparkFlex(ShooterConstants.pivotMotor1ID, MotorType.kBrushless);
 
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
         ampShooterMotorTop.setSmartCurrentLimit(30);
         ampShooterMotorBottom.setSmartCurrentLimit(30);
-        pivotMotor.setSmartCurrentLimit(40);
     }
 
     public Command shootNoteToSpeaker() {
@@ -48,7 +48,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command shootNoteToAmp() {
         return this.startEnd(
                 this::setAmpShooterMotorSpeeds,
-                this::stopAmpShooterMotorSpeeds);
+                this::stopAmpShooterMotorSpeeds
+                );
     }
 
     public Command stopShooter() {
@@ -56,10 +57,17 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
-    private void setSpeakerShooterMotorSpeeds() {
-        double motorSpeed = 0.65;// needs to be tuned
-        speakerMotorTop.set(0.1);
-        speakerMotorBottom.set(0.1);
+    public Command ampIntake(){
+        return this.startEnd(
+                this::setAmpIntakeSpeeds,
+                this::stopAmpShooterMotorSpeeds
+        );
+    }
+
+    private void setSpeakerShooterMotorSpeeds(){
+        double motorSpeed = 0.65;//needs to be tuned
+        speakerMotorTop.set(0.60);
+        speakerMotorBottom.set(0.60);
     }
 
     private void stopSpeakerShooterMotors() {
@@ -78,13 +86,10 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.stopMotor();
     }
 
-    private void setPivotMotorSpeeds() {
-        double motorSpeed = 0.3;// needs to be tuned
-        pivotMotor.set(motorSpeed);
-    }
-
-    private void stopPivotMotorSpeeds() {
-        pivotMotor.stopMotor();
+    private void setAmpIntakeSpeeds(){
+        double motorSpeed = 0.3; //needs to be tuned
+        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorBottom.set(motorSpeed);
     }
 
     @Override
