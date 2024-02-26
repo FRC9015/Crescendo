@@ -121,7 +121,7 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(PIVOT.lowerPivot());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(PIVOT.raisePivot());
 
-		 InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.ampScoreCommand());
+		 InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.flatCommand());
 		 InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(PIVOT.intakeCommand());
 		 InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(PIVOT.subWiffer());
 
