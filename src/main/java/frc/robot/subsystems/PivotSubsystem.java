@@ -96,7 +96,7 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
         enable();
     }
 
-    public Command subWoffer(){
+    public Command subWoofer(){
         return startEnd(
             this::resetPosition,
             this::intake
