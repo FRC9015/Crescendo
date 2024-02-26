@@ -123,7 +123,7 @@ public class RobotContainer {
 
 		 InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.flatCommand());
 		 InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(PIVOT.intakeCommand());
-		 InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(PIVOT.subWiffer());
+		 InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(PIVOT.subWoofer());
 
 	}
 
