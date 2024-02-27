@@ -37,7 +37,13 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::setSpeakerShooterMotorSpeeds,
                 this::stopSpeakerShooterMotors);
     }
-
+    public Command reverseAmpShooters() {
+        // TODO change this into a Sequential Command. We should set the first command
+        // in the sequence to set the pivot angle.
+        return this.startEnd(
+                this::reverseAmpShooterMotorSpeeds,
+                this::stopAmpShooterMotorSpeeds);
+    }
     public Command autoShootNoteToSpeaker() {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
@@ -76,11 +82,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void setAmpShooterMotorSpeeds() {
-        double motorSpeed = 0.5;// needs to be tuned
+        double motorSpeed = 0.75;// needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }
-
+    private void reverseAmpShooterMotorSpeeds() {
+        double motorSpeed = 0.75;// needs to be tuned
+        ampShooterMotorTop.set(-motorSpeed);
+    }
     private void stopAmpShooterMotorSpeeds() {
         ampShooterMotorTop.stopMotor();
         ampShooterMotorBottom.stopMotor();

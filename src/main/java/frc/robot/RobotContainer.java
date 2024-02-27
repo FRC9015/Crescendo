@@ -112,11 +112,12 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
 
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(SHOOTER.shootNoteToSpeaker());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.reverseAmpShooters());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
