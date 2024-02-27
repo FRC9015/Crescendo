@@ -12,11 +12,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless),
-        new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless)
+        new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless)
+
 
     };
-
+    private CANSparkFlex pivotMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
 
 
     public IntakeSubsystem(){
@@ -59,20 +59,20 @@ public class IntakeSubsystem extends SubsystemBase {
         for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
-        
+        pivotMotor.set(-motorSpeed);
     }
     private void setReverseIntakeMotorSpeeds(){
         double motorSpeed = 1;
         for(CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
-        
+        pivotMotor.set(-motorSpeed);
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){
             motor.set(0);
         }
-        
+        pivotMotor.set(0);
     }
 
 

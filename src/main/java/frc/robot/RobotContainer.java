@@ -118,13 +118,11 @@ public class RobotContainer {
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(PIVOT.raisePivot());
-
-		 InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.flatCommand());
-		 InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(PIVOT.intakeCommand());
-		 InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(PIVOT.subWoofer());
-
+		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
+		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).toggleOnTrue(PIVOT.ampScoreCommand());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue(PIVOT.subWoofer());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).toggleOnTrue(PIVOT.intakeCommand());
 	}
 
 	public Command followPath(String wantedPath) {
