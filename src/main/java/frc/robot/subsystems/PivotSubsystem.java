@@ -1,15 +1,12 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.*;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.revrobotics.CANSparkFlex;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.Constants.Constants.PivotConstants;
@@ -17,9 +14,9 @@ import frc.robot.Constants.Constants.PivotConstants;
 
 
 public class PivotSubsystem extends ProfiledPIDSubsystem {
-    private final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
+    public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
+    public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
     private final ArmFeedforward pivotFeedForward =
             new ArmFeedforward(
                     1,1.26,0.15,0.02);  //kSVolts, kGVolts, kVVoltSecondPerRad, kAVoltSecondSquaredPerRad
@@ -35,9 +32,9 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
                                 0 //kMaxAccelerationRadPerSecSquared)),
                 )));
 
-        pivotEncoder.setPositionConversionFactor(1.0/27);
+        pivotEncoder.setPositionConversionFactor(1.0/9);
         pivotMotor1.setSmartCurrentLimit(40);
-        pivotMotor2.setSmartCurrentLimit(40);
+        pivotMotor2.setSmartCurrentLimit(-40);
         pivotMotor1.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward,180); //TODO tune
         pivotMotor2.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse,-90); //TODO tune
         // Start arm at rest in neutral position
@@ -48,6 +45,7 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
     public void useOutput(double output, TrapezoidProfile.State setpoint) {
         // Calculate the feedforward from the setpoint
         double feedforward = pivotFeedForward.calculate(setpoint.position, setpoint.velocity);
+        System.out.println("feedforward: " + feedforward + " | output: " + output);
         // Add the feedforward to the PID output to get the motor output
         pivotMotor1.setVoltage(output + feedforward);
         pivotMotor2.setVoltage(output + feedforward);
@@ -57,6 +55,7 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
     public double getMeasurement() {
         return pivotEncoder.getPosition() + 0;  //TODO Find the Pivot Encoder Offset
     }
+
 
     public Command zeroPivot(){
         return run(()->{
@@ -97,14 +96,15 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
     }
 
     public Command subWoofer(){
-        return startEnd(
-            this::resetPosition,
-            this::intake
-            );
+        // return startEnd(
+        //     this::resetPosition,
+        //     this::intake
+        //     );
+        return this.runOnce(this::resetPosition);
     }
 
     private void ampScore(){
-        setGoal(0);//change later
+        setGoal(-3);//change later
         enable();
     }
     public Command ampScoreCommand(){
@@ -117,28 +117,23 @@ public class PivotSubsystem extends ProfiledPIDSubsystem {
     private void flat(){
         setGoal(0.27);//change later
         enable();
+        
     }
-    public Command flatCommand(){
-        return startEnd(
-            this::flat,
-            this::intake
-            );
-    }
+    // public Command flatCommand(){
+    //     CommandsrunOnce(
+    //         flat(),
+    //          this
+    //         );
+    // }
 
     private void intake(){
-        setGoal(0.15);//change later
+        setGoal(1.125);//change later
         enable();
 
     }
 
     public Command intakeCommand(){
-        return startEnd(
-            this::intakeCommand,
-            this::resetPosition
-            );
+        return this.runOnce(this::intake);
     }
-    @Override
-    public void periodic(){
-        SmartDashboard.putNumber("Pivot Position", pivotEncoder.getPosition());
-        }
+   
 }

@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.RobotSelf.RobotSelves;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
@@ -39,9 +41,10 @@ public class RobotContainer {
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 
-	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
+	// Replace with CommandPS4Controller or CommandJoystick if needed
+	private static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final SpeakerSelfDrive speakerSelfDrive = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
 
 
 
@@ -112,9 +115,10 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
+	//	InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
@@ -130,6 +134,9 @@ public class RobotContainer {
 		return AutoBuilder.followPath(path);
 	}
 
+	public void disablePIDSubsystems(){
+		PIVOT.disable();
+	}
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
 	  }
