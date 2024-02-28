@@ -56,7 +56,9 @@ public final class Constants {
 	public static class LEDConstants {
 
 	}
-
+	public static class SensorConstants {
+		public static final int limitSwitchID = 7;
+	}
 	public static class PigeonConstants {
 		public static final int pigeonID = 30; //TODO Remove this Later for YAGSL Json Instance
 	}

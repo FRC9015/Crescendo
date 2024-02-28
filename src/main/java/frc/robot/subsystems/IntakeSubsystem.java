@@ -3,8 +3,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.IntakeConstants;
+
+import java.util.function.BooleanSupplier;
 
 public class IntakeSubsystem extends SubsystemBase {
     private ShooterSubsystem shooter;
@@ -49,20 +54,23 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command stopIntake(){
-        return new InstantCommand(
+        return this.runOnce(
             this::stopIntakeMotors
         );
     }
 
+
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = -1;
-        for (CANSparkFlex motor:intakeMotors){
+        double motorSpeed = -0.9;
+        for (CANSparkFlex motor : intakeMotors) {
             motor.set(motorSpeed);
         }
         pivotMotor.set(-motorSpeed);
+
+
     }
     private void setReverseIntakeMotorSpeeds(){
-        double motorSpeed = 1;
+        double motorSpeed = 0.9;
         for(CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
@@ -78,7 +86,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      // This method will be called once per scheduler run
+        // This method will be called once per scheduler run
 
     }
 

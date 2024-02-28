@@ -5,11 +5,13 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -22,7 +24,7 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
-
+    private DigitalInput limitSwitch = new DigitalInput(Constants.SensorConstants.limitSwitchID);
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
@@ -37,13 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::setSpeakerShooterMotorSpeeds,
                 this::stopSpeakerShooterMotors);
     }
-    public Command reverseAmpShooters() {
-        // TODO change this into a Sequential Command. We should set the first command
-        // in the sequence to set the pivot angle.
-        return this.startEnd(
-                this::reverseAmpShooterMotorSpeeds,
-                this::stopAmpShooterMotorSpeeds);
-    }
+
     public Command autoShootNoteToSpeaker() {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
@@ -69,7 +65,9 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopAmpShooterMotorSpeeds
         );
     }
-
+    public boolean isNoteLoaded(){
+        return limitSwitch.get();
+    }
     private void setSpeakerShooterMotorSpeeds(){
         double motorSpeed = 0.65;//needs to be tuned
         speakerMotorTop.set(0.60);
@@ -86,19 +84,15 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }
-    private void reverseAmpShooterMotorSpeeds() {
-        double motorSpeed = 0.75;// needs to be tuned
-        ampShooterMotorTop.set(-motorSpeed);
-    }
+
     private void stopAmpShooterMotorSpeeds() {
         ampShooterMotorTop.stopMotor();
         ampShooterMotorBottom.stopMotor();
     }
 
     private void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.3; //needs to be tuned
+        double motorSpeed = -0.75; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
-        ampShooterMotorBottom.set(motorSpeed);
     }
 
     @Override

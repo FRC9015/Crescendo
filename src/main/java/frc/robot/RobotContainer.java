@@ -67,13 +67,13 @@ public class RobotContainer {
 		SWERVE.setDefaultCommand(swerveDriveCommand);
 		SWERVE.setupPathPlanner();
 
-		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
+		//autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
 
 		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
 		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
 
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
-		Shuffleboard.getTab("Autonomous").add(autoChooser);
+//		Shuffleboard.getTab("Autonomous").add(pathChooser);
+//		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
 
 
@@ -115,9 +115,8 @@ public class RobotContainer {
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
 
-
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.reverseAmpShooters());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).and(SHOOTER::isNoteLoaded).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
