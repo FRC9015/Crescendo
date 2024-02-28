@@ -18,22 +18,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeNote"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Forward to Note - Center"
-                }
-              }
-            ]
+            "pathName": "2 Note - Center Path"
           }
         },
         {

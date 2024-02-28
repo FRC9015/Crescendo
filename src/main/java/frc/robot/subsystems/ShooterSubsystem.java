@@ -52,6 +52,13 @@ public class ShooterSubsystem extends SubsystemBase {
                 );
     }
 
+    public Command autoShootNoteToAmp(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setAmpShooterMotorSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+    }
+
     public Command stopShooter() {
         return this.runOnce(
                 this::stopSpeakerShooterMotors);

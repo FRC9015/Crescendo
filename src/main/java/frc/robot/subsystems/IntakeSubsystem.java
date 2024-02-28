@@ -41,11 +41,26 @@ public class IntakeSubsystem extends SubsystemBase {
            this::stopIntakeMotors
         );
     }
+
+    public Command autoIntakeNote(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setIntakeMotorSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopIntakeMotors));
+    }
+
     public Command outtakeNote(){
         return this.startEnd(
                 this::setReverseIntakeMotorSpeeds,
                 this::stopIntakeMotors
         );
+    }
+
+    public Command autoOuttakeNote(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setReverseIntakeMotorSpeeds),
+                new WaitCommand(3),
+                new InstantCommand(this::stopIntakeMotors));
     }
 
     public Command stopIntake(){
@@ -70,7 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){
-            motor.set(0);
+            motor.stopMotor();
         }
         pivotMotor.set(0);
     }
