@@ -81,13 +81,13 @@ public class ShooterSubsystem extends SubsystemBase {
         ampShooterMotorBottom.set(motorSpeed);
     }
 
-    private void stopAmpShooterMotorSpeeds() {
+    public void stopAmpShooterMotorSpeeds() {
         ampShooterMotorTop.stopMotor();
         ampShooterMotorBottom.stopMotor();
     }
 
-    private void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.3; //needs to be tuned
+    public void setAmpIntakeSpeeds(){
+        double motorSpeed = 0.9; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }

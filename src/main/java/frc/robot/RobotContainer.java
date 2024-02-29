@@ -119,7 +119,7 @@ public class RobotContainer {
 	private void configureBindings() {
 	//	InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE, SHOOTER));
 		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
@@ -129,6 +129,7 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(RobotSelves::toggleSubWooferSelf));
 		//InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).onTrue(PIVOT.subWoofer());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(RobotSelves::toggleIntakeSelf));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).onTrue(new InstantCommand(RobotSelves::toggleAmpPrestSelf));
 	}
 
 	public Command followPath(String wantedPath) {

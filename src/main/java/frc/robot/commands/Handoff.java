@@ -15,6 +15,7 @@ public class Handoff extends ParallelCommandGroup {
         addCommands(
                 intake.intakeNote(),
                 shooter.ampIntake()
+                
         );
     }
 }

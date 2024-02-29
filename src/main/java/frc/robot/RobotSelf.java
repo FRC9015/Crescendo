@@ -29,30 +29,42 @@ public class RobotSelf {
 
         public static boolean getIntakeSelf(){
             return intakeSelf;
+            
         }
         public static void toggleIntakeSelf(){
-            intakeSelf = !intakeSelf;
+            if(!SubWooferSelf && !AmpPresetSelf && !flatSelf){
+                intakeSelf = !intakeSelf;
+            }    
         }
         
         public static boolean getSubWooferSelf(){
             return SubWooferSelf;
         }
         public static void toggleSubWooferSelf(){
-            SubWooferSelf = !SubWooferSelf;
+            if(!intakeSelf && !AmpPresetSelf && !flatSelf){
+                SubWooferSelf = !SubWooferSelf;
+            }  
+           
         }
 
         public static boolean getAmpPrestSelf(){
             return AmpPresetSelf;
         }
         public static void toggleAmpPrestSelf(){
-            AmpPresetSelf = !AmpPresetSelf;
+            if(!SubWooferSelf && !intakeSelf && !flatSelf){
+                AmpPresetSelf = !AmpPresetSelf;
+            }  
+            
         }
 
         public static boolean getFlatSelf(){
             return flatSelf;
         }
         public static void toggleFlatSelf(){
-            flatSelf = !AmpSelf;
+            if(!SubWooferSelf && !AmpPresetSelf && !intakeSelf){
+                flatSelf = !flatSelf;
+            }  
+            
         }
     }
 }

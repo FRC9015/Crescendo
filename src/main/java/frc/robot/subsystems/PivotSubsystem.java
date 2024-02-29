@@ -30,12 +30,12 @@ public class PivotSubsystem extends SubsystemBase {
     public PivotSubsystem(){
         
         //sets PID values of both controllers
-        pivot_PidController1.setP(0.1);
+        pivot_PidController1.setP(1);
         pivot_PidController1.setI(0);
         pivot_PidController1.setD(0);
 
 
-        pivot_PidController2.setP(0.1);
+        pivot_PidController2.setP(1);
         pivot_PidController2.setI(0);
         pivot_PidController2.setD(0);
 
@@ -83,8 +83,18 @@ public class PivotSubsystem extends SubsystemBase {
     //uses SparkMax PID to set the motors to a position
     private void intake(){
         //                               what position              //what mesurmeant it uses
-        pivot_PidController1.setReference(0.2, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(-0.10, CANSparkMax.ControlType.kPosition);
+        pivot_PidController1.setReference(0.3, CANSparkMax.ControlType.kPosition);
+        pivot_PidController2.setReference(-0.2, CANSparkMax.ControlType.kPosition);
+
+        //sets different PID values based on preset
+        pivot_PidController1.setP(1);
+        pivot_PidController1.setI(0);
+        pivot_PidController1.setD(0);
+
+
+        pivot_PidController2.setP(1);
+        pivot_PidController2.setI(0);
+        pivot_PidController2.setD(0);
     }
 
     
@@ -92,6 +102,32 @@ public class PivotSubsystem extends SubsystemBase {
     private void SubWoofer(){
         pivot_PidController1.setReference(0, CANSparkMax.ControlType.kPosition);
         pivot_PidController2.setReference(-0, CANSparkMax.ControlType.kPosition);
+
+        //sets different PID values based on preset
+        pivot_PidController1.setP(0.4);
+        pivot_PidController1.setI(0);
+        pivot_PidController1.setD(0);
+
+
+        pivot_PidController2.setP(0.4);
+        pivot_PidController2.setI(0);
+        pivot_PidController2.setD(0);
+    }
+
+    //uses SparkMax PID to set the motors to a position
+    private void AmpPreset(){
+        pivot_PidController1.setReference(1.5, CANSparkMax.ControlType.kPosition);
+        pivot_PidController2.setReference(-0.7, CANSparkMax.ControlType.kPosition);
+       
+        //sets different PID values based on preset
+        pivot_PidController1.setP(1);
+        pivot_PidController1.setI(0);
+        pivot_PidController1.setD(0);
+
+
+        pivot_PidController2.setP(1);
+        pivot_PidController2.setI(0);
+        pivot_PidController2.setD(0);
     }
 
     //zeros encoder
@@ -108,6 +144,7 @@ public class PivotSubsystem extends SubsystemBase {
 
         SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
+        SmartDashboard.putBoolean("AmpPreset", RobotSelves.getAmpPrestSelf());
 
         //uses robotSelf booleans to decide if to run a command
         if(RobotSelves.getIntakeSelf()){
@@ -116,6 +153,11 @@ public class PivotSubsystem extends SubsystemBase {
 
         if(RobotSelves.getSubWooferSelf()){
             SubWoofer();
+        }
+
+        if(RobotSelves.getAmpPrestSelf()){
+            AmpPreset();
+            
         }
     }
 }
