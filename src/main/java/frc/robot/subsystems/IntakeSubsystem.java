@@ -61,20 +61,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
     private void setIntakeMotorSpeeds(){
-        double motorSpeed = -0.9;
+        double motorSpeed = -0.8;
         for (CANSparkFlex motor : intakeMotors) {
             motor.set(motorSpeed);
         }
-        pivotMotor.set(-motorSpeed);
+        pivotMotor.set(0.85);
 
 
     }
     private void setReverseIntakeMotorSpeeds(){
-        double motorSpeed = 0.9;
+        double motorSpeed = 0.8;
         for(CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
-        pivotMotor.set(-motorSpeed);
+        pivotMotor.set(-0.85);
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){

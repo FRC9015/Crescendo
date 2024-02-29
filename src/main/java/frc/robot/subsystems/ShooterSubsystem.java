@@ -91,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void setAmpIntakeSpeeds(){
-        double motorSpeed = -0.75; //needs to be tuned
+        double motorSpeed = -0.9; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
     }
 
