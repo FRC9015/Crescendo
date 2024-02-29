@@ -37,7 +37,7 @@ public class SpeakerSelfDrive extends SubsystemBase{
 
         //adds things to dashboard
         SmartDashboard.putBoolean("SpeakerSelf", RobotSelves.getSpeakerSelf());
-        SmartDashboard.putNumber("Pivot Position", Pivot.pivotEncoder.getPosition());
+        //SmartDashboard.putNumber("Pivot Position", Pivot.pivotEncoder.getPosition());
         SmartDashboard.putNumber("Speaker SetPoint",speakerSetPoint);
 
         //checks if speakerSelf is on
@@ -46,17 +46,17 @@ public class SpeakerSelfDrive extends SubsystemBase{
             //checks if there is a tag
           if(limelight.tagCheck()){
 
-                Pivot.setGoal(1);
-                Pivot.enable();
+                // Pivot.setGoal(1);
+                // Pivot.enable();
 
-                if(Pivot.pivotEncoder.getPosition() >= speakerSetPoint){
-                    Shooter.setSpeakerShooterMotorSpeeds();
-                }
+                // if(Pivot.pivotEncoder.getPosition() >= speakerSetPoint){
+                //     Shooter.setSpeakerShooterMotorSpeeds();
+                // }
 
 
-                if(Pivot.pivotEncoder.getPosition() >= speakerSetPoint){
-                    Shooter.setSpeakerShooterMotorSpeeds();
-                }
+                // if(Pivot.pivotEncoder.getPosition() >= speakerSetPoint){
+                //     Shooter.setSpeakerShooterMotorSpeeds();
+                // }
 
            }
         }
@@ -65,8 +65,8 @@ public class SpeakerSelfDrive extends SubsystemBase{
 
     //resets the position of the pivot
     private void resetPosition(){
-        Pivot.setGoal(0);
-        Pivot.enable();
+        // Pivot.setGoal(0);
+        // Pivot.enable();
         Shooter.stopSpeakerShooterMotors();
     }
 }

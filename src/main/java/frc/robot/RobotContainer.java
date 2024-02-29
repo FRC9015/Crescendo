@@ -42,9 +42,10 @@ public class RobotContainer {
 	public static final Pigeon PIGEON = new Pigeon();
 
 
+
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-	public static final SpeakerSelfDrive speakerSelfDrive = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
+	//public static final SpeakerSelfDrive speakerSelfDrive = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
 
 
 
@@ -58,6 +59,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
+
 		configureBindings();
 
 
@@ -122,11 +124,11 @@ public class RobotContainer {
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
-		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
-		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).toggleOnTrue(PIVOT.ampScoreCommand());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue(PIVOT.subWoofer());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).toggleOnTrue(PIVOT.intakeCommand());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(PIVOT.raisePivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(RobotSelves::toggleSubWooferSelf));
+		//InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).onTrue(PIVOT.subWoofer());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(RobotSelves::toggleIntakeSelf));
 	}
 
 	public Command followPath(String wantedPath) {
@@ -134,9 +136,7 @@ public class RobotContainer {
 		return AutoBuilder.followPath(path);
 	}
 
-	public void disablePIDSubsystems(){
-		PIVOT.disable();
-	}
+	
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
 	  }
