@@ -30,7 +30,6 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final Field2d pathField;
-	private SendableChooser<Command> pathChooser = new SendableChooser<>();
 	private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
@@ -41,11 +40,6 @@ public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-
-
-
-
-
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -65,20 +59,12 @@ public class RobotContainer {
 		SWERVE.setDefaultCommand(swerveDriveCommand);
 		SWERVE.setupPathPlanner();
 
-		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
-
-		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
-		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
-
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
+		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
-
-
 
 		pathField = new Field2d();
 
 		SmartDashboard.putData("Field", pathField);
-
 
 		// Logging callback for current robot pose
 		PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
@@ -121,11 +107,6 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).toggleOnTrue(PIVOT.ampScoreCommand());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue(PIVOT.subWoofer());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).toggleOnTrue(PIVOT.intakeCommand());
-	}
-
-	public Command followPath(String wantedPath) {
-		PathPlannerPath path = PathPlannerPath.fromPathFile(wantedPath);
-		return AutoBuilder.followPath(path);
 	}
 
 	public Command getAutonomousCommand() {
