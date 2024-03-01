@@ -1,17 +1,14 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.*;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
 
 import frc.robot.Constants.Constants.PivotConstants;
 import frc.robot.RobotSelf.RobotSelves;
-
-import com.revrobotics.SparkPIDController;
 
 public class PivotSubsystem extends SubsystemBase {
     //makes motors
@@ -34,12 +31,10 @@ public class PivotSubsystem extends SubsystemBase {
         pivot_PidController1.setI(0);
         pivot_PidController1.setD(0);
 
-
         pivot_PidController2.setP(1);
         pivot_PidController2.setI(0);
         pivot_PidController2.setD(0);
-
-        //makes encoders acount for gear box
+        //makes encoders account for gear box
         pivotEncoder1.setPositionConversionFactor(1.0/9);
         pivotEncoder2.setPositionConversionFactor(1.0/9);
     }
@@ -82,7 +77,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     //uses SparkMax PID to set the motors to a position
     private void intake(){
-        //                               what position              //what mesurmeant it uses
+        //                               what position              //what measurement it uses
         pivot_PidController1.setReference(0.3, CANSparkMax.ControlType.kPosition);
         pivot_PidController2.setReference(-0.2, CANSparkMax.ControlType.kPosition);
 
@@ -90,7 +85,6 @@ public class PivotSubsystem extends SubsystemBase {
         pivot_PidController1.setP(1);
         pivot_PidController1.setI(0);
         pivot_PidController1.setD(0);
-
 
         pivot_PidController2.setP(1);
         pivot_PidController2.setI(0);
@@ -101,7 +95,7 @@ public class PivotSubsystem extends SubsystemBase {
     //uses SparkMax PID to set the motors to a position
     private void SubWoofer(){
         pivot_PidController1.setReference(0, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(-0, CANSparkMax.ControlType.kPosition);
+        pivot_PidController2.setReference(0, CANSparkMax.ControlType.kPosition);
 
         //sets different PID values based on preset
         pivot_PidController1.setP(0.4);
@@ -116,8 +110,8 @@ public class PivotSubsystem extends SubsystemBase {
 
     //uses SparkMax PID to set the motors to a position
     private void AmpPreset(){
-        pivot_PidController1.setReference(1.5, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(-0.7, CANSparkMax.ControlType.kPosition);
+        pivot_PidController1.setReference(0.9, CANSparkMax.ControlType.kPosition);
+        pivot_PidController2.setReference(-0.9, CANSparkMax.ControlType.kPosition);
        
         //sets different PID values based on preset
         pivot_PidController1.setP(1);
