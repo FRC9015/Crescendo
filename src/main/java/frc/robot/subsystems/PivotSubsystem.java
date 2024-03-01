@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,6 +10,8 @@ import frc.robot.Constants.Constants.PivotConstants;
 import frc.robot.RobotSelf.RobotSelves;
 
 public class PivotSubsystem extends SubsystemBase {
+    private final double kDt = 0.02;
+
     //makes motors
     public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
@@ -20,23 +21,38 @@ public class PivotSubsystem extends SubsystemBase {
     public final RelativeEncoder pivotEncoder2 = pivotMotor2.getEncoder();
     
     //makes PIDs for both motors
-    private final SparkPIDController pivot_PidController1 = pivotMotor1.getPIDController();
-    private final SparkPIDController pivot_PidController2 = pivotMotor2.getPIDController();
+    private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
+
+    //motion profiling
+    private final TrapezoidProfile pivot1Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
+    private final TrapezoidProfile pivot2Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
+    TrapezoidProfile.State motor1Setpoint = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor2Setpoint = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
+
 
 
     public PivotSubsystem(){
-        
-        //sets PID values of both controllers
-        pivot_PidController1.setP(1);
-        pivot_PidController1.setI(0);
-        pivot_PidController1.setD(0);
 
-        pivot_PidController2.setP(1);
-        pivot_PidController2.setI(0);
-        pivot_PidController2.setD(0);
+        //sets PID values of both controllers
+        pivotPIDController.setP(1);
+        pivotPIDController.setI(0);
+        pivotPIDController.setD(0);
+        pivotPIDController.setOutputRange(-1,1);
+        pivotPIDController.setFF(0.00015);
+
+
+        pivotMotor2.setInverted(true);
+        pivotMotor2.follow(pivotMotor1);
+//        pivot_PidController2.setP(1);
+//        pivot_PidController2.setI(0);
+//        pivot_PidController2.setD(0);
+//        pivot_PidController2.setOutputRange(-1,1);
+//        pivot_PidController2.setFF(0.00015);
         //makes encoders account for gear box
         pivotEncoder1.setPositionConversionFactor(1.0/9);
-        pivotEncoder2.setPositionConversionFactor(1.0/9);
+//        pivotEncoder2.setPositionConversionFactor(1.0/9);
     }
 
 
@@ -60,7 +76,7 @@ public class PivotSubsystem extends SubsystemBase {
     private void movePivotUp(){
         double motorSpeed = 0.1;
         pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(-motorSpeed);
+        pivotMotor2.set(motorSpeed);
         
     }
     //stops pivot
@@ -72,56 +88,40 @@ public class PivotSubsystem extends SubsystemBase {
     private void movePivotDown(){
         double motorSpeed = -0.1;
         pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(-motorSpeed);
+        pivotMotor2.set(motorSpeed);
     }
 
     //uses SparkMax PID to set the motors to a position
     private void intake(){
+
+
+        motor1Goal = new TrapezoidProfile.State(0.5,0.5);
+        motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
+
         //                               what position              //what measurement it uses
-        pivot_PidController1.setReference(0.3, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(-0.2, CANSparkMax.ControlType.kPosition);
+        pivotPIDController.setReference(0.1, CANSparkFlex.ControlType.kSmartMotion);
 
-        //sets different PID values based on preset
-        pivot_PidController1.setP(1);
-        pivot_PidController1.setI(0);
-        pivot_PidController1.setD(0);
 
-        pivot_PidController2.setP(1);
-        pivot_PidController2.setI(0);
-        pivot_PidController2.setD(0);
+
     }
 
     
     //uses SparkMax PID to set the motors to a position
     private void SubWoofer(){
-        pivot_PidController1.setReference(0, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(0, CANSparkMax.ControlType.kPosition);
+        pivotPIDController.setReference(0, CANSparkFlex.ControlType.kSmartMotion);
+
 
         //sets different PID values based on preset
-        pivot_PidController1.setP(0.4);
-        pivot_PidController1.setI(0);
-        pivot_PidController1.setD(0);
 
-
-        pivot_PidController2.setP(0.4);
-        pivot_PidController2.setI(0);
-        pivot_PidController2.setD(0);
     }
 
     //uses SparkMax PID to set the motors to a position
     private void AmpPreset(){
-        pivot_PidController1.setReference(0.9, CANSparkMax.ControlType.kPosition);
-        pivot_PidController2.setReference(-0.9, CANSparkMax.ControlType.kPosition);
+        pivotPIDController.setReference(0.9, CANSparkFlex.ControlType.kSmartMotion);
+
        
         //sets different PID values based on preset
-        pivot_PidController1.setP(1);
-        pivot_PidController1.setI(0);
-        pivot_PidController1.setD(0);
 
-
-        pivot_PidController2.setP(1);
-        pivot_PidController2.setI(0);
-        pivot_PidController2.setD(0);
     }
 
     //zeros encoder
@@ -139,7 +139,8 @@ public class PivotSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
         SmartDashboard.putBoolean("AmpPreset", RobotSelves.getAmpPrestSelf());
-
+        motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
+        motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
         //uses robotSelf booleans to decide if to run a command
         if(RobotSelves.getIntakeSelf()){
             intake();
