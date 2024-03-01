@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Handoff;
-import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -37,6 +35,8 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final ClimberSubsystem CLIMBER = new ClimberSubsystem();
+
 	public static final Pigeon PIGEON = new Pigeon();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
@@ -121,6 +121,10 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).toggleOnTrue(PIVOT.ampScoreCommand());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue(PIVOT.subWoofer());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).toggleOnTrue(PIVOT.intakeCommand());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(CLIMBER.goUp());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(CLIMBER.goDown());
+
+
 	}
 
 	public Command followPath(String wantedPath) {

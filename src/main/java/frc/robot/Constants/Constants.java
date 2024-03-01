@@ -42,7 +42,10 @@ public final class Constants {
 		public static final int ampShooterMotor1ID = 53;
 		public static final int ampShooterMotor2ID = 54;
 	}
-
+	public static class ClimberConstants {
+		public static final int climberMotor1ID = 59;
+		public static final int climberMotor2ID = 60;
+	}
 	public static class PivotConstants {
 		public static final int pivotMotor1ID = 61;
 		public static final int pivotMotor2ID = 62;	}
