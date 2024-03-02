@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -67,7 +68,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setSpeakerShooterMotorSpeeds(){
         double motorSpeed = 0.65;//needs to be tuned
         speakerMotorTop.set(0.60);
-        speakerMotorBottom.set(0.60);
+        speakerMotorBottom.set(0.40);
     }
 
     public void stopSpeakerShooterMotors() {

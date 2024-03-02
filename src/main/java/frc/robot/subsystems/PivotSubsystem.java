@@ -36,27 +36,27 @@ public class PivotSubsystem extends SubsystemBase {
     public PivotSubsystem(){
 
         //sets PID values of both controllers
-        pivotPIDController.setP(1);
+        pivotPIDController.setP(0.25);
         pivotPIDController.setI(0);
         pivotPIDController.setD(0);
         pivotPIDController.setOutputRange(-1,1);
         pivotPIDController.setFF(0.00015);
 
 
-        pivotMotor2.setInverted(true);
-        pivotMotor2.follow(pivotMotor1);
+        pivotMotor2.follow(pivotMotor1,true);
+        //pivotMotor2.follow(pivotMotor1);
 //        pivot_PidController2.setP(1);
 //        pivot_PidController2.setI(0);
 //        pivot_PidController2.setD(0);
 //        pivot_PidController2.setOutputRange(-1,1);
 //        pivot_PidController2.setFF(0.00015);
         //makes encoders account for gear box
-        pivotEncoder1.setPositionConversionFactor(1.0/9);
+        pivotEncoder1.setPositionConversionFactor(1.0/27);
 //        pivotEncoder2.setPositionConversionFactor(1.0/9);
     }
 
 
-   
+
     //raises the pivot
     public Command raisePivot(){
         return startEnd(
@@ -76,7 +76,7 @@ public class PivotSubsystem extends SubsystemBase {
     private void movePivotUp(){
         double motorSpeed = 0.1;
         pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(motorSpeed);
+
         
     }
     //stops pivot
@@ -88,7 +88,7 @@ public class PivotSubsystem extends SubsystemBase {
     private void movePivotDown(){
         double motorSpeed = -0.1;
         pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(motorSpeed);
+
     }
 
     //uses SparkMax PID to set the motors to a position
@@ -99,7 +99,7 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         //                               what position              //what measurement it uses
-        pivotPIDController.setReference(0.1, CANSparkFlex.ControlType.kSmartMotion);
+        pivotPIDController.setReference(0.25, CANSparkFlex.ControlType.kPosition);
 
 
 
@@ -108,7 +108,7 @@ public class PivotSubsystem extends SubsystemBase {
     
     //uses SparkMax PID to set the motors to a position
     private void SubWoofer(){
-        pivotPIDController.setReference(0, CANSparkFlex.ControlType.kSmartMotion);
+        pivotPIDController.setReference(0, CANSparkFlex.ControlType.kPosition);
 
 
         //sets different PID values based on preset
@@ -117,7 +117,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     //uses SparkMax PID to set the motors to a position
     private void AmpPreset(){
-        pivotPIDController.setReference(0.9, CANSparkFlex.ControlType.kSmartMotion);
+        pivotPIDController.setReference(0.38, CANSparkFlex.ControlType.kPosition);
 
        
         //sets different PID values based on preset
