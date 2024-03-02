@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private CANSparkFlex[] climberMotors = new CANSparkFlex[]{
-            new CANSparkFlex(Constants.ClimberConstants.climberMotor1ID, MotorType.kBrushless),
-            new CANSparkFlex(Constants.ClimberConstants.climberMotor2ID, MotorType.kBrushless)
-    };
+    CANSparkFlex climberMotor1 = new CANSparkFlex(Constants.ClimberConstants.climberMotor1ID, MotorType.kBrushless);
+    //TODO Add CANSparkFlex climberMotor2 = new CANSparkFlex(Constants.ClimberConstants.climberMotor2ID, MotorType.kBrushless);
+
+    public ClimberSubsystem() {
+        //TODO add climberMotor2.follow(climberMotor1);
+    }
 
     public Command goUp(){
         return this.startEnd(
@@ -28,21 +30,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
     private void setMotorSpeedsUp(){
         double motorSpeed = 0.3;
-        for (CANSparkFlex motor:climberMotors){
-            motor.set(motorSpeed);
-        }
+            climberMotor1.set(motorSpeed);
     }
 
-    private void setMotorSpeedsDown(){
+    private void setMotorSpeedsDown() {
         double motorSpeed = -0.3;
-        for (CANSparkFlex motor:climberMotors){
-            motor.set(motorSpeed);
-        }
+        climberMotor1.set(motorSpeed);
     }
 
     private void stopClimberMotorSpeeds(){
-        for (CANSparkFlex motor:climberMotors){
-            motor.stopMotor();
-        }
+        climberMotor1.stopMotor();
     }
 }
