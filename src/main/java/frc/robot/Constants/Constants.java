@@ -53,11 +53,4 @@ public final class Constants {
 		public static final int handoffMotorID = 43;
 
 	}
-	public static class LEDConstants {
-
-	}
-
-	public static class PigeonConstants {
-		public static final int pigeonID = 30; //TODO Remove this Later for YAGSL Json Instance
-	}
 }
