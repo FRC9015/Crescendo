@@ -219,9 +219,9 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "shootNote"
               }
             }
           ]
@@ -234,7 +234,14 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shootNote"
+              }
+            }
+          ]
         }
       }
     },
@@ -246,12 +253,79 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "shootNote"
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 3.75,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 6.3,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 8.75,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 4.4,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 7.25,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "stopIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 9.200000000000001,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
         }
       }
     }

@@ -171,9 +171,9 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "shootNote"
               }
             }
           ]
@@ -188,9 +188,9 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "shootNote"
               }
             }
           ]
@@ -205,12 +205,79 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "shootNote"
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 1.75,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeNote"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 3.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "intakeNote",
+      "waypointRelativePos": 5.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 2.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 4.5,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    },
+    {
+      "name": "stopIntake",
+      "waypointRelativePos": 6.199999999999999,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
         }
       }
     }
