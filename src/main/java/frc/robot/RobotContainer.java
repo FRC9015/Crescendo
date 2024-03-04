@@ -123,7 +123,8 @@ public class RobotContainer {
 		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.ampIntake());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(RobotSelves::toggleSubWooferSelf));

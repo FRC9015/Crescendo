@@ -65,8 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
-    public void setSpeakerShooterMotorSpeeds(){
-        double motorSpeed = 0.65;//needs to be tuned
+    private void setSpeakerShooterMotorSpeeds(){
         speakerMotorTop.set(0.60);
         speakerMotorBottom.set(0.40);
     }
@@ -78,17 +77,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private void setAmpShooterMotorSpeeds() {
         double motorSpeed = 0.5;// needs to be tuned
-        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorTop.set(-motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }
 
-    public void stopAmpShooterMotorSpeeds() {
+    private void stopAmpShooterMotorSpeeds() {
         ampShooterMotorTop.stopMotor();
         ampShooterMotorBottom.stopMotor();
     }
 
-    public void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.9; //needs to be tuned
+    private void setAmpIntakeSpeeds(){
+        double motorSpeed = 0.8; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }
