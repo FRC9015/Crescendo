@@ -45,12 +45,7 @@ public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-	//public static final SpeakerSelfDrive speakerSelfDrive = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
-
-
-
-
-
+	
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
@@ -117,7 +112,7 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(PIVOT::zeroEncoder));
+		
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE, SHOOTER));
 		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));

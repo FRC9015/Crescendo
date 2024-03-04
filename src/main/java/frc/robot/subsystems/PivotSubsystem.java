@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,10 +18,9 @@ public class PivotSubsystem extends SubsystemBase {
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
     
     //gets encoders
-    public final RelativeEncoder pivotEncoder1 = pivotMotor1.getEncoder();
-    public final RelativeEncoder pivotEncoder2 = pivotMotor2.getEncoder();
-    
-    //makes PIDs for both motors
+    public final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(0);//change later
+
+    //makes PID for motors
     private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
 
     //motion profiling
@@ -42,9 +42,9 @@ public class PivotSubsystem extends SubsystemBase {
 
 
         pivotMotor2.follow(pivotMotor1,true);
-        //makes encoders account for gear box
-        pivotEncoder1.setPositionConversionFactor(1.0/45);
-        pivotEncoder2.setPositionConversionFactor(1.0/45);
+        //makes encoder account for gear box/Chain
+        pivotEncoder.setDistancePerRotation(1/3);
+        
     }
 
     //raises the pivot
@@ -99,17 +99,10 @@ public class PivotSubsystem extends SubsystemBase {
         pivotPIDController.setReference(0.4, CANSparkFlex.ControlType.kPosition);
     }
 
-    //zeros encoder
-    public  void zeroEncoder(){
-        pivotEncoder1.setPosition(0);
-        pivotEncoder2.setPosition(0);
-    }
-
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putNumber("pivot Position 1", pivotEncoder1.getPosition());
-        SmartDashboard.putNumber("pivot Position 2", pivotEncoder2.getPosition());
+        SmartDashboard.putNumber("pivot Position 1", pivotEncoder.getAbsolutePosition());
 
         SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
