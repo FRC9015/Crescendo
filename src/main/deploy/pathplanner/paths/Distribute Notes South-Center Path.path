@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1713621482798517,
-        "y": 1.9412753177358217
+        "x": 2.2947035014440402,
+        "y": 2.2430667268741944
       },
       "isLocked": false,
       "linkedName": null
@@ -127,37 +127,37 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 3,
-      "rotationDegrees": 180.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 2.0,
-      "rotationDegrees": 180.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": -160.0,
+      "rotationDegrees": 30.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 4,
-      "rotationDegrees": -140.0,
+      "rotationDegrees": 30.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 5,
-      "rotationDegrees": -160.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 6,
-      "rotationDegrees": 120.0,
+      "rotationDegrees": -30.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 0,
-      "rotationDegrees": 45.0,
+      "rotationDegrees": -130.0,
       "rotateFast": false
     }
   ],
@@ -165,7 +165,7 @@
   "eventMarkers": [
     {
       "name": "shootNote",
-      "waypointRelativePos": 0.09999999999999999,
+      "waypointRelativePos": 0.049999999999999996,
       "command": {
         "type": "parallel",
         "data": {
@@ -182,7 +182,7 @@
     },
     {
       "name": "shootNote",
-      "waypointRelativePos": 3.1999999999999997,
+      "waypointRelativePos": 3.0999999999999996,
       "command": {
         "type": "parallel",
         "data": {
@@ -290,7 +290,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
