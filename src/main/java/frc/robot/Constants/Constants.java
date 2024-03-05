@@ -44,7 +44,7 @@ public final class Constants {
 	}
 
 	public static class PivotConstants {
-		public static final int pivotEncoderChannel = 0;//TODO change DIS later
+		public static final int pivotEncoderChannel = 35;
 		public static final int pivotMotor1ID = 61;
 		public static final int pivotMotor2ID = 62;	
 	}

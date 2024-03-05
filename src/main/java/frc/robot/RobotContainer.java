@@ -33,19 +33,17 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final Field2d pathField;
-	private SendableChooser<Command> pathChooser = new SendableChooser<>();
-	private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
-	public static final Pigeon PIGEON = new Pigeon();
 
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -70,10 +68,6 @@ public class RobotContainer {
 
 		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
 
-		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
-		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
-
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
 
@@ -84,10 +78,8 @@ public class RobotContainer {
 
 
 		// Logging callback for current robot pose
-		PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-			// Do whatever you want with the pose here
-			pathField.setRobotPose(pose);
-		});
+        // Do whatever you want with the pose here
+        PathPlannerLogging.setLogCurrentPoseCallback(pathField::setRobotPose);
 
 		// Logging callback for target robot pose
 		PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
@@ -124,19 +116,13 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(new ScoreAmp(SHOOTER, PIVOT));
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new SubWoofer(SHOOTER));
 
 		// Operator Presets
-		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new SubWoofer(SHOOTER));
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(RobotSelves::toggleIntakeSelf));
 		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleAmpPresetSelf));
 	}
 
-	public Command followPath(String wantedPath) {
-		PathPlannerPath path = PathPlannerPath.fromPathFile(wantedPath);
-		return AutoBuilder.followPath(path);
-	}
-
-	
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
 	  }

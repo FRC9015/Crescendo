@@ -25,16 +25,6 @@ public class IntakeSubsystem extends SubsystemBase {
         }
     }
 
-    public boolean isReadytoIntake() {
-        // This function determines whether the robot is ready to intake a note.
-        return false;
-    }
-
-    public boolean isReadyToHandoff() {
-        // This function determines whether the robot is ready to complete the hand off.
-        return false;
-    }
-
     public Command intakeNote(){
         return this.startEnd(
            this::setIntakeMotorSpeeds,
@@ -60,7 +50,6 @@ public class IntakeSubsystem extends SubsystemBase {
             motor.set(motorSpeed);
         }
         handoffMotor.set(motorSpeed);
-       // shooter.setAmpIntakeSpeeds();
     }
     private void setReverseIntakeMotorSpeeds(){
         double motorSpeed = 0.8;
@@ -74,7 +63,6 @@ public class IntakeSubsystem extends SubsystemBase {
             motor.set(0);
         }
         handoffMotor.stopMotor();
-        // shooter.stopAmpShooterMotorSpeeds();
     }
 
 

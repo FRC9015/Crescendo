@@ -10,15 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.PivotConstants;
 import frc.robot.RobotSelf.RobotSelves;
 
+import static frc.robot.Constants.Constants.PivotConstants.pivotEncoderChannel;
+
 public class PivotSubsystem extends SubsystemBase {
-    private final double kDt = 0.02;
 
     //makes motors
     public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
     
     //gets encoders
-    public final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(0);//change later
+    public final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(pivotEncoderChannel);//change later
 
     //makes PID for motors
     private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
@@ -43,7 +44,7 @@ public class PivotSubsystem extends SubsystemBase {
 
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
-        pivotEncoder.setDistancePerRotation(1/3);
+        pivotEncoder.setDistancePerRotation((double) 1 /3);
         
     }
 
@@ -109,6 +110,7 @@ public class PivotSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
         SmartDashboard.putBoolean("AmpPreset", RobotSelves.getAmpPrestSelf());
 
+        double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
         //uses robotSelf booleans to decide if to run a command
