@@ -79,12 +79,13 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     //uses SparkMax PID to set the motors to a position
-    private void intake(){
+    public void intake(){
         motor1Goal = new TrapezoidProfile.State(0.5,0.5);
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         //                               what position              //what measurement it uses
         pivotPIDController.setReference(0.1, CANSparkFlex.ControlType.kPosition);
+
     }
 
     //uses SparkMax PID to set the motors to a position
@@ -95,7 +96,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     //uses SparkMax PID to set the motors to a position
-    private void AmpPreset(){
+    public void AmpPreset(){
         pivotPIDController.setReference(0.4, CANSparkFlex.ControlType.kPosition);
     }
 
@@ -111,9 +112,6 @@ public class PivotSubsystem extends SubsystemBase {
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
         //uses robotSelf booleans to decide if to run a command
-        if(RobotSelves.getIntakeSelf()){
-            intake();
-        }
 
         if(RobotSelves.getSubWooferSelf()){
             SubWoofer();
@@ -123,5 +121,14 @@ public class PivotSubsystem extends SubsystemBase {
             AmpPreset();
             
         }
+
+        if (RobotSelves.getIntakeSelf()){
+            intake();
+        }
+
+        else{
+            intake();
+        }
+
     }
 }

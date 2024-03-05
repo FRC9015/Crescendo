@@ -50,7 +50,7 @@ public class RobotSelf {
         public static boolean getAmpPrestSelf(){
             return AmpPresetSelf;
         }
-        public static void toggleAmpPrestSelf(){
+        public static void toggleAmpPresetSelf(){
             if(!SubWooferSelf && !intakeSelf && !flatSelf){
                 AmpPresetSelf = !AmpPresetSelf;
             }  
