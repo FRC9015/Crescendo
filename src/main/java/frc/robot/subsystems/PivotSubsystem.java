@@ -105,6 +105,11 @@ public class PivotSubsystem extends SubsystemBase {
         
     }
 
+    public void passNotePreset(){
+        pivotPIDController.setP(2);
+        currentPosition = 0.58;
+    }
+
     @Override
     public void periodic(){
         //puts values on dashboard

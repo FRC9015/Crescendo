@@ -62,9 +62,15 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
+    public Command shooterBackward(){
+        return this.startEnd(
+                this::backwardsShooter,
+                this::stopSpeakerShooterMotors);
+    }
+
     private void setSpeakerShooterMotorSpeeds(){
-        speakerMotorTop.set(1);
-        speakerMotorBottom.set(0.80);
+        speakerMotorTop.set(0.8);
+        speakerMotorBottom.set(0.60);
     }
 
     public void stopSpeakerShooterMotors() {
@@ -87,6 +93,11 @@ public class ShooterSubsystem extends SubsystemBase {
         double motorSpeed = 0.8; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
+    }
+
+    private void backwardsShooter(){
+        speakerMotorTop.set(-0.8);
+        speakerMotorBottom.set(-0.80);
     }
 
     @Override
