@@ -116,11 +116,12 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(RobotSelves::toggleSubWooferSelf));
+		
 
 		// Operator Presets
-		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(RobotSelves::toggleIntakeSelf));
-		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleAmpPresetSelf));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIVOT::intake));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(PIVOT::AmpPreset));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(PIVOT::SubWoofer));
 	}
 
 	public Command getAutonomousCommand() {

@@ -33,10 +33,10 @@ public class LimelightInterface extends SubsystemBase{
     //Used to calculate the distance from a tag
     // how many degrees back is your limelight rotated from perfectly vertical?
    //needs to be different for distance.
-    double limelightMountAngleDegrees = 30.0;
+    double limelightMountAngleDegrees = 34.0;
 
     // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 6.25;
+    double limelightLensHeightInches = 13;
 
     // distance from the target to the floor
     double goalHeightInches = 47.25;//change to the height of the april tag on the field

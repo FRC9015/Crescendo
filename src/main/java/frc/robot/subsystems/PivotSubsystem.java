@@ -19,7 +19,7 @@ public class PivotSubsystem extends SubsystemBase {
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
     //gets encoders
-    public final RelativeEncoder pivotEncoder1 = pivotMotor1.getEncoder();//change later
+    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();//change later
 
 
     //makes PID for motors
@@ -32,6 +32,8 @@ public class PivotSubsystem extends SubsystemBase {
     TrapezoidProfile.State motor2Setpoint = new TrapezoidProfile.State();
     TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
     TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
+
+    private double currentPosition = 0;
 
     public PivotSubsystem(){
 
@@ -46,7 +48,7 @@ public class PivotSubsystem extends SubsystemBase {
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
         //pivotEncoder.setDistancePerRotation((double) 1 /3);
-        pivotEncoder1.setPositionConversionFactor(1.0/15);
+        pivotEncoder.setPositionConversionFactor(1.0/15);
     }
 
     //raises the pivot
@@ -66,8 +68,8 @@ public class PivotSubsystem extends SubsystemBase {
 
     //moves pivot up
     private void movePivotUp(){
-        double motorSpeed = 0.1;
-        pivotMotor1.set(motorSpeed);
+        double motorSpeed = 0.05;
+        currentPosition += motorSpeed;
     }
     //stops pivot
     private void stopPivot(){
@@ -76,8 +78,8 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot
     private void movePivotDown(){
-        double motorSpeed = -0.75;
-        pivotMotor1.set(motorSpeed);
+        double motorSpeed = -0.05;
+        currentPosition += motorSpeed;
     }
 
     //uses SparkMax PID to set the motors to a position
@@ -86,30 +88,27 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         pivotPIDController.setP(2);
-
-        //                               what position              //what measurement it uses
-        pivotPIDController.setReference(0.24, CANSparkFlex.ControlType.kPosition);
-
+        currentPosition = 0.24;
     }
 
     //uses SparkMax PID to set the motors to a position
-    private void SubWoofer(){
+    public void SubWoofer(){
         pivotPIDController.setP(0.4);
-
-        pivotPIDController.setReference(0, CANSparkFlex.ControlType.kPosition);
+        currentPosition = 0;
+        
     }
 
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(2);
-
-        pivotPIDController.setReference(0.8, CANSparkFlex.ControlType.kPosition);
+        currentPosition = 1.3;
+        
     }
 
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putNumber("pivot Position", pivotEncoder1.getPosition());
+        SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
 
         SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
@@ -120,17 +119,7 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
         //uses robotSelf booleans to decide if to run a command
 
-        if(RobotSelves.getSubWooferSelf()){
-            SubWoofer();
-        }
-
-        if(RobotSelves.getAmpPrestSelf()){
-            AmpPreset();
-            
-        }
-
-        if (RobotSelves.getIntakeSelf()){
-            intake();
-        }
+        pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
+        
     }
 }
