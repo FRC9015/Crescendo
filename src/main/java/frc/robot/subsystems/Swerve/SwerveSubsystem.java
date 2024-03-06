@@ -126,11 +126,13 @@ public class SwerveSubsystem extends SubsystemBase {
 	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
 			DoubleSupplier angularRotationX) {
 		return run(() -> {
-
+			double xVectorVelocity = Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()*slowSpeedMultiplier;
+			double yVectorVelocity = Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()*slowSpeedMultiplier;
+			double rotationalVectorVelocity = Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity()*slowSpeedMultiplier;
 			//gi Make the robot move
-			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
-					Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
-					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
+			swerveDrive.drive(
+					new Translation2d(xVectorVelocity,yVectorVelocity),
+					rotationalVectorVelocity,
 					true,
 					false);
 		});
