@@ -25,7 +25,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
-		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.NONE;
+		SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
 
 		File directory = new File(Filesystem.getDeployDirectory(), "swerve");
 

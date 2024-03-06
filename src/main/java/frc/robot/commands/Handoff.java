@@ -7,9 +7,8 @@ import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Handoff extends ParallelCommandGroup {
-    public Handoff(IntakeSubsystem intake, ShooterSubsystem shooter, PivotSubsystem pivot){
+    public Handoff(IntakeSubsystem intake, ShooterSubsystem shooter){
         addCommands(
-                new InstantCommand(pivot::intake),
                 intake.intakeNote(),
                 shooter.ampIntake()
         );

@@ -49,14 +49,14 @@ public class IntakeSubsystem extends SubsystemBase {
         for (CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
-        handoffMotor.set(motorSpeed);
+        handoffMotor.set(-motorSpeed);
     }
     private void setReverseIntakeMotorSpeeds(){
         double motorSpeed = 0.8;
         for(CANSparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
-        handoffMotor.set(motorSpeed);
+        handoffMotor.set(-motorSpeed);
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){

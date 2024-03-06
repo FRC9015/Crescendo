@@ -17,9 +17,10 @@ public class PivotSubsystem extends SubsystemBase {
     //makes motors
     public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
-    
+
     //gets encoders
-    public final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(pivotEncoderChannel);//change later
+    public final RelativeEncoder pivotEncoder1 = pivotMotor1.getEncoder();//change later
+
 
     //makes PID for motors
     private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
@@ -44,8 +45,8 @@ public class PivotSubsystem extends SubsystemBase {
 
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
-        pivotEncoder.setDistancePerRotation((double) 1 /3);
-        
+        //pivotEncoder.setDistancePerRotation((double) 1 /3);
+        pivotEncoder1.setPositionConversionFactor(1.0/15);
     }
 
     //raises the pivot
@@ -84,27 +85,31 @@ public class PivotSubsystem extends SubsystemBase {
         motor1Goal = new TrapezoidProfile.State(0.5,0.5);
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
+        pivotPIDController.setP(2);
+
         //                               what position              //what measurement it uses
-        pivotPIDController.setReference(0.1, CANSparkFlex.ControlType.kPosition);
+        pivotPIDController.setReference(0.24, CANSparkFlex.ControlType.kPosition);
 
     }
 
     //uses SparkMax PID to set the motors to a position
     private void SubWoofer(){
-        pivotPIDController.setP(1.5);
+        pivotPIDController.setP(0.4);
 
         pivotPIDController.setReference(0, CANSparkFlex.ControlType.kPosition);
     }
 
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
-        pivotPIDController.setReference(0.4, CANSparkFlex.ControlType.kPosition);
+        pivotPIDController.setP(2);
+
+        pivotPIDController.setReference(0.8, CANSparkFlex.ControlType.kPosition);
     }
 
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putNumber("pivot Position 1", pivotEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("pivot Position", pivotEncoder1.getPosition());
 
         SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
         SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
@@ -127,10 +132,5 @@ public class PivotSubsystem extends SubsystemBase {
         if (RobotSelves.getIntakeSelf()){
             intake();
         }
-
-        else{
-            intake();
-        }
-
     }
 }

@@ -107,16 +107,16 @@ public class RobotContainer {
 	private void configureBindings() {
 
 		// Driver Bindings
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new Handoff(INTAKE, SHOOTER, PIVOT));
-		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
+		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		//InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
 		// Operator Bindings
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(SHOOTER.ampIntake());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(new ScoreAmp(SHOOTER, PIVOT));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new SubWoofer(SHOOTER));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(RobotSelves::toggleSubWooferSelf));
 
 		// Operator Presets
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(RobotSelves::toggleIntakeSelf));
