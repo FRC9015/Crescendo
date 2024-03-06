@@ -109,6 +109,7 @@ public class RobotContainer {
 		// Driver Bindings
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(INTAKE.intakeNote());
 		//InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
 		// Operator Bindings
@@ -116,6 +117,7 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(SHOOTER.ampIntake());
 		
 
 		// Operator Presets

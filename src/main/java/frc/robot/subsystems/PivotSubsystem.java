@@ -41,7 +41,7 @@ public class PivotSubsystem extends SubsystemBase {
         pivotPIDController.setP(2);
         pivotPIDController.setI(0);
         pivotPIDController.setD(0);
-        pivotPIDController.setOutputRange(-1,1);
+        pivotPIDController.setOutputRange(-1,1.45);
         pivotPIDController.setFF(0.00015);
 
 
@@ -100,8 +100,8 @@ public class PivotSubsystem extends SubsystemBase {
 
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
-        pivotPIDController.setP(2);
-        currentPosition = 1.3;
+        pivotPIDController.setP(1.5);
+        currentPosition = 1.2;
         
     }
 
@@ -109,11 +109,7 @@ public class PivotSubsystem extends SubsystemBase {
     public void periodic(){
         //puts values on dashboard
         SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
-
-        SmartDashboard.putBoolean("intake", RobotSelves.getIntakeSelf());
-        SmartDashboard.putBoolean("SubWoofer", RobotSelves.getSubWooferSelf());
-        SmartDashboard.putBoolean("AmpPreset", RobotSelves.getAmpPrestSelf());
-
+        
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
