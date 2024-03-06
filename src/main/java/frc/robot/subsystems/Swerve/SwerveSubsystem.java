@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
+import static frc.robot.Constants.Constants.SwerveConstants.slowSpeedMultiplier;
+
 
 public class SwerveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
@@ -132,6 +134,13 @@ public class SwerveSubsystem extends SubsystemBase {
 					true,
 					false);
 		});
+	}
+
+	public Command slowMode(){
+		return this.startEnd(
+				()-> slowSpeedMultiplier = 0.3,
+				()-> slowSpeedMultiplier = 1
+		);
 	}
 
 }

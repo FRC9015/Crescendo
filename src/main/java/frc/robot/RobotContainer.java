@@ -109,6 +109,7 @@ public class RobotContainer {
 		// Driver Bindings
 		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new Handoff(INTAKE,SHOOTER));
+		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(SWERVE.slowMode());
 		// InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(INTAKE.intakeNote());
 		//InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
