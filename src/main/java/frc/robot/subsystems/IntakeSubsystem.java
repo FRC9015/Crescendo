@@ -2,21 +2,24 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalOutput;
 
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private ShooterSubsystem shooter;
 
-
+    private final DigitalOutput proximitySensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
         new CANSparkFlex(IntakeConstants.intakeMotor2ID, MotorType.kBrushless)
 
 
     };
-    private CANSparkFlex handoffMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
+    private final CANSparkFlex handoffMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
 
 
     public IntakeSubsystem(){
@@ -39,14 +42,14 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command stopIntake(){
-        return new InstantCommand(
+        return this.runOnce(
             this::stopIntakeMotors
         );
     }
 
     private void setIntakeMotorSpeeds(){
         double motorSpeed = -0.8;
-        for (CANSparkFlex motor:intakeMotors){
+        for (CANSparkFlex motor : intakeMotors) {
             motor.set(motorSpeed);
         }
         handoffMotor.set(-motorSpeed);
@@ -69,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-
+        SmartDashboard.putBoolean("Note In?",proximitySensor.get());
     }
 
     @Override
