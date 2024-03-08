@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
+      "x": 1.0,
       "y": 7.0
     },
     "rotation": 0
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3-Note Middle Path"
+            "pathName": "Park Left"
           }
         }
       ]
     }
   },
-  "folder": "Test Autos",
+  "folder": null,
   "choreoAuto": false
 }
