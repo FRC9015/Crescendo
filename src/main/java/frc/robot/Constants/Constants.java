@@ -32,7 +32,6 @@ public final class Constants {
 
 	public static class SwerveConstants {
 		public static final double maxSpeed = Units.feetToMeters(19.3);
-		public static double slowSpeedMultiplier = 1;
 	}
 
 	public static class ShooterConstants {

@@ -20,10 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
-import static frc.robot.Constants.Constants.SwerveConstants.slowSpeedMultiplier;
-
-
 public class SwerveSubsystem extends SubsystemBase {
+
+	private static double slowSpeedMultiplier = 1;
+
 	private SwerveDrive swerveDrive;
 
 	public SwerveSubsystem() {
