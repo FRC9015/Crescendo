@@ -43,7 +43,7 @@ public class RobotContainer {
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	//public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
