@@ -68,6 +68,12 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
+    public Command autoAmpIntake(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setAmpIntakeSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+    }
     private void setSpeakerShooterMotorSpeeds(){
         speakerMotorTop.set(0.8);
         speakerMotorBottom.set(0.60);
@@ -77,6 +83,7 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorTop.stopMotor();
         speakerMotorBottom.stopMotor();
     }
+    
 
     private void setAmpShooterMotorSpeeds() {
         double motorSpeed = 0.5;// needs to be tuned

@@ -52,8 +52,10 @@ public class RobotContainer {
 		NamedCommands.registerCommand("intakeNote", INTAKE.intakeNote());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
+		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
-
+		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
+		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
 		configureBindings();
 
 

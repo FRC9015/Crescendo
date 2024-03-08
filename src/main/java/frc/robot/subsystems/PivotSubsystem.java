@@ -65,7 +65,9 @@ public class PivotSubsystem extends SubsystemBase {
                 this::stopPivot
         );
     }
-
+    public Command movePivotToIntake(){
+        return this.runOnce(this::intake);
+    }
     //moves pivot up
     private void movePivotUp(){
         double motorSpeed = 0.05;
@@ -101,7 +103,7 @@ public class PivotSubsystem extends SubsystemBase {
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(1.5);
-        currentPosition = 1.2;
+        currentPosition = 1.3;
         
     }
 
