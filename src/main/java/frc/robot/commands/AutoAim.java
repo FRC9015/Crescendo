@@ -25,6 +25,7 @@ public class AutoAim extends Command{
     @Override
     public void execute() {
         PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.getTargetAngle());
+        
         SWERVE.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds( //TODO Add slew rate limiting to inputs
 				MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
 				MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[0], 0.15),
