@@ -55,6 +55,8 @@ public class LimelightInterface extends SubsystemBase{
     double height = 0;
     double floorDistance = 0;
 
+    double setPivotAngle = 0;
+
     //updates limelight X, Y, and Area and puts them onto smartdashboard.
     @Override
     public void periodic() {
@@ -77,6 +79,8 @@ public class LimelightInterface extends SubsystemBase{
 
             //A^2 + B^2 = C^2
             floorDistance = Math.sqrt((diagonalDistance*diagonalDistance)-(height*height));
+
+            setPivotAngle = Math.atan(height/floorDistance);
         }
         else {
             diagonalDistance = 0;
