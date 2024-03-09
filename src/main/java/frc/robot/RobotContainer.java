@@ -125,7 +125,8 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
-
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).onTrue(LIMELIGHT_INTERFACE.noteVelocityIncrease());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).onTrue(LIMELIGHT_INTERFACE.noteVelocityDecrease());
 		
 		
 		
