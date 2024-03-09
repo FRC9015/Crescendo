@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -56,6 +57,7 @@ public class LimelightInterface extends SubsystemBase{
     double floorDistance = 0;
 
     double setPivotAngle = 0;
+    public double noteVelocity = 11;//if over shoot increase under decrease
 
     //updates limelight X, Y, and Area and puts them onto smartdashboard.
     @Override
@@ -90,6 +92,7 @@ public class LimelightInterface extends SubsystemBase{
         SmartDashboard.putNumber("floor distance", floorDistance);
         SmartDashboard.putNumber("diagonal distance", diagonalDistance);
         SmartDashboard.putBoolean("April Tag", tag);
+        SmartDashboard.putNumber("Note Velocity", noteVelocity);
 
     }
 
@@ -132,4 +135,22 @@ public class LimelightInterface extends SubsystemBase{
         table.getEntry("ledMode").setNumber(1);
     }
 
+    public double getTargetAngle(){
+        if(!tagCheck()){
+            return 0;
+        }
+        double flightTime = floorDistance/noteVelocity;
+        double dropDistance = (9.8/2) * (flightTime*flightTime);
+        double newHeight = dropDistance + height;
+
+        return Math.atan(newHeight/floorDistance);
+    }
+
+    public Command noteVelocityIncrease(){
+        return this.runOnce(() -> noteVelocity += 0.05);
+    }
+
+    public Command noteVelocityDecrease(){
+        return this.runOnce(() -> noteVelocity -= 0.05);
+    }
 }

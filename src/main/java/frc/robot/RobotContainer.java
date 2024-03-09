@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotSelf.RobotSelves;
+import frc.robot.commands.AutoAim;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
@@ -44,8 +45,8 @@ public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-	public static final SpeakerSelfDrive SPEAKER_SELF_DRIVE = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
 	
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
@@ -123,9 +124,9 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
 
-
+		
 		
 		
 
