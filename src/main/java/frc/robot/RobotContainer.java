@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotSelf.RobotSelves;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ScoreAmp;
-import frc.robot.commands.SubWoofer;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -39,11 +38,13 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final CameraSubsystem CAMERA_SUBSYSTEM = new CameraSubsystem();
 
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final SpeakerSelfDrive SPEAKER_SELF_DRIVE = new SpeakerSelfDrive(LIMELIGHT_INTERFACE, PIVOT, SHOOTER);
 	
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -56,6 +57,8 @@ public class RobotContainer {
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
 		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
+		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
+
 		configureBindings();
 
 
@@ -109,20 +112,21 @@ public class RobotContainer {
 	private void configureBindings() {
 
 		// Driver Bindings
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new Handoff(INTAKE,SHOOTER));
-		// InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(INTAKE.intakeNote());
-		//InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
+		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		
 
 		// Operator Bindings
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(SHOOTER.ampIntake());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(SHOOTER.shooterBackward());
-	
+		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
+		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(RobotSelves::toggleSpeakerSelf));
 
+
+		
 		
 
 		// Operator Presets

@@ -40,6 +40,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
                 new WaitCommand(3),
+                new InstantCommand(this::setAmpIntakeSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
@@ -74,7 +77,15 @@ public class ShooterSubsystem extends SubsystemBase {
                 new WaitCommand(1),
                 new InstantCommand(this::stopAmpShooterMotorSpeeds));
     }
-    private void setSpeakerShooterMotorSpeeds(){
+
+    public Command autoBackwardShooter(){
+        return new SequentialCommandGroup(
+            new InstantCommand(this::backwardsShooter),
+            new WaitCommand(3),
+            new InstantCommand(this::stopSpeakerShooterMotors));
+}
+    
+    public void setSpeakerShooterMotorSpeeds(){
         speakerMotorTop.set(0.8);
         speakerMotorBottom.set(0.60);
     }
