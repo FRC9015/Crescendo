@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.RobotSelf.RobotSelves;
 import frc.robot.commands.AutoAim;
+import frc.robot.commands.AutoAmp;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
@@ -51,7 +51,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
-		NamedCommands.registerCommand("intakeNote", INTAKE.intakeNote());
+		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
 		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
@@ -122,7 +122,7 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorPOV(0).onTrue(new InstantCommand(PIVOT::passNotePreset));
-		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
+		InputManager.getInstance().getOperatorPOV(180).whileTrue(new AutoAmp());
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());

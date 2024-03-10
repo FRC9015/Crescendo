@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Constants.PivotConstants;
-import frc.robot.RobotSelf.RobotSelves;
+
 
 import static frc.robot.Constants.Constants.PivotConstants.pivotEncoderChannel;
 
@@ -113,7 +113,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     public void passNotePreset(){
         pivotPIDController.setP(2);
-        currentPosition = 0.58;
+        currentPosition = 0.48;
     }
 
     public void setCurrentPosition(double SetPoint){
