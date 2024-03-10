@@ -68,6 +68,10 @@ public class PivotSubsystem extends SubsystemBase {
     public Command movePivotToIntake(){
         return this.runOnce(this::intake);
     }
+
+    public Command movePivotToSubWoofer(){
+        return this.runOnce(this::SubWoofer);
+    }
     //moves pivot up
     private void movePivotUp(){
         double motorSpeed = 0.05;

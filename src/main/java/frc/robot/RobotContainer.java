@@ -60,6 +60,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
 		NamedCommands.registerCommand("autoAim", new AutoAim());
+		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
 		configureBindings();
 
 
