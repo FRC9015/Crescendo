@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -44,22 +45,24 @@ public class LimelightInterface extends SubsystemBase{
     double limelightLensHeightInches = 8.5;
 
     // distance from the target to the floor
-    double goalHeightInches = 41;//change to the height of the april tag on the field
+    double goalHeightInches = 54;//change to the height of the april tag on the field
 
 
-    double angleToGoalDegreesSelf = 0;
-    double angleToGoalDegrees = 0;
+    double angleToGoalDegreesSelf = 45;
+    double angleToGoalDegrees = 315;
     
     double thetaSelf = 0;
     double theta = 0;
     double diagonalDistance = 0;
-    double height = 0;
+    double  height = limelightLensHeightInches - goalHeightInches;
+    double targetHeight = Units.inchesToMeters(95 - limelightLensHeightInches);
     double floorDistance = 0;
 
     double setPivotAngle = 0;
     public double noteVelocity = 11;//if over shoot increase under decrease
 
-    //updates limelight X, Y, and Area and puts them onto smartdashboard.
+
+    //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
     @Override
     public void periodic() {
         
@@ -72,15 +75,16 @@ public class LimelightInterface extends SubsystemBase{
         angleToGoalDegrees = limelightMountAngleDegrees - y;
         thetaSelf = angleToGoalDegreesSelf * (Math.PI / 180.0);
         theta = angleToGoalDegrees * (Math.PI / 180.0);
-        height = limelightLensHeightInches - goalHeightInches;
+       
+        
         
         
         if(tagCheck()){
 
-            diagonalDistance = height / Math.tan(theta);
+            diagonalDistance = (height / Math.sin(theta));
 
             //A^2 + B^2 = C^2
-            floorDistance = Math.sqrt((diagonalDistance*diagonalDistance)-(height*height));
+            floorDistance = Units.inchesToMeters(Math.sqrt((diagonalDistance*diagonalDistance)-(height*height)));
 
         }
         else {
@@ -92,6 +96,7 @@ public class LimelightInterface extends SubsystemBase{
         SmartDashboard.putNumber("diagonal distance", diagonalDistance);
         SmartDashboard.putBoolean("April Tag", tag);
         SmartDashboard.putNumber("Note Velocity", noteVelocity);
+        SmartDashboard.putNumber("targetangle", getTargetAngle());
 
     }
 
@@ -140,9 +145,9 @@ public class LimelightInterface extends SubsystemBase{
         }
         double flightTime = floorDistance/noteVelocity;
         double dropDistance = (9.8/2) * (flightTime*flightTime);
-        double newHeight = dropDistance + height;
+        double newHeight = 0  + targetHeight;
 
-        return Math.atan(newHeight/floorDistance);
+        return Math.atan(Math.abs(newHeight/floorDistance));
     }
 
     public Command noteVelocityIncrease(){
