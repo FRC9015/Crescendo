@@ -12,19 +12,21 @@ import frc.robot.InputManager;
 import frc.robot.subsystems.LimelightInterface;
 
 public class AutoAim extends Command{
+   
     public AutoAim(){
-        addRequirements(PIVOT, SHOOTER, SWERVE);
+        addRequirements(PIVOT, SWERVE);
     }
     PIDController w_pid = new PIDController(0.1, 0, 0);
+    
     @Override
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
-        //SHOOTER.setSpeakerShooterMotorSpeeds();
+        SHOOTER.setSpeakerShooterMotorSpeeds();
         
     }
     @Override
     public void execute() {
-        //PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.getTargetAngle());
+        PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint() + LIMELIGHT_INTERFACE.offsetMultiplier());
 
         SWERVE.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds( //TODO Add slew rate limiting to inputs
 				MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[1], 0.15),
@@ -37,7 +39,7 @@ public class AutoAim extends Command{
     @Override
     public void end(boolean interrupted) {
         LIMELIGHT_INTERFACE.LEDsOff();
-        //SHOOTER.stopSpeakerShooterMotors();
+        SHOOTER.stopSpeakerShooterMotors();
         PIVOT.intake();        
     }
     

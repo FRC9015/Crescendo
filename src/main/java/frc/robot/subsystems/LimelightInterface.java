@@ -93,10 +93,9 @@ public class LimelightInterface extends SubsystemBase{
         }
         //updates smartdashboard with values
         SmartDashboard.putNumber("floor distance", floorDistance);
-        SmartDashboard.putNumber("diagonal distance", diagonalDistance);
         SmartDashboard.putBoolean("April Tag", tag);
         SmartDashboard.putNumber("Note Velocity", noteVelocity);
-        SmartDashboard.putNumber("targetangle", getTargetAngle());
+        SmartDashboard.putNumber("SpeakerSetPoint", speakerSetPoint());
 
     }
 
@@ -156,5 +155,24 @@ public class LimelightInterface extends SubsystemBase{
 
     public Command noteVelocityDecrease(){
         return this.runOnce(() -> noteVelocity -= 0.05);
+    }
+
+    public double speakerSetPoint(){
+        return thetaSelf/ (Math.PI *2);
+    }
+
+    public double offsetMultiplier(){
+        double multiplier = 1500;
+
+        if(diagonalDistance >= 70){
+            multiplier = 1600;
+        }else if (diagonalDistance < 70 && diagonalDistance >= 50){
+            multiplier = 1500;
+        }else{
+            multiplier = 2100;
+        }
+
+        return diagonalDistance/multiplier;
+        
     }
 }

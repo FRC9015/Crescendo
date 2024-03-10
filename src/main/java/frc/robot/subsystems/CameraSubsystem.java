@@ -12,5 +12,7 @@ public class CameraSubsystem extends SubsystemBase{
     public CameraSubsystem(){
         camera.setResolution(640,480);
         camera.setFPS(24);
+        
     }
+    
 }

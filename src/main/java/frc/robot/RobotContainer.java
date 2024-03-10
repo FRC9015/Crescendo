@@ -59,7 +59,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
-
+		NamedCommands.registerCommand("autoAim", new AutoAim());
 		configureBindings();
 
 
@@ -115,12 +115,12 @@ public class RobotContainer {
 		// Driver Bindings
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
-		
+		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(SWERVE.zeroYaw());
 
 		// Operator Bindings
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
+		InputManager.getInstance().getOperatorPOV(0).onTrue(new InstantCommand(PIVOT::passNotePreset));
 		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
