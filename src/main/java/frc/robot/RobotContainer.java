@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAim;
-import frc.robot.commands.AutoAmp;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ScoreAmp;
 import frc.robot.subsystems.*;
@@ -121,21 +120,18 @@ public class RobotContainer {
 		// Operator Bindings
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		InputManager.getInstance().getOperatorPOV(0).onTrue(new InstantCommand(PIVOT::passNotePreset));
-		InputManager.getInstance().getOperatorPOV(180).whileTrue(new AutoAmp());
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).onTrue(LIMELIGHT_INTERFACE.noteVelocityIncrease());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).onTrue(LIMELIGHT_INTERFACE.noteVelocityDecrease());
 		
-		
-		
-
+				
 		// Operator Presets
 		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIVOT::intake));
 		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(PIVOT::AmpPreset));
 		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).onTrue(new InstantCommand(PIVOT::SubWoofer));
+		InputManager.getInstance().getOperatorPOV(0).onTrue(new InstantCommand(PIVOT::passNotePreset));
 	}
 
 	public Command getAutonomousCommand() {
