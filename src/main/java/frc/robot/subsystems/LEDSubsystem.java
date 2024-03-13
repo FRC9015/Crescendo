@@ -14,8 +14,7 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import frc.robot.Constants.Constants;
 
 public class LEDSubsystem extends SubsystemBase {
-  /** Creates a new LEDS. */
-
+  /** Creates a new LED. */
   CANdle candle = new CANdle(Constants.LEDConstants.CANDleID1);
 
     //for reference; actually type in the numbers into the setLEDs method when giving the Leds a color.
