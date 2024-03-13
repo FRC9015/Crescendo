@@ -12,6 +12,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.RainbowAnimation;
 import frc.robot.Constants.Constants;
+import static frc.robot.RobotContainer.INTAKE;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LED. */
@@ -79,6 +80,12 @@ public class LEDSubsystem extends SubsystemBase {
         candle.animate(rainbowAnim);
     }
 
+    public void setLEDs() {
+        if (INTAKE.getNoteStatus()) {
+            setOrange();
+            setSampleAnimation();
+        }
+    }
 
     public static class Color {
         public int red;
