@@ -16,7 +16,7 @@ public class AutoAim extends Command{
     public AutoAim(){
         addRequirements(PIVOT, SWERVE);
     }
-    PIDController w_pid = new PIDController(0.1, 0, 0);
+    PIDController w_pid = new PIDController(0.2, 0, 0);
     
     @Override
     public void initialize() {

@@ -16,8 +16,6 @@ import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
-import static frc.robot.RobotContainer.SWERVE;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
@@ -132,7 +130,7 @@ public class SwerveSubsystem extends SubsystemBase {
 					Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
 					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
 					true,
-					false);
+					true);
 		});
 	}
 
