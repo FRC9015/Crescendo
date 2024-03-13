@@ -32,13 +32,13 @@ public class ShooterSubsystem extends SubsystemBase {
         // TODO change this into a Sequential Command. We should set the first command
         // in the sequence to set the pivot angle.
         return this.startEnd(
-                this::setSpeakerShooterMotorSpeeds,
+                this::setSpeakerShooterMotorSpeedsSubWoofer,
                 this::stopSpeakerShooterMotors);
     }
 
     public Command autoShootNoteToSpeaker() {
         return new SequentialCommandGroup(
-                new InstantCommand(this::setSpeakerShooterMotorSpeeds),
+                new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
                 new WaitCommand(3),
                 new InstantCommand(this::setAmpIntakeSpeeds),
                 new WaitCommand(1),
@@ -85,9 +85,14 @@ public class ShooterSubsystem extends SubsystemBase {
             new InstantCommand(this::stopSpeakerShooterMotors));
 }
     
+    public void setSpeakerShooterMotorSpeedsSubWoofer(){
+        speakerMotorTop.set(0.7);
+        speakerMotorBottom.set(0.5);
+    }
+
     public void setSpeakerShooterMotorSpeeds(){
         speakerMotorTop.set(0.8);
-        speakerMotorBottom.set(0.60);
+        speakerMotorBottom.set(0.6);
     }
 
     public void stopSpeakerShooterMotors() {
