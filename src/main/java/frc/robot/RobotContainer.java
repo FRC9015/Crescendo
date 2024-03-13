@@ -19,9 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAim;
 import frc.robot.commands.Handoff;
-import frc.robot.commands.ScoreAmp;
-import frc.robot.commands.Presets.AmpPreset;
-import frc.robot.commands.Presets.SubWooferPreset;
+import frc.robot.commands.Presets.*;
+
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -123,8 +122,8 @@ public class RobotContainer {
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LT_Button7).whileTrue(SHOOTER.ampIntake());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.RT_Button8).whileTrue(SHOOTER.shooterBackward());
+		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
+		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 		
 				
 		// Operator Presets

@@ -126,8 +126,10 @@ public class SwerveSubsystem extends SubsystemBase {
 		return run(() -> {
 
 			//gi Make the robot move
-			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
-					Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+			double sign = (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue) ? 1.0 : -1.0);
+			
+			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble() * sign, 3) * swerveDrive.getMaximumVelocity(),
+					Math.pow(translationY.getAsDouble() * sign, 3) * swerveDrive.getMaximumVelocity()),
 					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
 					true,
 					true);
