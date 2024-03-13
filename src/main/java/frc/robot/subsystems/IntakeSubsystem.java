@@ -78,6 +78,9 @@ public class IntakeSubsystem extends SubsystemBase {
         handoffMotor.stopMotor();
     }
 
+    public boolean getNoteStatus() {
+        return proximitySensor.get();
+    }
 
     @Override
     public void periodic() {
