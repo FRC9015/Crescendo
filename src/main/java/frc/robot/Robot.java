@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.PivotSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,9 +21,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends LoggedRobot {
-	private Command m_autonomousCommand;
+	private Command autonomousCommand;
 
-	private RobotContainer m_robotContainer;
+	private RobotContainer robotContainer;
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -46,7 +48,7 @@ public class Robot extends LoggedRobot {
 		// Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
 		Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 		
-		m_robotContainer = new RobotContainer();
+		robotContainer = new RobotContainer();
 	}
 
 	/**
@@ -67,20 +69,20 @@ public class Robot extends LoggedRobot {
 
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
-	public void disabledInit() {}
-
+	public void disabledInit() {
+		robotContainer.disableRobot();
+	}
 	@Override
 	public void disabledPeriodic() {}
-
 	/** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
 	@Override
 	public void autonomousInit() {
 
 		// schedule the autonomous command (example)
-		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+		autonomousCommand = robotContainer.getAutonomousCommand();
 
-		if(m_autonomousCommand !=null){
-			m_autonomousCommand.schedule();
+		if(autonomousCommand !=null){
+			autonomousCommand.schedule();
 		}
 	}
 
@@ -94,9 +96,12 @@ public class Robot extends LoggedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
+		robotContainer.enableRobot();
+		
+		
 	}
 
 	/** This function is called periodically during operator control. */

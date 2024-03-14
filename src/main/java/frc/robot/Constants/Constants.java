@@ -44,12 +44,13 @@ public final class Constants {
 	}
 
 	public static class PivotConstants {
+		public static final int pivotEncoderChannel = 0;
 		public static final int pivotMotor1ID = 61;
-		public static final int pivotMotor2ID = 62;	}
+		public static final int pivotMotor2ID = 62;	
+	}
 
 	public static class IntakeConstants {
 		public static final int intakeMotor1ID = 41;
-		public static final int intakeMotor2ID = 42;
 		public static final int handoffMotorID = 43;
 
 	}

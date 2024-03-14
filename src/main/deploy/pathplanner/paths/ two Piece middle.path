@@ -3,80 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0,
-        "y": 7.0
+        "x": 1.35,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 2.35,
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.0,
-        "y": 6.9
+        "x": 3.4553985700695447,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 2.9375,
-        "y": 7.228125
+        "x": 3.4290489275521585,
+        "y": 5.5
       },
       "nextControl": {
-        "x": 3.0625,
-        "y": 6.571875
+        "x": 3.481748212586931,
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
+        "x": 1.35,
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.0,
-        "y": 5.75
-      },
-      "nextControl": {
-        "x": 2.0,
-        "y": 5.25
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.0,
-        "y": 5.5
-      },
-      "prevControl": {
-        "x": 2.0,
-        "y": 5.5
+        "x": 1.3502639960027034,
+        "y": 5.4995730222161425
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5499999999999999,
-      "rotationDegrees": 32.0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 2,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -84,19 +57,13 @@
             {
               "type": "named",
               "data": {
-                "name": "shootNote"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.5
+                "name": "intakeNote"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
+                "name": "backwardShooter"
               }
             }
           ]
@@ -105,7 +72,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 3.0,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -113,13 +80,13 @@
             {
               "type": "named",
               "data": {
-                "name": "stopSpeakerShooter"
+                "name": "pivotToSubWoofer"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "stopIntake"
+                "name": "shootNote"
               }
             }
           ]
@@ -139,7 +106,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Test Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 1.35,
-        "y": 5.55
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.35,
-        "y": 5.55
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9029602018594898,
-        "y": 5.55
+        "x": 3.4553985700695447,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 1.9029602018594898,
-        "y": 5.55
+        "x": 2.4553985700695447,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,21 +33,21 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.5,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "stopSpeakerShooter"
+                "name": "intakeNote"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "stopIntake"
+                "name": "backwardShooter"
               }
             }
           ]
@@ -58,16 +58,19 @@
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 1.0,
-    "maxAngularVelocity": 180.0,
-    "maxAngularAcceleration": 90.0
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Comp Paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

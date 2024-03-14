@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.0,
-      "y": 6.99
+      "x": 1.35,
+      "y": 5.5
     },
     "rotation": 0
   },
@@ -12,20 +12,26 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "LineUp1"
+            "name": "shootNote"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootNote"
+            "name": "pivotToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " two Piece middle"
           }
         }
       ]
     }
   },
-  "folder": "Test Autos",
+  "folder": null,
   "choreoAuto": false
 }

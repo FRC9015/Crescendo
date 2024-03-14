@@ -1,144 +1,134 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import com.revrobotics.*;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.revrobotics.CANSparkFlex;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.Constants.PivotConstants;
 
 
+import static frc.robot.Constants.Constants.PivotConstants.pivotEncoderChannel;
 
-public class PivotSubsystem extends ProfiledPIDSubsystem {
-    private final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
-    private final ArmFeedforward pivotFeedForward =
-            new ArmFeedforward(
-                    1,1.26,0.15,0.02);  //kSVolts, kGVolts, kVVoltSecondPerRad, kAVoltSecondSquaredPerRad
+public class PivotSubsystem extends SubsystemBase {
+
+    //makes motors
+    public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
+    public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+
+    //gets encoders
+    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();//change later
+
+
+    //makes PID for motors
+    private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
+
+    //motion profiling
+    private final TrapezoidProfile pivot1Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
+    private final TrapezoidProfile pivot2Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
+    TrapezoidProfile.State motor1Setpoint = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor2Setpoint = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
+
+    private double currentPosition = 0;
 
     public PivotSubsystem(){
-        super(
-                new ProfiledPIDController(
-                        0.5,
-                        0,
-                        0.32,
-                        new TrapezoidProfile.Constraints(
-                                0, //kMaxVelocityRadPerSecond,
-                                0 //kMaxAccelerationRadPerSecSquared)),
-                )));
 
-        pivotEncoder.setPositionConversionFactor(1.0/27);
-        pivotMotor1.setSmartCurrentLimit(40);
-        pivotMotor2.setSmartCurrentLimit(40);
-        pivotMotor1.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward,180); //TODO tune
-        pivotMotor2.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse,-90); //TODO tune
-        // Start arm at rest in neutral position
-        setGoal(0); //TODO Add Pivot Encoder Offset in Radians
+        //sets PID values of both controllers
+        pivotPIDController.setP(2);
+        pivotPIDController.setI(0);
+        pivotPIDController.setD(0);
+        pivotPIDController.setOutputRange(-1,1.45);
+        pivotPIDController.setFF(0.00015);
 
-    }
-    @Override
-    public void useOutput(double output, TrapezoidProfile.State setpoint) {
-        // Calculate the feedforward from the setpoint
-        double feedforward = pivotFeedForward.calculate(setpoint.position, setpoint.velocity);
-        // Add the feedforward to the PID output to get the motor output
-        pivotMotor1.setVoltage(output + feedforward);
-        pivotMotor2.setVoltage(output + feedforward);
+
+        pivotMotor2.follow(pivotMotor1,true);
+        //makes encoder account for gear box/Chain
+        pivotEncoder.setPositionConversionFactor(1.0/15);
     }
 
-    @Override
-    public double getMeasurement() {
-        return pivotEncoder.getPosition() + 0;  //TODO Find the Pivot Encoder Offset
-    }
-
-    public Command zeroPivot(){
-        return run(()->{
-            pivotEncoder.setPosition(0);
-        });
-    }
+    //raises the pivot
     public Command raisePivot(){
         return startEnd(
                 this::movePivotUp,
                 this::stopPivot
         );
     }
+    //lowers the pivot
     public Command lowerPivot(){
         return startEnd(
                 this::movePivotDown,
                 this::stopPivot
         );
     }
-    private void movePivotUp(){
-        double motorSpeed = 0.1;
-        pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(-motorSpeed);
-        
+    public Command movePivotToIntake(){
+        return this.runOnce(this::intake);
     }
+
+    public Command movePivotToSubWoofer(){
+        return this.runOnce(this::SubWoofer);
+    }
+    //moves pivot up
+    private void movePivotUp(){
+        currentPosition += 0.05;
+    }
+    //stops pivot
     private void stopPivot(){
         pivotMotor1.stopMotor();
         pivotMotor2.stopMotor();
     }
+    //moves pivot
     private void movePivotDown(){
-        double motorSpeed = -0.1;
-        pivotMotor1.set(motorSpeed);
-        pivotMotor2.set(-motorSpeed);
+        currentPosition -= 0.05;
     }
 
-    private void resetPosition(){
-        setGoal(0);
-        enable();
+    //uses SparkMax PID to set the motors to a position
+    public void intake(){
+        motor1Goal = new TrapezoidProfile.State(0.5,0.5);
+        motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
+
+        pivotPIDController.setP(2);
+        currentPosition = 0.24;
     }
 
-    public Command subWoofer(){
-        return startEnd(
-            this::resetPosition,
-            this::intake
-            );
+    //uses SparkMax PID to set the motors to a position
+    public void SubWoofer(){
+        pivotPIDController.setP(0.4);
+        currentPosition = 0;
+        
     }
 
-    private void ampScore(){
-        setGoal(0);//change later
-        enable();
-    }
-    public Command ampScoreCommand(){
-        return startEnd(
-            this::ampScore,
-            this::intake
-            );
+    //uses SparkMax PID to set the motors to a position
+    public void AmpPreset(){
+        pivotPIDController.setP(1.5);
+        currentPosition = 1.3;
+        
     }
 
-    private void flat(){
-        setGoal(0.27);//change later
-        enable();
-    }
-    public Command flatCommand(){
-        return startEnd(
-            this::flat,
-            this::intake
-            );
+    public void passNotePreset(){
+        pivotPIDController.setP(2);
+        currentPosition = 0.48;
     }
 
-    private void intake(){
-        setGoal(0.15);//change later
-        enable();
-
+    public void setCurrentPosition(double SetPoint){
+        pivotPIDController.setP(2);
+        currentPosition = SetPoint;
     }
 
-    public Command intakeCommand(){
-        return startEnd(
-            this::intakeCommand,
-            this::resetPosition
-            );
-    }
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("Pivot Position", pivotEncoder.getPosition());
-        }
+        //puts values on dashboard
+        SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
+        
+        double kDt = 0.02;
+        motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
+        motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
+        //uses robotSelf booleans to decide if to run a command
+
+        pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
+        
+    }
 }

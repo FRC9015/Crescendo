@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4028643441902284,
-      "y": 5.574822688106915
+      "x": 1.0,
+      "y": 2
     },
     "rotation": 0
   },
@@ -14,18 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LineUp2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootNote"
+            "pathName": "Stay Still Right"
           }
         }
       ]
     }
   },
-  "folder": "Test Autos",
+  "folder": null,
   "choreoAuto": false
 }

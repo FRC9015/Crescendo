@@ -14,10 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoAim;
 import frc.robot.commands.Handoff;
-import frc.robot.commands.ScoreAmp;
+import frc.robot.commands.Presets.AmpPreset;
+import frc.robot.commands.Presets.SubWooferPreset;
+
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -30,28 +34,34 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final Field2d pathField;
-	private SendableChooser<Command> pathChooser = new SendableChooser<>();
-	private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final CameraSubsystem CAMERA_SUBSYSTEM = new CameraSubsystem();
+
+
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-
-
-
-
-
+	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
 		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
-		NamedCommands.registerCommand("outtakeNote", INTAKE.autoOuttakeNote());
+		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
+		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
+		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
+		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
+		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
+		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
+		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
+		NamedCommands.registerCommand("autoAim", new AutoAim());
+		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
 		configureBindings();
 
 
@@ -66,10 +76,6 @@ public class RobotContainer {
 
 		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
 
-		pathChooser.addOption("Run Straight Path", followPath("LineUp1"));
-		pathChooser.addOption("Run Curvy Path", followPath("Curvy Path"));
-
-		Shuffleboard.getTab("Autonomous").add(pathChooser);
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
 
@@ -80,10 +86,8 @@ public class RobotContainer {
 
 
 		// Logging callback for current robot pose
-		PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-			// Do whatever you want with the pose here
-			pathField.setRobotPose(pose);
-		});
+        // Do whatever you want with the pose here
+        PathPlannerLogging.setLogCurrentPoseCallback(pathField::setRobotPose);
 
 		// Logging callback for target robot pose
 		PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
@@ -109,25 +113,36 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue((PIVOT.zeroPivot()));
+
+		// Driver Bindings
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(INTAKE.intakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(SWERVE.zeroYaw());
 
-		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+		// Operator Bindings
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
-		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
-		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).toggleOnTrue(PIVOT.ampScoreCommand());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue(PIVOT.subWoofer());
-		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).toggleOnTrue(PIVOT.intakeCommand());
-	}
-
-	public Command followPath(String wantedPath) {
-		PathPlannerPath path = PathPlannerPath.fromPathFile(wantedPath);
-		return AutoBuilder.followPath(path);
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
+		InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
+		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
+		
+				
+		// Operator Presets
+		
+		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubWooferPreset());
+		InputManager.getInstance().getOperatorPOV(0).onTrue(new InstantCommand(PIVOT::passNotePreset));
 	}
 
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
 	  }
+
+	public void disableRobot(){
+		PIVOT.SubWoofer();
+	}
+
+	public void enableRobot(){
+		PIVOT.intake();
+	}
 }

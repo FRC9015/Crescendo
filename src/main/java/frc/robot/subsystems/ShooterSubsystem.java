@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -34,14 +32,17 @@ public class ShooterSubsystem extends SubsystemBase {
         // TODO change this into a Sequential Command. We should set the first command
         // in the sequence to set the pivot angle.
         return this.startEnd(
-                this::setSpeakerShooterMotorSpeeds,
+                this::setSpeakerShooterMotorSpeedsSubWoofer,
                 this::stopSpeakerShooterMotors);
     }
 
     public Command autoShootNoteToSpeaker() {
         return new SequentialCommandGroup(
-                new InstantCommand(this::setSpeakerShooterMotorSpeeds),
+                new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
                 new WaitCommand(3),
+                new InstantCommand(this::setAmpIntakeSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
@@ -71,20 +72,45 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
-    private void setSpeakerShooterMotorSpeeds(){
-        double motorSpeed = 0.65;//needs to be tuned
-        speakerMotorTop.set(0.60);
-        speakerMotorBottom.set(0.60);
+    public Command shooterBackward(){
+        return this.startEnd(
+                this::backwardsShooter,
+                this::stopSpeakerShooterMotors);
     }
 
-    private void stopSpeakerShooterMotors() {
+    public Command autoAmpIntake(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setAmpIntakeSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+    }
+
+    public Command autoBackwardShooter(){
+        return new SequentialCommandGroup(
+            new InstantCommand(this::backwardsShooter),
+            new WaitCommand(3),
+            new InstantCommand(this::stopSpeakerShooterMotors));
+}
+    
+    public void setSpeakerShooterMotorSpeedsSubWoofer(){
+        speakerMotorTop.set(0.7);
+        speakerMotorBottom.set(0.5);
+    }
+
+    public void setSpeakerShooterMotorSpeeds(){
+        speakerMotorTop.set(0.8);
+        speakerMotorBottom.set(0.6);
+    }
+
+    public void stopSpeakerShooterMotors() {
         speakerMotorTop.stopMotor();
         speakerMotorBottom.stopMotor();
     }
+    
 
     private void setAmpShooterMotorSpeeds() {
         double motorSpeed = 0.5;// needs to be tuned
-        ampShooterMotorTop.set(motorSpeed);
+        ampShooterMotorTop.set(-motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
     }
 
@@ -94,9 +120,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.3; //needs to be tuned
+        double motorSpeed = 0.8; //needs to be tuned
         ampShooterMotorTop.set(motorSpeed);
         ampShooterMotorBottom.set(motorSpeed);
+    }
+
+    private void backwardsShooter(){
+        speakerMotorTop.set(-0.8);
+        speakerMotorBottom.set(-0.80);
     }
 
     @Override
