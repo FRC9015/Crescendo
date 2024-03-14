@@ -35,7 +35,7 @@ public class LEDSubsystem extends SubsystemBase {
             candleConfiguration.vBatOutputMode = VBatOutputMode.Modulated;
             candle.configAllSettings(candleConfiguration, 100);
 
-            setDefaultCommand(new InstantCommand());
+            setDefaultCommand(new InstantCommand(this::setSampleAnimation));
 
     }
     public void setBrightness(double percent) {
