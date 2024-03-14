@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAim;
 import frc.robot.commands.Handoff;
-import frc.robot.commands.Presets.*;
+import frc.robot.commands.Presets.AmpPreset;
+import frc.robot.commands.Presets.SubWooferPreset;
 
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;

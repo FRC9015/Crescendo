@@ -38,11 +38,11 @@ public class LimelightInterface extends SubsystemBase{
     //Used to calculate the distance from a tag
     // how many degrees back is your limelight rotated from perfectly vertical?
    //needs to be different for distance.
-    double limelightMountAngleDegreesSelf = 45.0;
-    double limelightMountAngleDegrees = 315;
+    final double limelightMountAngleDegreesSelf = 45.0;
+    final double limelightMountAngleDegrees = 315;
 
     // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 8.5;
+    final double limelightLensHeightInches = 8.5;
 
     // distance from the target to the floor
     double goalHeightInches = 54;//change to the height of the april tag on the field
@@ -59,7 +59,7 @@ public class LimelightInterface extends SubsystemBase{
     double floorDistance = 0;
 
     double setPivotAngle = 0;
-    public double noteVelocity = 11;//if over shoot increase under decrease
+    private double noteVelocity = 11;//if over shoot increase under decrease
 
 
     //updates limelight X, Y, and Area and puts them onto smartd95ashboard.

@@ -47,7 +47,6 @@ public class PivotSubsystem extends SubsystemBase {
 
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
-        //pivotEncoder.setDistancePerRotation((double) 1 /3);
         pivotEncoder.setPositionConversionFactor(1.0/15);
     }
 
@@ -74,8 +73,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot up
     private void movePivotUp(){
-        double motorSpeed = 0.05;
-        currentPosition += motorSpeed;
+        currentPosition += 0.05;
     }
     //stops pivot
     private void stopPivot(){
@@ -84,8 +82,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot
     private void movePivotDown(){
-        double motorSpeed = -0.05;
-        currentPosition += motorSpeed;
+        currentPosition -= 0.05;
     }
 
     //uses SparkMax PID to set the motors to a position
