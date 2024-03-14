@@ -37,6 +37,14 @@ public class IntakeSubsystem extends SubsystemBase {
            this::stopIntakeMotors
         );
     }
+
+    public Command autoIntakeNote(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setIntakeMotorSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopIntakeMotors));
+    }
+
     public Command outtakeNote(){
         return this.startEnd(
                 this::setReverseIntakeMotorSpeeds,
@@ -44,18 +52,19 @@ public class IntakeSubsystem extends SubsystemBase {
         );
     }
 
+    public Command autoOuttakeNote(){
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setReverseIntakeMotorSpeeds),
+                new WaitCommand(3),
+                new InstantCommand(this::stopIntakeMotors));
+    }
+
     public Command stopIntake(){
         return this.runOnce(
             this::stopIntakeMotors
         );
     }
-    
-    public Command autoIntakeNote(){
-       return new SequentialCommandGroup(
-                new InstantCommand(this::setIntakeMotorSpeeds),
-                new WaitCommand(2),
-                new InstantCommand(this::stopIntakeMotors));
-   }
+
 
     private void setIntakeMotorSpeeds(){
         double motorSpeed = -0.8;
@@ -73,7 +82,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     private void stopIntakeMotors(){
         for (CANSparkFlex motor:intakeMotors){
-            motor.set(0);
+            motor.stopMotor();
         }
         handoffMotor.stopMotor();
     }
