@@ -23,7 +23,7 @@ public class AutoAim extends Command{
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
         SHOOTER.setSpeakerShooterMotorSpeeds();
-        LEDS.setGreen();
+        LEDS.setRed();
         
     }
     @Override

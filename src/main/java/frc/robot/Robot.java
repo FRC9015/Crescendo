@@ -96,7 +96,7 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if ((shooter.shooterIsReady())){
-			leds.setWhite();
+			leds.setGreen();
 		}
 
 		if (intake.getNoteStatus()){
@@ -124,8 +124,15 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
+		if ((shooter.shooterIsReady())){
+			leds.setGreen();
+		}
+
 		if (intake.getNoteStatus()){
 			leds.indicateNote();
+		}
+		else{
+			leds.indicateEmpty();
 		}
 	}
 
