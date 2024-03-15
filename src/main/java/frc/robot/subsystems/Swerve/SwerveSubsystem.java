@@ -106,7 +106,7 @@ public class SwerveSubsystem extends SubsystemBase {
 					// This will flip the path being followed to the red side of the field.
 					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 					var alliance = DriverStation.getAlliance();
-					return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+					return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
 				},
 				this // Reference to this subsystem to set requirements
 		);
@@ -124,12 +124,10 @@ public class SwerveSubsystem extends SubsystemBase {
 	public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
 			DoubleSupplier angularRotationX) {
 		return run(() -> {
-
-			//gi Make the robot move
 			double sign = (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Blue) ? 1.0 : -1.0);
-			
+			//gi Make the robot move
 			swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble() * sign, 3) * swerveDrive.getMaximumVelocity(),
-					Math.pow(translationY.getAsDouble() * sign, 3) * swerveDrive.getMaximumVelocity()),
+					Math.pow(translationY.getAsDouble() * sign, 3) * swerveDrive.getMaximumVelocity()) ,
 					Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
 					true,
 					true);

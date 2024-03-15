@@ -100,6 +100,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setSpeakerShooterMotorSpeeds(){
         speakerMotorTop.set(0.8);
         speakerMotorBottom.set(0.6);
+        speakerMotorTop.set(0.4);
+        speakerMotorBottom.set(0.4);
     }
 
     public void stopSpeakerShooterMotors() {
