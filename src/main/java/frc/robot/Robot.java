@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.PivotSubsystem;
 
+import java.awt.*;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -28,9 +30,6 @@ public class Robot extends LoggedRobot {
 
 	private RobotContainer robotContainer;
 
-	private IntakeSubsystem intake = new IntakeSubsystem();
-	private LEDSubsystem leds = new LEDSubsystem();
-	private ShooterSubsystem shooter = new ShooterSubsystem();
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -95,15 +94,15 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during autonomous. */
 	@Override
 	public void autonomousPeriodic() {
-		if ((shooter.shooterIsReady())){
-			leds.setGreen();
+		if ((RobotContainer.SHOOTER.shooterIsReady())){
+			RobotContainer.LEDS.setColor(Color.green);
 		}
 
-		if (intake.getNoteStatus()){
-			leds.indicateNote();
+		if (RobotContainer.INTAKE.getNoteStatus()){
+			RobotContainer.LEDS.indicateNote();
 		}
 		else{
-			leds.indicateEmpty();
+			RobotContainer.LEDS.indicateEmpty();
 		}
 	}
 
@@ -124,15 +123,15 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-		if ((shooter.shooterIsReady())){
-			leds.setGreen();
+		if ((RobotContainer.SHOOTER.shooterIsReady())){
+			RobotContainer.LEDS.setColor(Color.green);
 		}
 
-		if (intake.getNoteStatus()){
-			leds.indicateNote();
+		if (RobotContainer.INTAKE.getNoteStatus()){
+			RobotContainer.LEDS.indicateNote();
 		}
 		else{
-			leds.indicateEmpty();
+			RobotContainer.LEDS.indicateEmpty();
 		}
 	}
 

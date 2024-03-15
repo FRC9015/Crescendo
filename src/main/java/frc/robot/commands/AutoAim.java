@@ -12,6 +12,8 @@ import frc.robot.InputManager;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightInterface;
 
+import java.awt.Color;
+
 public class AutoAim extends Command{
    LEDSubsystem LEDS = new LEDSubsystem();
     public AutoAim(){
@@ -23,7 +25,7 @@ public class AutoAim extends Command{
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
         SHOOTER.setSpeakerShooterMotorSpeeds();
-        LEDS.setRed();
+        LEDS.setColor(Color.red);
         
     }
     @Override

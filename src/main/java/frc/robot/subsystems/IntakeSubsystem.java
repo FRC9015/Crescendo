@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final DigitalOutput proximitySensor = new DigitalOutput(1);
+    private final DigitalOutput proximitySensor = new DigitalOutput(0);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
     };

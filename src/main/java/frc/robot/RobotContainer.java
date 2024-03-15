@@ -40,6 +40,7 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final LEDSubsystem LEDS = new LEDSubsystem();
 	public static final CameraSubsystem CAMERA_SUBSYSTEM = new CameraSubsystem();
 
 

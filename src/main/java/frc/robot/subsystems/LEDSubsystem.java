@@ -29,8 +29,7 @@ public class LEDSubsystem extends SubsystemBase {
             candleConfiguration.brightnessScalar = 1.0;
             candleConfiguration.vBatOutputMode = VBatOutputMode.Modulated;
             candle.configAllSettings(candleConfiguration, 100);
-
-            setDefaultCommand(new InstantCommand(this::setSampleAnimation));
+            candle.clearAnimation(0);
     }
     public void setBrightness(double percent) {
         candle.configBrightnessScalar(percent, 100);
@@ -56,7 +55,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void indicateEmpty() {
-        if (INTAKE.getNoteStatus()){
+        if (!INTAKE.getNoteStatus()){
             setColor(Color.blue);
         }
     }
