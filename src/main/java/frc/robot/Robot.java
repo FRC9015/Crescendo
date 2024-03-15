@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -24,7 +26,9 @@ public class Robot extends LoggedRobot {
 	private Command autonomousCommand;
 
 	private RobotContainer robotContainer;
-	
+
+	private IntakeSubsystem intake = new IntakeSubsystem();
+	private LEDSubsystem leds = new LEDSubsystem();
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -88,7 +92,11 @@ public class Robot extends LoggedRobot {
 
 	/** This function is called periodically during autonomous. */
 	@Override
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+		if (intake.getNoteStatus()){
+			leds.indicateNote();
+		}
+	}
 
 	@Override
 	public void teleopInit() {
@@ -106,7 +114,11 @@ public class Robot extends LoggedRobot {
 
 	/** This function is called periodically during operator control. */
 	@Override
-	public void teleopPeriodic() {}
+	public void teleopPeriodic() {
+		if (intake.getNoteStatus()){
+			leds.indicateNote();
+		}
+	}
 
 	@Override
 	public void testInit() {

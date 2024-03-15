@@ -91,6 +91,7 @@ public class IntakeSubsystem extends SubsystemBase {
         return proximitySensor.get();
     }
 
+
     @Override
     public void periodic() {
       // This method will be called once per scheduler run

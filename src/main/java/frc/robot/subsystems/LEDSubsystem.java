@@ -80,7 +80,7 @@ public class LEDSubsystem extends SubsystemBase {
         candle.animate(rainbowAnim);
     }
 
-    public void setLEDs() {
+    public void indicateNote() {
         if (INTAKE.getNoteStatus()) {
             setOrange();
             setSampleAnimation();
