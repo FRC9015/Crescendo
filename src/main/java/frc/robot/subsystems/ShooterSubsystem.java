@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,6 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
+
+    RelativeEncoder encoder = speakerMotorTop.getEncoder();
 
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
@@ -128,6 +131,14 @@ public class ShooterSubsystem extends SubsystemBase {
     private void backwardsShooter(){
         speakerMotorTop.set(-0.8);
         speakerMotorBottom.set(-0.80);
+    }
+
+    public double getSpeakerMotorRPM(){
+        return encoder.getVelocity();
+    }
+
+    public boolean shooterIsReady(){
+        return getSpeakerMotorRPM() >= 0.65;
     }
 
     @Override

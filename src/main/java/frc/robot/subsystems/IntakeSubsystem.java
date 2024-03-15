@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private ShooterSubsystem shooter;
-
     private final DigitalOutput proximitySensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
@@ -87,7 +85,6 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean getNoteStatus() {
         return proximitySensor.get();
     }
-
 
     @Override
     public void periodic() {

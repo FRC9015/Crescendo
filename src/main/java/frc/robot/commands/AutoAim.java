@@ -9,10 +9,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.InputManager;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightInterface;
 
 public class AutoAim extends Command{
-   
+   LEDSubsystem LEDS = new LEDSubsystem();
     public AutoAim(){
         addRequirements(PIVOT, SWERVE);
     }
@@ -22,6 +23,7 @@ public class AutoAim extends Command{
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
         SHOOTER.setSpeakerShooterMotorSpeeds();
+        LEDS.setGreen();
         
     }
     @Override

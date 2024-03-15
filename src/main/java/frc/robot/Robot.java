@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -29,6 +30,7 @@ public class Robot extends LoggedRobot {
 
 	private IntakeSubsystem intake = new IntakeSubsystem();
 	private LEDSubsystem leds = new LEDSubsystem();
+	private ShooterSubsystem shooter = new ShooterSubsystem();
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -93,8 +95,15 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during autonomous. */
 	@Override
 	public void autonomousPeriodic() {
+		if ((shooter.shooterIsReady())){
+			leds.setWhite();
+		}
+
 		if (intake.getNoteStatus()){
 			leds.indicateNote();
+		}
+		else{
+			leds.indicateEmpty();
 		}
 	}
 

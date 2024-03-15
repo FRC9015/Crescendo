@@ -83,7 +83,12 @@ public class LEDSubsystem extends SubsystemBase {
     public void indicateNote() {
         if (INTAKE.getNoteStatus()) {
             setOrange();
-            setSampleAnimation();
+        }
+    }
+
+    public void indicateEmpty() {
+        if (INTAKE.getNoteStatus()){
+            setBlue();
         }
     }
 
