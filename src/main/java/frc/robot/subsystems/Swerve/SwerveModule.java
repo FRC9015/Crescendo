@@ -1,26 +1,27 @@
-package frc.robot.Subsystems;
+package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.*;
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static java.lang.Math.*;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkFlex;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 public class SwerveModule {
-	public CANSparkFlex turn, drive;
-	public CANcoder encoder;
-	public Rotation2d encoder_offset;
+	private CANSparkFlex turn, drive;
+	private CANcoder encoder;
+	private Rotation2d encoderOffset;
 
-	public RelativeEncoder driveEncoder;
-	public SwerveModuleState targState;
-
+	private RelativeEncoder driveEncoder;
+	private SwerveModuleState targetState;
 	private PIDController drivePID, turnPPID;
 	private String name;
 	private double kV = 3;
@@ -31,10 +32,12 @@ public class SwerveModule {
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
 
-		drivePID = new PIDController(3, 0, 0);
-		turnPPID = new PIDController(2, 0, 0);
+		// TODO: Look into individually tuning these modules
+		drivePID = new PIDController(driveP, driveI, driveD);
+		turnPPID = new PIDController(turnP, turnI, turnD); 
+
 		turnPPID.enableContinuousInput(-PI, PI);
-		encoder_offset = config.offset;
+		encoderOffset = config.offset;
 		drive.restoreFactoryDefaults();
 		turn.restoreFactoryDefaults();
 
@@ -58,29 +61,42 @@ public class SwerveModule {
 
 	public Rotation2d getDirection() {
 		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
-				.minus(encoder_offset);
+				.minus(encoderOffset);
 	}
+	public SwerveModulePosition getPosition(){
+		return new SwerveModulePosition(getDriveDistance(), getDirection());
 
+	}
+	public double getDriveDistance(){
+		return driveEncoder.getPosition() / gearRatio * 2 * Math.PI * Units.inchesToMeters(2);
+	}
 	public void setState(SwerveModuleState state) {
-		this.targState = SwerveModuleState.optimize(state, getDirection());
+		this.targetState = SwerveModuleState.optimize(state, getDirection());
 	}
 
-	public void fixOffset() {
+	public SwerveModuleState getTargetState(){
+		return targetState;
+	}
+
+	public SwerveModuleState getMeasuredState() {
+		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection()); 
+	}
+
+	public void printOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
-				+ getDirection().plus(encoder_offset).getRotations());
+				+ getDirection().plus(encoderOffset).getRotations());
 	}
 
-	public void teleop() {
-		if (targState == null) return;
+	public void periodic() {
+		if (targetState == null) return;
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;
-		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targState.angle.getRadians())))
-				* targState.speedMetersPerSecond;
-		if (name == "NW") {
-			// System.out.println("Module: " + this.name + " Target_angle: " + targState.angle.getRadians() +
-			// "current_angle: " + getDirection().getRadians());
-		}
+		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
+				* targetState.speedMetersPerSecond;
+
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
-		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targState.angle.getRadians()));
+		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
 	}
+
+	
 }

@@ -4,13 +4,26 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Constants.OperatorConstants;
-import frc.robot.Commands.DefaultDrive;
-import frc.robot.Subsystems.IMU;
-import frc.robot.Subsystems.SwerveSubsystem;
+import frc.robot.Commands.*;
+import frc.robot.Commands.Presets.*;
+import frc.robot.subsystems.Pigeon;
+import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Swerve.SwerveSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,21 +33,41 @@ import frc.robot.Subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	public static final SwerveSubsystem swerve = new SwerveSubsystem();
+	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
+	//public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+	public static final Pigeon PIGEON = new Pigeon();
+	public static final PoseEstimator POSE_ESTIMATOR =
+			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
-	public static final IMU imu = new IMU();
+	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
+	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+	public static final CameraSubsystem CAMERA = new CameraSubsystem();
+	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
-	// Replace with CommandPS4Controller or CommandJoystick if needed
-	public static final CommandXboxController driveController =
-			new CommandXboxController(OperatorConstants.DriverControllerPort);
-	
-	public static final CommandXboxController operatorController = 
-			new CommandXboxController(OperatorConstants.OperatorControllerPort);
+	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
+		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
+		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
+		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
+		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
+		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
+		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
+		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
+		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
+		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
+		NamedCommands.registerCommand("autoAim", new AutoAim());
+		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
+		
 		configureBindings();
+
+		SWERVE.setUpPathPlanner();
+		autoChooser = AutoBuilder.buildAutoChooser();
+		Shuffleboard.getTab("Autonomous").add(autoChooser);
+
 	}
 
 	/**
@@ -47,13 +80,28 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		swerve.setDefaultCommand(new DefaultDrive());
+		SWERVE.setDefaultCommand(new DefaultDrive());
 
-		//binds for driver Controller
-		driveController.a().onTrue(swerve.printOffsets());
-		driveController.y().onTrue(new InstantCommand(() -> imu.zeroYaw()));
-
-		//binds for operator controller
+				// Driver Bindings
+				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+	
 		
+				// Operator Bindings
+				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
+				InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
+				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
+				
+						
+				// Operator Presets
+				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubWooferPreset());
+				InputManager.getInstance().getOperatorPOV(0).onTrue(new PassNotePreset());
 	}
+
+	public Command getAutonomousCommand() {
+		return autoChooser.getSelected();
+	  }
 }
