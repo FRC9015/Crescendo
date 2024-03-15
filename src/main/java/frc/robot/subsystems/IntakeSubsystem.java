@@ -18,9 +18,6 @@ public class IntakeSubsystem extends SubsystemBase {
     private final DigitalOutput proximitySensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        
-
-
     };
     private final CANSparkFlex handoffMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
 
