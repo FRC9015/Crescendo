@@ -14,9 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,6 +23,8 @@ import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
 import java.util.Map;
+
+import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
 import static frc.robot.Constants.Constants.robotLength;
@@ -38,8 +37,7 @@ public class SwerveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
 	}
 	
-	private double speedMultiplier;
-	private double angularMultiplier;
+
 
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(robotLength / 2, robotWidth / 2), // NW
@@ -120,6 +118,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
+		
 
 		speeds = ChassisSpeeds.discretize(speeds, dtSeconds);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
@@ -172,8 +171,16 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-
-		//if statment is so that the telop wont run if selfdrive is on.
+		// double[] states = new double[8];
+		// for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
+		// for (int i = 0; i < 4; i++)
+		// 	states[i * 2] = modules[i].getTargetState().angle.getRadians();
+		// Logger.recordOutput("Target States", states);
+		// for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
+		// for (int i = 0; i < 4; i++)
+		// 	states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
+		// Logger.recordOutput("Measured States", states);
+		// //if statment is so that the telop wont run if selfdrive is on.
 		for (SwerveModule module : modules) {
 			module.periodic();
 		}
@@ -187,14 +194,6 @@ public class SwerveSubsystem extends SubsystemBase {
 				module.printOffset();
 			}
 		}, this);
-	}
-
-	public double getSpeedMultiplier(){
-		return speedMultiplier;
-	}
-
-	public double getAngularMultiplier(){
-		return angularMultiplier;
 	}
 
 	public SwerveDriveKinematics getKinematics(){

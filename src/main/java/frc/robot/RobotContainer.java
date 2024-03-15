@@ -13,8 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Commands.*;
-import frc.robot.Commands.Presets.*;
+import frc.robot.Commands.DefaultDrive;
+import frc.robot.Commands.AutoAim;
+import frc.robot.Commands.Handoff;
+import frc.robot.Commands.Presets.AmpPreset;
+import frc.robot.Commands.Presets.PassNotePreset;
+import frc.robot.Commands.Presets.SubWooferPreset;
+import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
@@ -44,6 +49,9 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+
+	public static final CommandXboxController driveController =
+			new CommandXboxController(OperatorConstants.driverControllerPort);
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -80,7 +88,7 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		SWERVE.setDefaultCommand(new DefaultDrive());
+				SWERVE.setDefaultCommand(new DefaultDrive());
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
@@ -94,7 +102,6 @@ public class RobotContainer {
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 				
-						
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubWooferPreset());

@@ -40,15 +40,16 @@ public class DefaultDrive extends Command {
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
+		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign);
 
-		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * SWERVE.getSpeedMultiplier() * forwardDirectionSign);
+		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign);
 
-		double rotationalVelocity = rotationalVelocityFilter.calculate(inputZ * angularSpeed * SWERVE.getAngularMultiplier());
+		double rotationalVelocity = rotationalVelocityFilter.calculate(inputZ * angularSpeed );
 
-		SWERVE.drive(-yVelocity, -xVelocity, -rotationalVelocity);
+		SWERVE.drive(yVelocity, xVelocity, rotationalVelocity);
 
-		SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
+		// SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
+
 	}
 	
 	// Returns true when the command should end.

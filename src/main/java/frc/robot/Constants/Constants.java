@@ -31,7 +31,7 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double maxSpeed = Units.feetToMeters(16.6);
+		public static final double maxSpeed = Units.feetToMeters(19.3);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
 		public static final double slewRateLimit = 50;
 		public static final double dtSeconds = 0.02;
@@ -62,8 +62,8 @@ public final class Constants {
 	public static class LEDConstants {
 
 	}
-	public static final double robotWidth = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
-	public static final double robotLength = Units.inchesToMeters(21.73); // TODO: This must be tuned to specific robot
+	public static final double robotWidth = Units.inchesToMeters(27); // TODO: This must be tuned to specific robot
+	public static final double robotLength = Units.inchesToMeters(27); // TODO: This must be tuned to specific robot
 	public static final double wheelRatio = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
