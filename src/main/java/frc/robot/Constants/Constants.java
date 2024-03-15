@@ -54,6 +54,5 @@ public final class Constants {
 	public static class LEDConstants {
         public static final int CANDleID1 = 36;
         public static final int CANDleID2 = 37;
-
 	}
 }
