@@ -70,7 +70,7 @@ public class SwerveModule {
 				+ getDirection().plus(encoder_offset).getRotations());
 	}
 
-	public void periodic() {
+	public void teleop() {
 		if (targState == null) return;
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;

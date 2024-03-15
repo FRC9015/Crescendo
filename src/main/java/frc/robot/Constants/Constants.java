@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 	public static class OperatorConstants {
 		public static final int DriverControllerPort = 0;
+		public static final int OperatorControllerPort = 1;
 	}
 
 	public static class SwerveConstants {

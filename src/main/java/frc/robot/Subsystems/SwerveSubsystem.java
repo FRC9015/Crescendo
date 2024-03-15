@@ -36,7 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		for (SwerveModule module : modules) {
-			module.periodic();
+			module.teleop();
 		}
 	}
 

@@ -33,13 +33,13 @@ public class DefaultDrive extends Command {
 		double vy = -driveController.getLeftY();
 		double w = -driveController.getRightX();
 		double mag = Math.hypot(vx, vy);
-		double ma2 = MathUtil.applyDeadband(mag, 0.1);
+		double ma2 = MathUtil.applyDeadband(mag, 0.15);
 		double theta = Math.atan2(vy, vx);
 		vx = cos(theta) * ma2 * maxSpeed;
 		vy = sin(theta) * ma2 * maxSpeed;
 
 		ChassisSpeeds speeds =
-				ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, MathUtil.applyDeadband(w, 0.1), imu.yaw());
+				ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, MathUtil.applyDeadband(w, 0.15), imu.yaw());
 		swerve.drive(speeds);
 	}
 

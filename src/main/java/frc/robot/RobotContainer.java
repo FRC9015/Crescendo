@@ -27,6 +27,9 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final CommandXboxController driveController =
 			new CommandXboxController(OperatorConstants.DriverControllerPort);
+	
+	public static final CommandXboxController operatorController = 
+			new CommandXboxController(OperatorConstants.OperatorControllerPort);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -46,7 +49,11 @@ public class RobotContainer {
 	private void configureBindings() {
 		swerve.setDefaultCommand(new DefaultDrive());
 
+		//binds for driver Controller
 		driveController.a().onTrue(swerve.printOffsets());
-		driveController.x().onTrue(new InstantCommand(() -> imu.zeroYaw()));
+		driveController.y().onTrue(new InstantCommand(() -> imu.zeroYaw()));
+
+		//binds for operator controller
+		
 	}
 }
