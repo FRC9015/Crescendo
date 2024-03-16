@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static final double SPEAKER_SPEED = 0; //TODO: FIND SPEED AT SHOOTER
+    private static final double speakerSpeed = 4400;
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
             MotorType.kBrushless);
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
@@ -139,13 +139,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean shooterIsReady(){
-        return (getSpeakerMotorRPM()- SPEAKER_SPEED) >= 250;
+        return (speakerSpeed - getSpeakerMotorRPM()) <= 40;
     }
 
     @Override
     public void periodic() {
-        System.out.println("Speaker Motor Current Speed: " + speakerMotorTopEncoder.getVelocity());
-
         // This method will be called once per scheduler run
     }
 
