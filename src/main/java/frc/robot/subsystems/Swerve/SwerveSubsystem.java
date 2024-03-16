@@ -40,10 +40,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-			new Translation2d(robotLength / 2, robotWidth / 2), // NW
-			new Translation2d(robotLength / 2, -robotWidth / 2), // NE
-			new Translation2d(-robotLength / 2, -robotWidth / 2), // SE
-			new Translation2d(-robotLength / 2, robotWidth / 2) // SW
+			new Translation2d(-robotLength / 2, -robotWidth / 2), // NW
+			new Translation2d(-robotLength / 2, robotWidth / 2), // NE
+			new Translation2d(robotLength / 2, robotWidth / 2), // SE
+			new Translation2d(robotLength / 2, -robotWidth / 2) // SW
 			);
 
 	private SwerveModule[] modules = new SwerveModule[] {
@@ -66,16 +66,12 @@ public class SwerveSubsystem extends SubsystemBase {
 		}
 		return states;
 	  }
-
-	public SwerveSubsystem() {
-		setUpPathPlanner();
-	}
 	public void setUpPathPlanner() {
 		AutoBuilder.configureHolonomic(
 			this::getCurrentPose, 
 			this::resetOdom, 
 			this::getChassisSpeedsAuto, 
-			this::drive, 
+			this::driveRobotRelative, 
 			Constants.PATH_FOLLOWER_CONFIG,
 			() -> {
 				// Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -100,8 +96,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	public ChassisSpeeds getChassisSpeedsTeleop(double xVelocity, double yVelocity, double rotationalVelocity) {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
 	}
-	public void drive(ChassisSpeeds speeds) {
-	SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+	public void driveRobotRelative(ChassisSpeeds speeds) {
+		ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, dtSeconds);
+	SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
 		}
@@ -145,7 +142,7 @@ public class SwerveSubsystem extends SubsystemBase {
 				path,
 				this::getCurrentPose, // Robot pose supplier
 				this::getChassisSpeedsAuto,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-				this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+				this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
 				new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
 						new PIDConstants(1.5, 0.0, 0.0), // Translation PID constants
 						new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
@@ -171,15 +168,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		// double[] states = new double[8];
-		// for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
-		// for (int i = 0; i < 4; i++)
-		// 	states[i * 2] = modules[i].getTargetState().angle.getRadians();
-		// Logger.recordOutput("Target States", states);
-		// for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
-		// for (int i = 0; i < 4; i++)
-		// 	states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
-		// Logger.recordOutput("Measured States", states);
+		double[] states = new double[8];
+		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getTargetState().angle.getRadians();
+		Logger.recordOutput("Target States", states);
+		for (int i = 0; i < 4; i++) states[i * 2 +1] = modules[i].getMeasuredState().speedMetersPerSecond;
+		for (int i = 0; i < 4; i++)
+			states[i * 2] = modules[i].getMeasuredState().angle.getRadians();
+		Logger.recordOutput("Measured States", states);
 		// //if statment is so that the telop wont run if selfdrive is on.
 		for (SwerveModule module : modules) {
 			module.periodic();

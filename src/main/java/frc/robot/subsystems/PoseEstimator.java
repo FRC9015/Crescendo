@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
@@ -22,7 +24,7 @@ public class PoseEstimator extends SubsystemBase{
             Shuffleboard.getTab("swerve")
                     .add("Add Vision Measurement", false)
                     .withWidget(BuiltInWidgets.kToggleButton);
-    private boolean addVisionMeasurement;
+    
     private final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
     private final SwerveSubsystem swerveSubsystem;
     private final Pigeon pigeon;
@@ -41,7 +43,7 @@ public class PoseEstimator extends SubsystemBase{
                 swerveSubsystem.getPositions(),
                 initialPose,
                 VecBuilder.fill(0.1, 0.1, 0.1),
-                VecBuilder.fill(0.1, 0.1, 0.1));
+                VecBuilder.fill(0.4, 0.4, 0.1));
 
         initShuffleboard();
     }
@@ -53,7 +55,7 @@ public class PoseEstimator extends SubsystemBase{
     public void updatePoseEstimator() {
         swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
 
-        if (addVisionMeasurement) {
+        if (LIMELIGHT_INTERFACE.tagCheck() && false) {
             LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
             if (LimelightHelpers.getTV("limelight")) {
 
@@ -64,9 +66,9 @@ public class PoseEstimator extends SubsystemBase{
                 double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
 
                 
-                swerveDrivePoseEstimator.addVisionMeasurement(result.getBotPose2d(), timeStamp);
+                swerveDrivePoseEstimator.addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
 
-                Logger.recordOutput("limelight/botPose", result.getBotPose2d());
+                Logger.recordOutput("limelight/botPose", result.getBotPose2d_wpiBlue());
                 
             }
         }
@@ -79,8 +81,6 @@ public class PoseEstimator extends SubsystemBase{
                 swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getRadians()
         };
         currentPos.setDoubleArray(curr_pos);
-
-        addVisionMeasurement = visionMeasurementToggle.getEntry().get().getBoolean();
     }
 
     @Override

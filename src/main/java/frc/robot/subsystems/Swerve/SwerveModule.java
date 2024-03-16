@@ -4,6 +4,8 @@ import static frc.robot.Constants.Constants.*;
 import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
 import static java.lang.Math.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -21,7 +23,7 @@ public class SwerveModule {
 	private Rotation2d encoderOffset;
 
 	private RelativeEncoder driveEncoder;
-	private SwerveModuleState targetState;
+	private SwerveModuleState targetState = new SwerveModuleState();;
 	private PIDController drivePID, turnPPID;
 	private String name;
 	private double kV = 3;
@@ -64,7 +66,7 @@ public class SwerveModule {
 				.minus(encoderOffset);
 	}
 	public SwerveModulePosition getPosition(){
-		return new SwerveModulePosition(getDriveDistance(), getDirection());
+		return new SwerveModulePosition(-getDriveDistance(), getDirection());
 
 	}
 	public double getDriveDistance(){
@@ -89,6 +91,8 @@ public class SwerveModule {
 
 	public void periodic() {
 		if (targetState == null) return;
+		Logger.recordOutput("swerveModules/" + name + "/targetstate", targetState);
+		Logger.recordOutput("swerveModules/" + name + "/messuredstate", getMeasuredState());
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;
 		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
