@@ -50,13 +50,15 @@ public class LEDSubsystem extends SubsystemBase {
 
     public void indicateNote() {
         if (INTAKE.getNoteStatus()) {
-            setColor(Color.orange);
+            candle.configBrightnessScalar(0.9);
+            setSampleAnimation();
+        } else {
+            candle.configBrightnessScalar(0);
+
         }
+    }
+    public void  clearLEDs(){
+        candle.clearAnimation(0);
     }
 
-    public void indicateEmpty() {
-        if (!INTAKE.getNoteStatus()){
-            setColor(Color.blue);
-        }
-    }
 }

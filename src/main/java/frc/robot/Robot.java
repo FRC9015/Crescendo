@@ -65,6 +65,7 @@ public class Robot extends LoggedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		RobotContainer.LEDS.indicateNote();
 		// Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
 		// commands, running already-scheduled commands, removing finished or interrupted commands,
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -94,16 +95,7 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during autonomous. */
 	@Override
 	public void autonomousPeriodic() {
-		if ((RobotContainer.SHOOTER.shooterIsReady())){
-			RobotContainer.LEDS.setColor(Color.green);
-		}
 
-		if (RobotContainer.INTAKE.getNoteStatus()){
-			RobotContainer.LEDS.indicateNote();
-		}
-		else{
-			RobotContainer.LEDS.indicateEmpty();
-		}
 	}
 
 	@Override
@@ -123,16 +115,6 @@ public class Robot extends LoggedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-		if ((RobotContainer.SHOOTER.shooterIsReady())){
-			RobotContainer.LEDS.setColor(Color.green);
-		}
-
-		if (RobotContainer.INTAKE.getNoteStatus()){
-			RobotContainer.LEDS.indicateNote();
-		}
-		else{
-			RobotContainer.LEDS.indicateEmpty();
-		}
 	}
 
 	@Override
