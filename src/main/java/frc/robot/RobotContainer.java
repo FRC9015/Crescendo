@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.DefaultDrive;
@@ -93,7 +94,7 @@ public class RobotContainer {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(SHOOTER.getSensor()).andThen(SHOOTER.shooterBackward().withTimeout(0.2)));
-				
+				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(PIGEON::zeroYaw));
 		
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
@@ -105,7 +106,7 @@ public class RobotContainer {
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubWooferPreset());
-				InputManager.getInstance().getOperatorPOV(0).whileTrue(new PassNotePreset());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
 	}
 
 	public Command getAutonomousCommand() {

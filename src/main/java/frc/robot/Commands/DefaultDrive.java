@@ -7,7 +7,11 @@ package frc.robot.Commands;
 import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
 import static java.lang.Math.*;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
@@ -18,13 +22,23 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /** An example command that uses an example subsystem. */
 public class DefaultDrive extends Command {
 	
+
 	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(slewRateLimit);
 	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(slewRateLimit);
-	SlewRateLimiter rotationalVelocityFilter = new SlewRateLimiter(slewRateLimit);
+
+	PIDController headingPID = new PIDController(1.4,0.1,0);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
 		addRequirements(SWERVE);
+	}
+
+	@Override
+	public void initialize() {
+		
+		headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		headingPID.enableContinuousInput(-PI, PI);
+	
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -44,7 +58,18 @@ public class DefaultDrive extends Command {
 
 		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign);
 
-		double rotationalVelocity = rotationalVelocityFilter.calculate(inputZ * angularSpeed );
+		double rotationalVelocity = (inputZ * angularSpeed );
+
+		if(abs(rotationalVelocity) > 1e-10){
+			headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+			headingPID.reset();
+		}else{
+			rotationalVelocity = -headingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		}
+
+		Logger.recordOutput("Swerve/heading/target", headingPID.getSetpoint());
+		Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
+		Logger.recordOutput("Swerve/Recorded", POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
 
 		SWERVE.drive(yVelocity, xVelocity, rotationalVelocity);
 

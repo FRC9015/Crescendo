@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -61,12 +63,15 @@ public class PoseEstimator extends SubsystemBase{
 
                 double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
 
-
+                
                 swerveDrivePoseEstimator.addVisionMeasurement(result.getBotPose2d(), timeStamp);
 
+                Logger.recordOutput("limelight/botPose", result.getBotPose2d());
+                
             }
         }
         field.setRobotPose(swerveDrivePoseEstimator.getEstimatedPosition());
+        Logger.recordOutput("Odom/Pose", swerveDrivePoseEstimator.getEstimatedPosition());
 
         double[] curr_pos = {
                 swerveDrivePoseEstimator.getEstimatedPosition().getX(),
