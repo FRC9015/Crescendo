@@ -33,7 +33,7 @@ public final class Constants {
 	public static class SwerveConstants {
 		public static final double maxSpeed = Units.feetToMeters(19.3);
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2);
-		public static final double slewRateLimit = 50;
+		public static final double slewRateLimit = 20;
 		public static final double dtSeconds = 0.02;
 	}
 
@@ -84,7 +84,7 @@ public final class Constants {
 		public static final double driveI = 0;
 		public static final double driveD = 0;
 
-		public static final double turnP = 1.5;
+		public static final double turnP = 1;
 		public static final double turnI = 0;
 		public static final double turnD = 0;
 	}

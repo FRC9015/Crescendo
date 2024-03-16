@@ -92,7 +92,7 @@ public class RobotContainer {
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).and(SHOOTER.getSensor()).whileTrue(new Handoff(INTAKE,SHOOTER));
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(SHOOTER.getSensor()).andThen(SHOOTER.shooterBackward().withTimeout(0.2)));
 				
 		
 				// Operator Bindings
@@ -105,7 +105,7 @@ public class RobotContainer {
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubWooferPreset());
-				InputManager.getInstance().getOperatorPOV(0).onTrue(new PassNotePreset());
+				InputManager.getInstance().getOperatorPOV(0).whileTrue(new PassNotePreset());
 	}
 
 	public Command getAutonomousCommand() {

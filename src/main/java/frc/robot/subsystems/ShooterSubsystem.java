@@ -133,13 +133,15 @@ public class ShooterSubsystem extends SubsystemBase {
     }
    
     public BooleanSupplier getSensor(){
-        return () -> !Sensor.get();
+        return () -> Sensor.get();
+    }
+    public Boolean getSensorBoolean(){
+        return Sensor.get();
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Shooter sensor", Sensor.get());
-
     }
 
     @Override
