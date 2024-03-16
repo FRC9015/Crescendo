@@ -4,22 +4,22 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
-import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.RainbowAnimation;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 
 import java.awt.Color;
 
 import static frc.robot.RobotContainer.INTAKE;
+import static frc.robot.RobotContainer.SHOOTER;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LED. */
+  private static int NUM_LEDS = 8;
   private CANdle candle = new CANdle(Constants.LEDConstants.CANDleID1);
+  private Animation bufferedAnimation = new RainbowAnimation(0.7, 0.2,NUM_LEDS);
 
     public LEDSubsystem() {
             CANdleConfiguration candleConfiguration = new CANdleConfiguration();
@@ -36,10 +36,10 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setColor(Color color){
-        candle.setLEDs(color.getRed(), color.getGreen(), color.getBlue());
-        candle.modulateVBatOutput(0.9);
+        bufferedAnimation = new TwinkleAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, TwinkleAnimation.TwinklePercent.Percent100);
+        //candle.modulateVBatOutput(0.9);
     }
-    public void setSampleAnimation() {
+    public void setNoteAnimation() {
         // create a rainbow animation:
         // - 90% brightness
         // - 1/2 speed
@@ -47,14 +47,41 @@ public class LEDSubsystem extends SubsystemBase {
         RainbowAnimation rainbowAnim = new RainbowAnimation(0.9, 0.5, 64);
         candle.animate(rainbowAnim);
     }
+    public void strobeAnimation(Color color){
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
+    }
 
-    public void indicateNote() {
+    public void setShooterAnimation() {
+        // create an RGB fade animation:
+        // - 90% brightness
+        // - 1/2 speed
+        // - 64 LEDs
+        RgbFadeAnimation rgbFade = new RgbFadeAnimation(0.9, 0.5, 64);
+        candle.animate(rgbFade);
+    }
+
+    public boolean indicateNote() {
         if (INTAKE.getNoteStatus()) {
-            candle.configBrightnessScalar(0.9);
-            setSampleAnimation();
+            strobeAnimation(Color.green);
+        } else if (INTAKE.getHandoffStatus()) {
+            //candle.configBrightnessScalar(0.9);
+            setColor(Color.ORANGE);
+        } else if (INTAKE.intakeRunning()) {
+            //candle.configBrightnessScalar(0.9);
+            setColor(Color.RED);
         } else {
-            candle.configBrightnessScalar(0);
-
+            return false;
+        }
+        return true;
+    }
+    public void updateLeds(){
+        candle.animate(bufferedAnimation);
+        setColor(Color.black);
+    }
+    public void indicateShooter(){
+        if (SHOOTER.shooterIsReady()){
+            candle.configBrightnessScalar(0.9);
+            setColor(Color.GREEN);
         }
     }
     public void  clearLEDs(){
