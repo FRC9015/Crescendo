@@ -9,7 +9,7 @@ public class CameraSubsystem extends SubsystemBase{
     UsbCamera camera = CameraServer.startAutomaticCapture();
     
     public CameraSubsystem(){
-        camera.setResolution(640,480);
+        camera.setResolution(240,240);
         camera.setFPS(24);
     }
     

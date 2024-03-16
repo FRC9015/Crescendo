@@ -92,8 +92,8 @@ public class RobotContainer {
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
-	
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).and(SHOOTER.getSensor()).whileTrue(new Handoff(INTAKE,SHOOTER));
+				
 		
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
@@ -111,4 +111,12 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
 	  }
+
+	public void disableRobot(){
+		PIVOT.SubWoofer();
+	}
+
+	public void enableRobot(){
+		PIVOT.intake();
+	}
 }

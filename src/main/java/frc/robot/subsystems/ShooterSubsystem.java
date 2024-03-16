@@ -1,8 +1,15 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,6 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
+    
+    private final DigitalOutput Sensor = new DigitalOutput(0);
 
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
@@ -119,13 +128,18 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void backwardsShooter(){
-        speakerMotorTop.set(-0.8);
-        speakerMotorBottom.set(-0.80);
+        speakerMotorTop.set(-0.1);
+        speakerMotorBottom.set(-0.1);
+    }
+   
+    public BooleanSupplier getSensor(){
+        return () -> !Sensor.get();
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        SmartDashboard.putBoolean("Shooter sensor", Sensor.get());
+
     }
 
     @Override

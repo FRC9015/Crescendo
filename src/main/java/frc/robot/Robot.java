@@ -5,8 +5,6 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.LoggedRobot;
-
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -50,7 +48,9 @@ public class Robot extends LoggedRobot{
 
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+		m_robotContainer.disableRobot();
+	}
 
 	@Override
 	public void disabledPeriodic() {}
@@ -75,6 +75,8 @@ public class Robot extends LoggedRobot{
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+
+		m_robotContainer.enableRobot();
 	}
 
 	/** This function is called periodically during operator control. */

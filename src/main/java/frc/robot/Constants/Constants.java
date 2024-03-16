@@ -84,7 +84,7 @@ public final class Constants {
 		public static final double driveI = 0;
 		public static final double driveD = 0;
 
-		public static final double turnP = 2.5;
+		public static final double turnP = 1.5;
 		public static final double turnI = 0;
 		public static final double turnD = 0;
 	}
