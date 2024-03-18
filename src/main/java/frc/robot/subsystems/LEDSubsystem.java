@@ -17,7 +17,7 @@ import static frc.robot.RobotContainer.*;
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LED. */
   private static int NUM_LEDS = 8;
-  private CANdle candle = new CANdle(Constants.LEDConstants.CANDleID1);
+  private CANdle candle = new CANdle(Constants.LEDConstants.candleID1);
   private Animation bufferedAnimation = new RainbowAnimation(0.7, 0.2,NUM_LEDS);
 
     public LEDSubsystem() {
