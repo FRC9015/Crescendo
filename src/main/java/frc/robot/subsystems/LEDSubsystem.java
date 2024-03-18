@@ -60,28 +60,23 @@ public class LEDSubsystem extends SubsystemBase {
         candle.animate(rgbFade);
     }
 
-    public boolean indicateNote() {
+    public void indicateNote() {
         if (INTAKE.getNoteStatus()) {
             strobeAnimation(Color.green);
         } else if (INTAKE.getHandoffStatus()) {
-            //candle.configBrightnessScalar(0.9);
-            setColor(Color.ORANGE);
+            strobeAnimation(Color.ORANGE);
         } else if (INTAKE.intakeRunning()) {
-            //candle.configBrightnessScalar(0.9);
-            setColor(Color.RED);
-        } else {
-            return false;
+            strobeAnimation(Color.RED);
         }
-        return true;
     }
     public void updateLEDs(){
         candle.animate(bufferedAnimation);
-        setColor(Color.black);
+        strobeAnimation(Color.black);
     }
     public void indicateShooter(){
         if (SHOOTER.shooterIsReady()){
             candle.configBrightnessScalar(0.9);
-            setColor(Color.GREEN);
+            strobeAnimation(Color.GREEN);
         }
     }
     public void  clearLEDs(){
