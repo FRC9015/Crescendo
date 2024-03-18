@@ -59,9 +59,12 @@ public class Robot extends LoggedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		RobotContainer.LEDS.indicateNote();
-		RobotContainer.LEDS.indicateShooter();
-		RobotContainer.LEDS.updateLEDs();
+
+		if (isEnabled()) {
+			RobotContainer.LEDS.indicateNote();
+			RobotContainer.LEDS.indicateShooter();
+			RobotContainer.LEDS.updateLEDs();
+		}
 
 		// Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
 		// commands, running already-scheduled commands, removing finished or interrupted commands,

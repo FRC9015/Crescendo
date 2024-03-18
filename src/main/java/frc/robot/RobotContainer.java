@@ -71,7 +71,7 @@ public class RobotContainer {
 				() -> MathUtil.applyDeadband(-InputManager.getInstance().getDriverXYZAxes()[2], 0.15)
 		);
 
-		//SWERVE.setDefaultCommand(swerveDriveCommand);
+		SWERVE.setDefaultCommand(swerveDriveCommand);
 		SWERVE.setupPathPlanner();
 
 		autoChooser = AutoBuilder.buildAutoChooser(); //might look for stuff in the folder; try deleting if no work.
