@@ -74,7 +74,7 @@ public class LEDSubsystem extends SubsystemBase {
         }
         return true;
     }
-    public void updateLeds(){
+    public void updateLEDs(){
         candle.animate(bufferedAnimation);
         setColor(Color.black);
     }
