@@ -51,7 +51,7 @@ public class LEDSubsystem extends SubsystemBase {
         if (INTAKE.noteInPosition()) {
             strobeAnimation(Color.GREEN);
         } if (INTAKE.getHandoffStatus()) {
-            LIMELIGHT_INTERFACE.LEDsOn();
+            strobeAnimation(new Color(200, 200, 0));
         } else if (INTAKE.intakeRunning()) {
             strobeAnimation(Color.RED);
         }

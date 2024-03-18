@@ -142,7 +142,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean shooterIsReady(){
         double motorSpeed = getSpeakerMotorRPM();
         SmartDashboard.putNumber("Shooter Speed", motorSpeed);
-        return (speakerSpeed - motorSpeed) <= 100;
+        return (speakerSpeed - motorSpeed) <= 250;
     }
 
     @Override
