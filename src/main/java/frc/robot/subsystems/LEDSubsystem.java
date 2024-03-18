@@ -12,8 +12,7 @@ import frc.robot.Constants.Constants;
 
 import java.awt.Color;
 
-import static frc.robot.RobotContainer.INTAKE;
-import static frc.robot.RobotContainer.SHOOTER;
+import static frc.robot.RobotContainer.*;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LED. */
@@ -30,9 +29,6 @@ public class LEDSubsystem extends SubsystemBase {
             candleConfiguration.vBatOutputMode = VBatOutputMode.Modulated;
             candle.configAllSettings(candleConfiguration, 100);
             candle.clearAnimation(0);
-    }
-    public void setBrightness(double percent) {
-        candle.configBrightnessScalar(percent, 100);
     }
 
     public void setColor(Color color){
@@ -51,20 +47,11 @@ public class LEDSubsystem extends SubsystemBase {
         bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
     }
 
-    public void setShooterAnimation() {
-        // create an RGB fade animation:
-        // - 90% brightness
-        // - 1/2 speed
-        // - 64 LEDs
-        RgbFadeAnimation rgbFade = new RgbFadeAnimation(0.9, 0.5, 64);
-        candle.animate(rgbFade);
-    }
-
     public void indicateNote() {
-        if (INTAKE.getNoteStatus()) {
-            strobeAnimation(Color.green);
-        } else if (INTAKE.getHandoffStatus()) {
-            strobeAnimation(Color.ORANGE);
+        if (INTAKE.noteInPosition()) {
+            strobeAnimation(Color.GREEN);
+        } if (INTAKE.getHandoffStatus()) {
+            LIMELIGHT_INTERFACE.LEDsOn();
         } else if (INTAKE.intakeRunning()) {
             strobeAnimation(Color.RED);
         }
@@ -76,7 +63,7 @@ public class LEDSubsystem extends SubsystemBase {
     public void indicateShooter(){
         if (SHOOTER.shooterIsReady()){
             candle.configBrightnessScalar(0.9);
-            strobeAnimation(Color.GREEN);
+            strobeAnimation(Color.BLUE);
         }
     }
     public void  clearLEDs(){

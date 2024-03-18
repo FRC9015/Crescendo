@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -139,12 +140,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean shooterIsReady(){
-        return (speakerSpeed - getSpeakerMotorRPM()) <= 40;
+        double motorSpeed = getSpeakerMotorRPM();
+        SmartDashboard.putNumber("Shooter Speed", motorSpeed);
+        return (speakerSpeed - motorSpeed) <= 100;
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
     }
 
     @Override
