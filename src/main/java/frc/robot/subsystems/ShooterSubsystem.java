@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -11,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+    private static final double speakerSpeed = 4400;
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
             MotorType.kBrushless);
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
@@ -20,6 +23,8 @@ public class ShooterSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
+
+    RelativeEncoder speakerMotorTopEncoder = speakerMotorTop.getEncoder();
 
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
@@ -130,9 +135,17 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorBottom.set(-0.80);
     }
 
+    public double getSpeakerMotorRPM(){
+        return speakerMotorTopEncoder.getVelocity();
+    }
+
+    public boolean shooterIsReady(){
+        double motorSpeed = getSpeakerMotorRPM();
+        return (speakerSpeed - motorSpeed) <= 250;
+    }
+
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
     }
 
     @Override

@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -40,6 +39,7 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
+	public static final LEDSubsystem LEDS = new LEDSubsystem();
 	public static final CameraSubsystem CAMERA_SUBSYSTEM = new CameraSubsystem();
 
 

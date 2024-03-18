@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
@@ -13,17 +14,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private ShooterSubsystem shooter;
-
-    private final DigitalOutput proximitySensor = new DigitalOutput(1);
+    private final DigitalOutput speakerSensor = new DigitalOutput(0);
+    private final DigitalOutput handoffSensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
-        
-
-
     };
     private final CANSparkFlex handoffMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
-
+    RelativeEncoder handoffMotorEncoder = handoffMotor.getEncoder();
 
     public IntakeSubsystem(){
         for (CANSparkFlex motor:intakeMotors){
@@ -87,11 +84,28 @@ public class IntakeSubsystem extends SubsystemBase {
         handoffMotor.stopMotor();
     }
 
+    public double getHandoffMotorRPM(){
+        return handoffMotorEncoder.getVelocity();
+    }
+    public boolean noteInPosition() {
+        return speakerSensor.get();
+    }
+
+    public boolean intakeRunning(){
+        return (getHandoffMotorRPM()>=0.3*6784);
+    }
+
+    public boolean getHandoffStatus(){
+
+        return handoffSensor.get();
+    }
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-        SmartDashboard.putBoolean("Note In?",proximitySensor.get());
+        SmartDashboard.putBoolean("Note In?", speakerSensor.get());
+        SmartDashboard.putBoolean("Note In Handoff?",handoffSensor.get());
+
     }
 
     @Override

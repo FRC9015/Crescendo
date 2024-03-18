@@ -4,60 +4,70 @@
 
 package frc.robot.subsystems;
 
-
-
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.util.Color;
+import com.ctre.phoenix.led.*;
+import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Constants;
+
+import java.awt.Color;
+
+import static frc.robot.RobotContainer.*;
 
 public class LEDSubsystem extends SubsystemBase {
-  /** Creates a new LEDS. */
-private AddressableLED m_LED = new AddressableLED(0);//port number needs to be changed
-private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(1);//port number needs to be changed
+  /** Creates a new LED. */
+  private static int NUM_LEDS = 8;
+  private CANdle candle = new CANdle(Constants.LEDConstants.candleID1);
+  private Animation bufferedAnimation = new RainbowAnimation(0.7, 0.2,NUM_LEDS);
 
-
-  public LEDSubsystem() 
-  {
-    
-    m_LED.setLength(m_LEDBuffer.getLength());
-    m_LED.setData(m_LEDBuffer);
-    m_LED.start();
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    
-
-  }
-  public void startLEDS(){
-    m_LED.start();
-  }
-  public void endLEDS(){
-    m_LED.stop();
-  }
-  
-  public void SetLEDsPurple()
-  { 
-    System.out.println("setting to purple");
-    for(int i = 0; i < m_LEDBuffer.getLength(); i++)
-    {
-      m_LEDBuffer.setLED(i, Color.kPurple);
+    public LEDSubsystem() {
+            CANdleConfiguration candleConfiguration = new CANdleConfiguration();
+            candleConfiguration.statusLedOffWhenActive = true;
+            candleConfiguration.disableWhenLOS = false;
+            candleConfiguration.stripType = LEDStripType.RGB;
+            candleConfiguration.brightnessScalar = 1.0;
+            candleConfiguration.vBatOutputMode = VBatOutputMode.Modulated;
+            candle.configAllSettings(candleConfiguration, 100);
+            candle.clearAnimation(0);
     }
-    System.out.println("done");
 
-
-  }
-
-  public void SetLEDsRed()
-  {
-    System.out.println("setting to red");
-    for(int i = 0; i < m_LEDBuffer.getLength(); i++)
-    {
-      m_LEDBuffer.setRGB(i, 255, 0, 0);
+    public void setColor(Color color){
+        bufferedAnimation = new TwinkleAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, TwinkleAnimation.TwinklePercent.Percent100);
+        //candle.modulateVBatOutput(0.9);
     }
-    System.out.println("done");
-  }
+    public void setNoteAnimation() {
+        // create a rainbow animation:
+        // - 90% brightness
+        // - 1/2 speed
+        // - 64 LEDs
+        RainbowAnimation rainbowAnim = new RainbowAnimation(0.9, 0.5, 64);
+        candle.animate(rainbowAnim);
+    }
+    public void strobeAnimation(Color color){
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
+    }
+
+    public void indicateNote() {
+        if (INTAKE.noteInPosition()) {
+            strobeAnimation(Color.GREEN);
+        } if (INTAKE.getHandoffStatus()) {
+            strobeAnimation(new Color(200, 200, 0));
+        } else if (INTAKE.intakeRunning()) {
+            strobeAnimation(Color.RED);
+        }
+    }
+    public void updateLEDs(){
+        candle.animate(bufferedAnimation);
+        strobeAnimation(Color.black);
+    }
+    public void indicateShooter(){
+        if (SHOOTER.shooterIsReady()){
+            candle.configBrightnessScalar(0.9);
+            strobeAnimation(Color.BLUE);
+        }
+    }
+    public void  clearLEDs(){
+        candle.clearAnimation(0);
+    }
 
 }
