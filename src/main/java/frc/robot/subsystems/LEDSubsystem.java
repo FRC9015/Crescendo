@@ -56,7 +56,7 @@ public class LEDSubsystem extends SubsystemBase {
             strobeAnimation(Color.RED);
         }
     }
-    public void updateLeds(){
+    public void updateLEDs(){
         candle.animate(bufferedAnimation);
         strobeAnimation(Color.black);
     }
