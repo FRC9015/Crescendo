@@ -18,11 +18,11 @@ public class AutoAim extends Command{
         LIMELIGHT_INTERFACE.LEDsOn();
         SHOOTER.setSpeakerShooterMotorSpeeds();
         
+        
     }
     @Override
     public void execute() {
         PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint() + LIMELIGHT_INTERFACE.offsetMultiplier());
-
     }
     
     @Override

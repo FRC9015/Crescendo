@@ -1,11 +1,9 @@
 
 package frc.robot.subsystems;
-
-import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
-
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -35,6 +33,15 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorBottom.setSmartCurrentLimit(40);
         ampShooterMotorTop.setSmartCurrentLimit(30);
         ampShooterMotorBottom.setSmartCurrentLimit(30);
+
+        speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+        speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+        ampShooterMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        ampShooterMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+        ampShooterMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        ampShooterMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
     }
 
     public Command shootNoteToSpeaker() {

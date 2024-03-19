@@ -48,7 +48,7 @@ public class RobotContainer {
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
-	public static final CameraSubsystem CAMERA = new CameraSubsystem();
+	//public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 
 	public static final CommandXboxController driveController =
@@ -95,7 +95,7 @@ public class RobotContainer {
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(SHOOTER.getSensor()).andThen(SHOOTER.shooterBackward().withTimeout(0.2)));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(PIGEON::zeroYaw));
-		
+
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());

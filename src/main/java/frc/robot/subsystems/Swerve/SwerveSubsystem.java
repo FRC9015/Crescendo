@@ -22,8 +22,6 @@ import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
 
-import java.util.Map;
-
 import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
@@ -52,6 +50,8 @@ public class SwerveSubsystem extends SubsystemBase {
 		new SwerveModule(SwerveModuleConfiguration.SE, "SE"),
 		new SwerveModule(SwerveModuleConfiguration.SW, "SW"),
 	};
+
+	double[] states = new double[8];
 
 	public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] pos = new SwerveModulePosition[4];
@@ -115,8 +115,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
 				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
-		
-
+	
 		speeds = ChassisSpeeds.discretize(speeds, dtSeconds);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 		for (int i = 0; i < modules.length; i++) {
@@ -168,7 +167,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double[] states = new double[8];
+		
 		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
 		for (int i = 0; i < 4; i++)
 			states[i * 2] = modules[i].getTargetState().angle.getRadians();

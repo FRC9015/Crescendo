@@ -66,6 +66,7 @@ public class DefaultDrive extends Command {
 		}else if(abs(xVelocity) > 1e-10 || abs(yVelocity) > 1e-10){
 			rotationalVelocity = -headingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
 		}
+		
 		Logger.recordOutput("Swerve/heading/target", headingPID.getSetpoint());
 		Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
 		Logger.recordOutput("Swerve/Recorded", POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());

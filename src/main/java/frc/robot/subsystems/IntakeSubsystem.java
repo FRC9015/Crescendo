@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -27,7 +28,16 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem(){
         for (CANSparkFlex motor:intakeMotors){
             motor.setSmartCurrentLimit(30);
+            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 1000);
+            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 1000);
+            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
         }
+
+        handoffMotor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 1000);
+        handoffMotor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 1000);
+        handoffMotor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        handoffMotor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
     }
 
     public Command intakeNote(){
