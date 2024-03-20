@@ -47,7 +47,7 @@ public class DefaultDrive extends Command {
 		double[] inputXYZ = InputManager.getInstance().getDriverXYZAxes();
 		double inputX = inputXYZ[0];
 		double inputY = inputXYZ[1];
-		double inputZ = inputXYZ[2];
+		double inputZ = -inputXYZ[2];
 		inputZ = MathUtil.applyDeadband(inputZ, 0.15);
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.15);
@@ -71,10 +71,8 @@ public class DefaultDrive extends Command {
 		Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
 		Logger.recordOutput("Swerve/Recorded", POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
 
-		SWERVE.drive(yVelocity, xVelocity, -rotationalVelocity);
-
-		// SWERVE.velocityGraphUpdate(xVelocity,yVelocity); //TODO Add all data visualization commands to one subsystem
-
+		SWERVE.drive(-yVelocity, -xVelocity, -rotationalVelocity);
+		
 	}
 	
 	// Returns true when the command should end.

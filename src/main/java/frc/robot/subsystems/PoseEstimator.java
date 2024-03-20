@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -56,7 +57,7 @@ public class PoseEstimator extends SubsystemBase{
         
         swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
 
-        if (LIMELIGHT_INTERFACE.tagCheck()) {
+        if (LIMELIGHT_INTERFACE.tagCheck() && false) {
             LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
             if (LimelightHelpers.getTV("limelight")) {
 
@@ -86,6 +87,7 @@ public class PoseEstimator extends SubsystemBase{
     @Override
     public void periodic() {
         updatePoseEstimator();
+        SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
     }
 
     public Pose2d getEstimatedPose(){

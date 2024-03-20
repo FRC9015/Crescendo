@@ -66,7 +66,7 @@ public class SwerveModule {
 				.minus(encoderOffset);
 	}
 	public SwerveModulePosition getPosition(){
-		return new SwerveModulePosition(getDriveDistance(), getDirection());
+		return new SwerveModulePosition(-getDriveDistance(), getDirection());
 
 	}
 	public double getDriveDistance(){

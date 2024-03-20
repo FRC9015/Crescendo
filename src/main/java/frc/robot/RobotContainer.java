@@ -73,9 +73,9 @@ public class RobotContainer {
 		
 		configureBindings();
 
-		SWERVE.setUpPathPlanner();
-		autoChooser = AutoBuilder.buildAutoChooser();
-		Shuffleboard.getTab("Autonomous").add(autoChooser);
+		// SWERVE.setUpPathPlanner();
+		// autoChooser = AutoBuilder.buildAutoChooser();
+		// Shuffleboard.getTab("Autonomous").add(autoChooser);
 
 	}
 

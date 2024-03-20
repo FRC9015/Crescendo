@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Pigeon {
+public class Pigeon extends SubsystemBase{
 	public Pigeon2 pigeon;
 
 	public Pigeon() {
@@ -19,4 +21,10 @@ public class Pigeon {
 	}
 	public void resetYaw(double angle){ pigeon.setYaw(angle); 
 	}
+
+	@Override
+	public void periodic(){
+		SmartDashboard.putString("yaw", getYawAsRotation2d().toString());
+	}
+
 }
