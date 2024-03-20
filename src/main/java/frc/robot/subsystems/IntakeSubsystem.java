@@ -96,9 +96,6 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean intakeRunning(){
         return (getHandoffMotorRPM()>=0.3*6784);
     }
-    public BooleanSupplier getSensor(){
-        return speakerSensor::get;
-    }
     public boolean getHandoffStatus(){
 
         return handoffSensor.get();
