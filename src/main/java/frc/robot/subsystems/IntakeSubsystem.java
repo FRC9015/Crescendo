@@ -16,7 +16,7 @@ import frc.robot.Constants.Constants.IntakeConstants;
 import java.util.function.BooleanSupplier;
 
 public class IntakeSubsystem extends SubsystemBase {
-    public final DigitalOutput speakerSensor = new DigitalOutput(0);
+    private final DigitalOutput speakerSensor = new DigitalOutput(0);
     private final DigitalOutput handoffSensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),

@@ -16,8 +16,8 @@ public class PivotSubsystem extends SubsystemBase {
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
     //gets encoders
-    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();//change later
-    private final DigitalOutput pivotSensor = new DigitalOutput(2);
+    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
+    private final DigitalOutput pivotSensor = new DigitalOutput(2); // TODO Reset when activated in periodic
 
 
     //makes PID for motors
