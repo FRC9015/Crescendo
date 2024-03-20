@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +17,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     //gets encoders
     public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();//change later
-    private final DigitalInput pivotSensor = new DigitalInput(2);
+    private final DigitalOutput pivotSensor = new DigitalOutput(2);
 
 
     //makes PID for motors
@@ -119,7 +119,7 @@ public class PivotSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putBoolean("pivot Position", pivotSensor.get());
+        SmartDashboard.putBoolean("pivot zeroed", pivotSensor.get());
         
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
