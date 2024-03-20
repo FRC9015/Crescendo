@@ -48,11 +48,14 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void indicateNote() {
-        if (INTAKE.getHandoffStatus()) {
-            strobeAnimation(Color.BLUE);
+        if (INTAKE.noteInPosition()&& INTAKE.getHandoffStatus()){
+            strobeAnimation(Color.GREEN);
+        }
+        else if (INTAKE.getHandoffStatus()) {
+            setColor(Color.RED);
         }
         if (INTAKE.noteInPosition()) {
-            setColor(Color.GREEN);
+            strobeAnimation(Color.GREEN);
         }
     }
 
@@ -64,7 +67,7 @@ public class LEDSubsystem extends SubsystemBase {
     public void indicateShooter(){
         if (SHOOTER.shooterIsReady()){
             candle.configBrightnessScalar(0.9);
-            strobeAnimation(Color.GREEN);
+            setColor(Color.GREEN);
         }
     }
     public void  clearLEDs(){

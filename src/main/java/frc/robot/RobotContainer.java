@@ -116,7 +116,7 @@ public class RobotContainer {
 
 		// Driver Bindings
 		InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(INTAKE.getSensor()).andThen(SHOOTER.shootNoteToAmp().withTimeout(0.01)));
 		InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(SWERVE.zeroYaw());
 
 		// Operator Bindings

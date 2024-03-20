@@ -15,6 +15,7 @@ import frc.robot.Constants.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final double motorMaxFreeSpeed = 6784;
+    private boolean shooterIsRunning = false;
     private BangBangController speakerPIDTop = new BangBangController();
     private BangBangController speakerPIDBottom = new BangBangController();
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
@@ -110,18 +111,21 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
         speakerPIDTop.setSetpoint(0.7*motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.5*motorMaxFreeSpeed);
+        shooterIsRunning=true;
     }
 
     public void setSpeakerShooterMotorSpeeds(){
         speakerPIDTop.setSetpoint(0.8*motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.6*motorMaxFreeSpeed);
+        shooterIsRunning=true;
+
     }
 
     public void stopSpeakerShooterMotors() {
-        speakerPIDTop.setSetpoint(0);
-        speakerPIDBottom.setSetpoint(0);
+        speakerMotorTop.stopMotor();
+        speakerMotorBottom.stopMotor();
+        shooterIsRunning=false;
     }
-    
 
     private void setAmpShooterMotorSpeeds() {
         double motorSpeed = 0.5;// needs to be tuned
@@ -143,16 +147,19 @@ public class ShooterSubsystem extends SubsystemBase {
     private void backwardsShooter(){
         speakerPIDTop.setSetpoint(-0.8*motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(-0.8*motorMaxFreeSpeed);
+        shooterIsRunning=true;
     }
 
     public boolean shooterIsReady(){
-        return (speakerPIDTop.atSetpoint()&& speakerPIDBottom.atSetpoint());
+        return (speakerPIDTop.atSetpoint() && speakerPIDBottom.atSetpoint() && shooterIsRunning);
     }
 
     @Override
     public void periodic() {
-        speakerMotorTop.setVoltage(speakerPIDTop.calculate(motorVelocity(speakerMotorTopEncoder))*10);
-        speakerMotorBottom.setVoltage(speakerPIDBottom.calculate(motorVelocity(speakerMotorBottomEncoder))*10);
+        if (shooterIsRunning) {
+            speakerMotorTop.setVoltage(speakerPIDTop.calculate(motorVelocity(speakerMotorTopEncoder)) * 10);
+            speakerMotorBottom.setVoltage(speakerPIDBottom.calculate(motorVelocity(speakerMotorBottomEncoder)) * 10);
+        }
     }
 
 
