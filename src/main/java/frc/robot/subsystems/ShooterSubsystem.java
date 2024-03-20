@@ -36,8 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorBottom.setSmartCurrentLimit(40);
         ampShooterMotorTop.setSmartCurrentLimit(30);
         ampShooterMotorBottom.setSmartCurrentLimit(30);
-        speakerPIDTop.setTolerance(300);
-        speakerPIDBottom.setTolerance(300);
+        speakerPIDTop.setTolerance(200);
+        speakerPIDBottom.setTolerance(200);
     }
 
     public double motorVelocity(RelativeEncoder encoder){
@@ -109,14 +109,14 @@ public class ShooterSubsystem extends SubsystemBase {
 }
     
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
-        speakerPIDTop.setSetpoint(0.7*motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.5*motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.7 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
         shooterIsRunning=true;
     }
 
     public void setSpeakerShooterMotorSpeeds(){
-        speakerPIDTop.setSetpoint(0.8*motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.6*motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.8 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.6 * motorMaxFreeSpeed);
         shooterIsRunning=true;
 
     }
@@ -145,8 +145,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void backwardsShooter(){
-        speakerPIDTop.setSetpoint(-0.8*motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(-0.8*motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(-0.8 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(-0.8 * motorMaxFreeSpeed);
         shooterIsRunning=true;
     }
 

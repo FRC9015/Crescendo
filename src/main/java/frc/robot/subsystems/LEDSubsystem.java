@@ -48,7 +48,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void indicateNote() {
-        if (INTAKE.noteInPosition()&& INTAKE.getHandoffStatus()){
+        if (INTAKE.noteInPosition() && INTAKE.getHandoffStatus()){
             setColor(Color.GREEN);
         }
         else if (INTAKE.getHandoffStatus()) {
