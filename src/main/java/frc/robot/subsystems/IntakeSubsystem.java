@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.IntakeConstants;
 
+import java.util.function.BooleanSupplier;
+
 public class IntakeSubsystem extends SubsystemBase {
     private final DigitalOutput speakerSensor = new DigitalOutput(0);
     private final DigitalOutput handoffSensor = new DigitalOutput(1);
@@ -94,7 +96,6 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean intakeRunning(){
         return (getHandoffMotorRPM()>=0.3*6784);
     }
-
     public boolean getHandoffStatus(){
 
         return handoffSensor.get();
