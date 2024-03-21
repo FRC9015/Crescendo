@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Commands.autp;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -82,13 +81,13 @@ Logger.start();
 	/** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
 	@Override
 	public void autonomousInit() {
-		// m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-		// if(m_autonomousCommand != null){
-		// 	m_autonomousCommand.schedule();
-		// }
+		if(m_autonomousCommand != null){
+			m_autonomousCommand.schedule();
+		}
 
-		new autp();
+		
 	
 		// schedule the autonomous command (example)
 	}

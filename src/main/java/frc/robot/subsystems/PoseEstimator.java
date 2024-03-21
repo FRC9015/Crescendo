@@ -47,6 +47,8 @@ public class PoseEstimator extends SubsystemBase{
                 VecBuilder.fill(0.4, 0.4, 0.1));
 
         initShuffleboard();
+
+        //swerveSubsystem.setUpHeadingPID();
     }
 
     private void initShuffleboard(){
@@ -55,9 +57,9 @@ public class PoseEstimator extends SubsystemBase{
 
     public void updatePoseEstimator() {
         
-        swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
+        
 
-        if (LIMELIGHT_INTERFACE.tagCheck() && false) {
+        if (LIMELIGHT_INTERFACE.tagCheck()) {
             LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
             if (LimelightHelpers.getTV("limelight")) {
 
@@ -65,7 +67,7 @@ public class PoseEstimator extends SubsystemBase{
                 double cl = result.latency_capture;
 
                 double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
-
+                
                 
                 swerveDrivePoseEstimator.addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
 
@@ -74,7 +76,7 @@ public class PoseEstimator extends SubsystemBase{
             }
         }
         field.setRobotPose(swerveDrivePoseEstimator.getEstimatedPosition());
-        Logger.recordOutput("Odom/Pose", swerveDrivePoseEstimator.getEstimatedPosition());
+        
 
         double[] curr_pos = {
                 swerveDrivePoseEstimator.getEstimatedPosition().getX(),
@@ -86,8 +88,9 @@ public class PoseEstimator extends SubsystemBase{
 
     @Override
     public void periodic() {
-        updatePoseEstimator();
+        swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
+        Logger.recordOutput("Odom/Pose", swerveDrivePoseEstimator.getEstimatedPosition());
     }
 
     public Pose2d getEstimatedPose(){

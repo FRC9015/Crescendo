@@ -47,12 +47,12 @@ public class DefaultDrive extends Command {
 		double[] inputXYZ = InputManager.getInstance().getDriverXYZAxes();
 		double inputX = inputXYZ[0];
 		double inputY = inputXYZ[1];
-		double inputZ = -inputXYZ[2];
+		double inputZ = inputXYZ[2];
 		inputZ = MathUtil.applyDeadband(inputZ, 0.15);
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.15);
 		double inputDir = Math.atan2(inputY, inputX);
-		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
+		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
 		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign);
 

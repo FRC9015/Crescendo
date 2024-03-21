@@ -6,7 +6,10 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -14,13 +17,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -30,12 +34,7 @@ import static frc.robot.Constants.Constants.robotWidth;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
 public class SwerveSubsystem extends SubsystemBase {
-	public void velocityGraphUpdate(double xVelocity, double yVelocity){
-		SmartDashboard.putNumber("xVelocity Graph", xVelocity);
-		SmartDashboard.putNumber("yVelocity Graph", yVelocity);
-	}
 	
-
 
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(-robotLength / 2, -robotWidth / 2), // NW
@@ -52,6 +51,13 @@ public class SwerveSubsystem extends SubsystemBase {
 	};
 
 	double[] states = new double[8];
+
+	// PIDController autoHeadingPID = new PIDController(1.4,0.1,0);
+
+	// public void setUpHeadingPID(){
+	// 	autoHeadingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+	// 	autoHeadingPID.enableContinuousInput(-PI, PI);
+	// }
 
 	public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] pos = new SwerveModulePosition[4];
@@ -88,7 +94,6 @@ public class SwerveSubsystem extends SubsystemBase {
     );
 	}
 	
-
 	public ChassisSpeeds getChassisSpeedsAuto() {
 		return kinematics.toChassisSpeeds(getModuleStates());
 	}
@@ -96,9 +101,20 @@ public class SwerveSubsystem extends SubsystemBase {
 	public ChassisSpeeds getChassisSpeedsTeleop(double xVelocity, double yVelocity, double rotationalVelocity) {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
 	}
+
 	public void driveRobotRelative(ChassisSpeeds speeds) {
+		// double rotationalVelocity = speeds.omegaRadiansPerSecond;
+
+		// if(abs(rotationalVelocity) > 1e-10){
+		// 	autoHeadingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// 	autoHeadingPID.reset();
+		// 	rotationalVelocity = -autoHeadingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// }
+
+		// speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, rotationalVelocity,  POSE_ESTIMATOR.getEstimatedPose().getRotation());
+
 		ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, dtSeconds);
-		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
+		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds.unaryMinus());
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
 		}
@@ -114,7 +130,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public void drive(double xVelocity, double yVelocity, double rotationalVelocity) {
 		ChassisSpeeds speeds =
-				ChassisSpeeds.fromFieldRelativeSpeeds(-xVelocity, -yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
+				ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation());
 	
 		speeds = ChassisSpeeds.discretize(speeds, dtSeconds);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);

@@ -73,9 +73,9 @@ public class RobotContainer {
 		
 		configureBindings();
 
-		// SWERVE.setUpPathPlanner();
-		// autoChooser = AutoBuilder.buildAutoChooser();
-		// Shuffleboard.getTab("Autonomous").add(autoChooser);
+		SWERVE.setUpPathPlanner();
+		autoChooser = AutoBuilder.buildAutoChooser();
+		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
 	}
 
@@ -94,7 +94,7 @@ public class RobotContainer {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(SHOOTER.getSensor()).andThen(SHOOTER.shooterBackward().withTimeout(0.2)));
-				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(PIGEON::zeroYaw));
+				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
 
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
