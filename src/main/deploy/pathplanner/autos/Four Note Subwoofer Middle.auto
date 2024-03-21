@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
+      "x": 1.3973572133190786,
       "y": 5.5
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,25 +14,37 @@
         {
           "type": "named",
           "data": {
-            "name": "shootNote"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
+            "name": "ShootNoteSubwoofer"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SubWoofer Middle Park"
+            "pathName": "Subwoofer Middle 2 Note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "ShootNoteSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Subwoofer Left Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNoteSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Subwoofer Right Note"
           }
         }
       ]
