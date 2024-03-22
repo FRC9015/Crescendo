@@ -67,7 +67,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public Command movePivotToSubWoofer(){
-        return this.startEnd(this::SubWoofer,this::intake);
+        return this.runOnce(this::SubWoofer);
     }
     //moves pivot up
     private void movePivotUp(){

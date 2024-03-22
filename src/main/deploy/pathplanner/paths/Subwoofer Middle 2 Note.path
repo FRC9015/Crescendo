@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 3.658952291070951,
+        "x": 3.3097145165009048,
         "y": 5.5
       },
       "prevControl": {
-        "x": 3.408952291070951,
+        "x": 3.0597145165009048,
         "y": 5.5
       },
       "nextControl": {
-        "x": 3.908952291070951,
+        "x": 3.5597145165009048,
         "y": 5.5
       },
       "isLocked": false,
@@ -32,11 +32,11 @@
     },
     {
       "anchor": {
-        "x": 1.4,
+        "x": 1.204579942434064,
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.2,
+        "x": 1.004579942434064,
         "y": 5.5
       },
       "nextControl": null,
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.1,
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "parallel",
         "data": {
@@ -63,7 +63,7 @@
             {
               "type": "named",
               "data": {
-                "name": "backwardShooter"
+                "name": "intakeAmp"
               }
             }
           ]
@@ -72,13 +72,13 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0,
     "rotateFast": false
   },
@@ -88,5 +88,5 @@
     "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

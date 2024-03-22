@@ -92,6 +92,10 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
+    public Command stopAmp(){
+        return this.runOnce(this::stopAmpShooterMotorSpeeds);
+    }
+
     public Command shooterBackward(){
         return this.startEnd(
                 this::backwardsShooter,
@@ -101,7 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command autoAmpIntake(){
         return new SequentialCommandGroup(
                 new InstantCommand(this::setAmpIntakeSpeeds),
-                new WaitCommand(1),
+                new WaitCommand( 1.5),
                 new InstantCommand(this::stopAmpShooterMotorSpeeds));
     }
 

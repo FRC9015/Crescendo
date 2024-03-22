@@ -15,11 +15,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.DefaultDrive;
-import frc.robot.Commands.AutoAim;
 import frc.robot.Commands.Handoff;
+import frc.robot.Commands.AutoAim;
+import frc.robot.Commands.autoHandoff;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
-import frc.robot.Commands.Presets.ShootNoteSubwoofer;
+
 import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
@@ -60,8 +61,9 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
-		NamedCommands.registerCommand("shootNote1", SHOOTER.autoShootNoteToSpeaker2());
+		
 		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
+
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
 		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
@@ -70,7 +72,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
 		NamedCommands.registerCommand("autoAim", new AutoAim());
-		NamedCommands.registerCommand("pivotToSubWoofer", new ShootNoteSubwoofer());
+		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
 		
 		configureBindings();
 
@@ -94,7 +96,7 @@ public class RobotContainer {
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(SHOOTER.getSensor()).andThen(SHOOTER.shooterBackward().withTimeout(0.2)));
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::resetOdometry));
 
 				// Operator Bindings

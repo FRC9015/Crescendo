@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootNoteSubwoofer"
+            "name": "shootNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
           }
         },
         {
@@ -26,7 +32,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootNoteSubwoofer"
+            "name": "pivotToSubWoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
           }
         },
         {
@@ -38,13 +50,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootNoteSubwoofer"
+            "name": "pivotToSubWoofer"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Middle Subwoofer Right Note"
+            "name": "shootNote"
           }
         }
       ]

@@ -86,7 +86,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 				var alliance = DriverStation.getAlliance();
 				if (alliance.isPresent()) {
-					return alliance.get() == DriverStation.Alliance.Blue;
+					return alliance.get() == DriverStation.Alliance.Red;
 				}
 				return false;
 			},
@@ -114,7 +114,7 @@ public class SwerveSubsystem extends SubsystemBase {
 		// speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, rotationalVelocity,  POSE_ESTIMATOR.getEstimatedPose().getRotation());
 
 		ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, dtSeconds);
-		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds.unaryMinus());
+		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
 		}
