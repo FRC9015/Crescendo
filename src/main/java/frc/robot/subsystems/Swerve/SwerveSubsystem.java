@@ -7,9 +7,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -103,18 +101,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	public void driveRobotRelative(ChassisSpeeds speeds) {
-		// double rotationalVelocity = speeds.omegaRadiansPerSecond;
-
-		// if(abs(rotationalVelocity) > 1e-10){
-		// 	autoHeadingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		// 	autoHeadingPID.reset();
-		// 	rotationalVelocity = -autoHeadingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		// }
-
-		// speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, rotationalVelocity,  POSE_ESTIMATOR.getEstimatedPose().getRotation());
-
 		ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, dtSeconds);
-		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
+
+		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds.unaryMinus());
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
 		}

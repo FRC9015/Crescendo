@@ -1,28 +1,20 @@
-// package frc.robot.Commands.Presets;
+package frc.robot.Commands.Presets;
 
 
-// import edu.wpi.first.wpilibj2.command.Command;
-// import static frc.robot.RobotContainer.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-// public class ShootNoteSubwoofer extends Command{
-//     public ShootNoteSubwoofer(){
-//         addRequirements(PIVOT,SHOOTER,INTAKE);
-//     }
- 
-    
-//     @Override
-//     public void initialize() {
-//        PIVOT.SubWoofer();
-//        SHOOTER.autoShootNoteToSpeaker();
-//     }
-//     @Override
-//     public void execute() {
-        
-        
-//     }
-    
-//     @Override
-//     public void end(boolean interrupted) {
-//         PIVOT.intake();
-//     }
-// }
+import static frc.robot.RobotContainer.PIVOT;
+import static frc.robot.RobotContainer.SHOOTER;
+
+public class ShootNoteSubwoofer extends SequentialCommandGroup {
+    public ShootNoteSubwoofer(){
+        addRequirements(PIVOT,SHOOTER);
+        addCommands(PIVOT.movePivotToSubWoofer(),
+                SHOOTER.autoShootNoteToSpeaker(),
+                new WaitCommand(1),
+                PIVOT.movePivotToIntake()
+        );
+    }
+}

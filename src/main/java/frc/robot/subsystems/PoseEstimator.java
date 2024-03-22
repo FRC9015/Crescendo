@@ -90,7 +90,7 @@ public class PoseEstimator extends SubsystemBase{
     public void periodic() {
         swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
-        Logger.recordOutput("Odom/Pose", swerveDrivePoseEstimator.getEstimatedPosition());
+        Logger.recordOutput("Odom/Pose", getEstimatedPose());
     }
 
     public Pose2d getEstimatedPose(){
