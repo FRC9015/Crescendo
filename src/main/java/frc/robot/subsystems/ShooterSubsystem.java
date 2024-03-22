@@ -58,10 +58,21 @@ public class ShooterSubsystem extends SubsystemBase {
                 new WaitCommand(3),
                 new InstantCommand(this::setAmpIntakeSpeeds),
                 new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds),
-                new InstantCommand(this::stopSpeakerShooterMotors));
+                new InstantCommand(this::stopSpeakerShooterMotors),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+               
     }
-
+    public Command autoShootNoteToSpeaker2() {
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
+                new WaitCommand(3),
+                new InstantCommand(this::setAmpIntakeSpeeds),
+                new WaitCommand(1),
+                new InstantCommand(this::stopSpeakerShooterMotors),
+                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+               
+    }
+    
     public Command shootNoteToAmp() {
         return this.startEnd(
                 this::setAmpShooterMotorSpeeds,

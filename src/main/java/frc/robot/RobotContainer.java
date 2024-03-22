@@ -60,6 +60,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
+		NamedCommands.registerCommand("shootNote1", SHOOTER.autoShootNoteToSpeaker2());
 		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
