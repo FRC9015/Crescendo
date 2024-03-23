@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.090557959915514,
-        "y": 5.5
+        "x": 1.4,
+        "y": 4.809442040084486
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.9113560946263224,
-        "y": 4.038562638842631
+        "x": 1.4,
+        "y": 4.122858715992498
       },
       "prevControl": {
-        "x": 1.44030419659278,
-        "y": 4.029674867181621
+        "x": 1.3499999999999999,
+        "y": 4.122858715992498
       },
       "nextControl": {
-        "x": 3.468038420871118,
-        "y": 4.067934003488759
+        "x": 1.45,
+        "y": 4.122858715992498
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8872307611518506,
+        "y": 4.122858715992498
+      },
+      "prevControl": {
+        "x": 2.937230761151851,
+        "y": 4.122858715992498
+      },
+      "nextControl": {
+        "x": 2.8726623557949864,
+        "y": 4.122858715992498
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +52,8 @@
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.2,
-        "y": 5.5
+        "x": 1.4,
+        "y": 5.45
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 1.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -57,7 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
+                "name": "intake"
               }
             }
           ]

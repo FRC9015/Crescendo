@@ -2,19 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3794008067164314,
-      "y": 5.56513084632203
+      "x": 0.7,
+      "y": 4.5
     },
-    "rotation": 0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "Leave Right"
           }
         }
       ]

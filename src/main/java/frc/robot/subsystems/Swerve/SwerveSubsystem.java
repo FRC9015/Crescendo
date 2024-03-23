@@ -32,7 +32,8 @@ import static frc.robot.Constants.Constants.robotWidth;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
 public class SwerveSubsystem extends SubsystemBase {
-	
+	private double slowSpeedMultiplier = 1;
+	public double speedMultiplier;
 
 	private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			new Translation2d(-robotLength / 2, -robotWidth / 2), // NW
@@ -169,10 +170,25 @@ public class SwerveSubsystem extends SubsystemBase {
 		);
 	}
 
+	public Command slowModeOn(){
+		return this.runOnce(
+				()-> slowSpeedMultiplier = 0.5
+		);
+	}
 
+	public Command slowModeOff(){
+		return this.runOnce(
+				()-> slowSpeedMultiplier = 1
+		);
+	}
+
+	public double getSlowSpeedMultiplier() {
+		return slowSpeedMultiplier;
+	}
 	@Override
 	public void periodic() {
-		
+		speedMultiplier = getSlowSpeedMultiplier();
+
 		for (int i = 0; i < 4; i++) states[i * 2 + 1] = modules[i].getTargetState().speedMetersPerSecond;
 		for (int i = 0; i < 4; i++)
 			states[i * 2] = modules[i].getTargetState().angle.getRadians();

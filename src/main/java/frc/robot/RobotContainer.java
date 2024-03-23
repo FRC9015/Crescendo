@@ -20,12 +20,14 @@ import frc.robot.Commands.AutoAim;
 import frc.robot.Commands.autoHandoff;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
-
+import frc.robot.Commands.Presets.SubwooferPreset;
 import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -51,6 +53,9 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem();
+	public static final HangerSubsystem HANGER = new HangerSubsystem();
+
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -62,7 +67,7 @@ public class RobotContainer {
 
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
-		NamedCommands.registerCommand("intakeAmp", SHOOTER.autoAmpIntake());
+		NamedCommands.registerCommand("intake", new Handoff(INTAKE,SHOOTER).until(INTAKE::getShooterSensor));
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
 		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
@@ -91,12 +96,13 @@ public class RobotContainer {
 				SWERVE.setDefaultCommand(new DefaultDrive());
 
 				// Driver Bindings
-				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
-				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::resetOdometry));
-
-
+				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(INTAKE::getShooterSensor));
+				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
+				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
+				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
+				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP());
+				InputManager.getInstance().getDriverPOV(180).whileTrue(HANGER.hangerDOWN());
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
@@ -106,7 +112,7 @@ public class RobotContainer {
 				
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(PIVOT.movePivotToSubWoofer());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
 	}
 
@@ -120,5 +126,10 @@ public class RobotContainer {
 
 	public void enableRobot(){
 		PIVOT.intake();
+		
+	}
+
+	public void teleopRunning(){
+		LED_SUBSYSTEM.updateLEDs();
 	}
 }

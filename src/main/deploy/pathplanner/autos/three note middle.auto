@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3973572133190786,
+      "x": 1.35,
       "y": 5.5
     },
     "rotation": 0
@@ -42,27 +42,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Subwoofer Left Note"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "pivotToSubWoofer"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootNote"
+            "name": "pivotToIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Subwoofer Right Note"
+            "pathName": "Middle Subwoofer Left Note"
           }
         },
         {

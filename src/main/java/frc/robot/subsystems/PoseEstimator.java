@@ -57,7 +57,7 @@ public class PoseEstimator extends SubsystemBase{
 
     public void updatePoseEstimator() {
         
-        
+        //swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());        
 
         if (LIMELIGHT_INTERFACE.tagCheck()) {
             LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
@@ -89,6 +89,8 @@ public class PoseEstimator extends SubsystemBase{
     @Override
     public void periodic() {
         swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());
+
+
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
         Logger.recordOutput("Odom/Pose", getEstimatedPose());
     }

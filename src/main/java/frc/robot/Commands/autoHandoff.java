@@ -1,22 +1,17 @@
 package frc.robot.Commands;
 
-import static frc.robot.RobotContainer.INTAKE;
-import static frc.robot.RobotContainer.SHOOTER;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class autoHandoff extends SequentialCommandGroup{
+
+public class autoHandoff extends ParallelCommandGroup{
     
-    public autoHandoff(){
-        addRequirements(INTAKE,SHOOTER);
+    public autoHandoff(IntakeSubsystem intake, ShooterSubsystem shooter){
         addCommands(
-                new Handoff(INTAKE, SHOOTER),
-                new WaitCommand(0.5),
-                SHOOTER.stopAmp(),
-                INTAKE.stopIntake()
-        );
+            intake.runIntake(),
+            shooter.runAmp());
     }
 }

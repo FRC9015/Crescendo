@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
+            "name": "shootNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "pivotToIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": " two Piece middle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": " two Piece middle"
+            "pathName": "Subwoofer Middle 2 Note"
           }
         },
         {

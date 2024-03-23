@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.542809002210728,
-        "y": 7.211360651647657
+        "x": 2.8362413424028268,
+        "y": 6.774308490941738
       },
       "prevControl": {
-        "x": 3.3236804476403985,
-        "y": 7.092992358123137
+        "x": 2.617112787832497,
+        "y": 6.655940197417219
       },
       "nextControl": {
-        "x": 3.761937556781058,
-        "y": 7.329728945172176
+        "x": 3.0553698969731564,
+        "y": 6.892676784466258
       },
       "isLocked": false,
       "linkedName": null
@@ -44,13 +44,7 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.35,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -63,36 +57,7 @@
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "backwardShooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.75,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "pivotToSubWoofer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "shootNote"
+                "name": "intake"
               }
             }
           ]
