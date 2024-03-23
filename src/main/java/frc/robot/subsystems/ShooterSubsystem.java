@@ -156,6 +156,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     
 
+    
+
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Shooter sensor", Sensor.get());
