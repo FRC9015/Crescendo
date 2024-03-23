@@ -48,9 +48,9 @@ public class DefaultDrive extends Command {
 		double inputX = inputXYZ[0];
 		double inputY = inputXYZ[1];
 		double inputZ = inputXYZ[2];
-		inputZ = MathUtil.applyDeadband(inputZ, 0.15);
+		inputZ = MathUtil.applyDeadband(inputZ, 0.2);
 		double inputMagnitude = Math.hypot(inputX, inputY);
-		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.15);
+		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.2);
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? -1.0 : 1.0);
 

@@ -107,7 +107,7 @@ Logger.start();
 			m_autonomousCommand.cancel();
 		}
 
-		m_robotContainer.enableRobot();
+		//m_robotContainer.enableRobot();
 	}
 
 	/** This function is called periodically during operator control. */

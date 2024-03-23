@@ -49,12 +49,8 @@ public class RobotContainer {
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
-	//public static final CameraSubsystem CAMERA = new CameraSubsystem();
+	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-
-	public static final CommandXboxController driveController =
-			new CommandXboxController(OperatorConstants.driverControllerPort);
-
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -96,8 +92,10 @@ public class RobotContainer {
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
+
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::resetOdometry));
+
 
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
