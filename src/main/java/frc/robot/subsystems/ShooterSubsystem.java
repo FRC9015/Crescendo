@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.ShooterConstants;
+import frc.robot.subsystems.AmpSubsystem;;
+
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -20,10 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
             MotorType.kBrushless);
 
-    private final CANSparkFlex ampShooterMotorTop = new CANSparkFlex(ShooterConstants.ampShooterMotor1ID,
-            MotorType.kBrushless);
-    private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
-            MotorType.kBrushless);
+
 
     RelativeEncoder speakerMotorTopEncoder = speakerMotorTop.getEncoder();
     RelativeEncoder speakerMotorBottomEncoder = speakerMotorBottom.getEncoder();
@@ -31,17 +30,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
-        ampShooterMotorTop.setSmartCurrentLimit(30);
-        ampShooterMotorBottom.setSmartCurrentLimit(30);
+        
    
         speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
         speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
         speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
         speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
-        ampShooterMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
-        ampShooterMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
-        ampShooterMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
-        ampShooterMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+     
     }
 
     public double motorVelocity(RelativeEncoder encoder){
@@ -56,45 +51,37 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command autoShootNoteToSpeaker() {
+    public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
                 new WaitCommand(1.5),
-                new InstantCommand(this::setAmpIntakeSpeeds),
+                new InstantCommand(amp::setAmpIntakeSpeeds),
                 new WaitCommand(0.5),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds),
+                new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
-    public Command shootNoteToAmp() {
-        return this.startEnd(
-                this::setAmpShooterMotorSpeeds,
-                this::stopAmpShooterMotorSpeeds
-        );
+    public Command autoShootNoteLimelight(AmpSubsystem amp) {
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setSpeakerShooterMotorSpeeds),
+                new WaitCommand(0.5),
+                new InstantCommand(amp::setAmpIntakeSpeeds),
+                new WaitCommand(0.3),
+                new InstantCommand(amp::stopAmpShooterMotorSpeeds),
+                new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
-    public Command autoShootNoteToAmp(){
-        return new SequentialCommandGroup(
-                new InstantCommand(this::setAmpShooterMotorSpeeds),
-                new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+    public Command revShooter(){
+        return this.runOnce(this::revShooterMotors);
     }
+
 
     public Command stopShooter() {
         return this.runOnce(
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command ampIntake(){
-        return this.startEnd(
-                this::setAmpIntakeSpeeds,
-                this::stopAmpShooterMotorSpeeds
-        );
-    }
 
-    public Command stopAmp(){
-        return this.runOnce(this::stopAmpShooterMotorSpeeds);
-    }
 
     public Command shooterBackward(){
         return this.startEnd(
@@ -102,12 +89,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command autoAmpIntake(){
-        return new SequentialCommandGroup(
-                new InstantCommand(this::setAmpIntakeSpeeds),
-                new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds));
-    }
+
 
     public Command autoBackwardShooter(){
         return new SequentialCommandGroup(
@@ -116,10 +98,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
-    public Command runAmp(){
-        return this.run(this::setAmpIntakeSpeeds);
-    }
-
+   
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
             speakerMotorTop.set(0.5);
             speakerMotorBottom.set(.5);
@@ -130,7 +109,10 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorTop.set(.8);
         speakerMotorBottom.set(.6);
         
-
+    }
+    public void revShooterMotors(){
+        speakerMotorTop.set(0.6);
+        speakerMotorBottom.set(0.4);
     }
 
     public void stopSpeakerShooterMotors() {
@@ -139,22 +121,7 @@ public class ShooterSubsystem extends SubsystemBase {
         
     }
 
-    private void setAmpShooterMotorSpeeds() {
-        double motorSpeed = 0.8;// needs to be tuned
-        ampShooterMotorTop.set(-motorSpeed);
-        ampShooterMotorBottom.set(motorSpeed);
-    }
-
-    private void stopAmpShooterMotorSpeeds() {
-        ampShooterMotorTop.stopMotor();
-        ampShooterMotorBottom.stopMotor();
-    }
-
-    private void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.8; //needs to be tuned
-        ampShooterMotorTop.set(motorSpeed);
-        ampShooterMotorBottom.set(motorSpeed);
-    }
+  
 
     private void backwardsShooter(){
         speakerMotorTop.set(-0.1);

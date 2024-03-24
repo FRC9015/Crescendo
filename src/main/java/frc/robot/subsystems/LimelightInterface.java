@@ -94,6 +94,7 @@ public class LimelightInterface extends SubsystemBase{
         SmartDashboard.putBoolean("April Tag", tag);
         SmartDashboard.putNumber("Note Velocity", noteVelocity);
         SmartDashboard.putNumber("SpeakerSetPoint", speakerSetPoint());
+        SmartDashboard.putNumber("Diagonal Distance", diagonalDistance);
 
     }
 
@@ -163,7 +164,7 @@ public class LimelightInterface extends SubsystemBase{
         double multiplier = 1500;
 
         if(diagonalDistance >= 70){
-            multiplier = 1600;
+            multiplier = 1000;
         }else if (diagonalDistance < 70 && diagonalDistance >= 50){
             multiplier = 1500;
         }else{

@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.DefaultDrive;
 import frc.robot.Commands.Handoff;
+import frc.robot.Commands.LimelightDrive;
 import frc.robot.Commands.AutoAim;
-import frc.robot.Commands.autoHandoff;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
 import frc.robot.Commands.Presets.SubwooferPreset;
-import frc.robot.Constants.Constants.OperatorConstants;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -55,24 +55,25 @@ public class RobotContainer {
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem();
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
+	public static final AmpSubsystem AMP = new AmpSubsystem();
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
-		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker());
-		
+		NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker(AMP));
+		NamedCommands.registerCommand("shootLimelight", SHOOTER.autoShootNoteLimelight(AMP));
 		NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
-
+		NamedCommands.registerCommand("revShooter", SHOOTER.revShooter());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
-		NamedCommands.registerCommand("intake", new Handoff(INTAKE,SHOOTER).until(INTAKE::getShooterSensor));
+		NamedCommands.registerCommand("intake", new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
-		NamedCommands.registerCommand("ampShoot", SHOOTER.shootNoteToAmp());
+		NamedCommands.registerCommand("ampShoot", AMP.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
-		NamedCommands.registerCommand("autoAim", new AutoAim());
+		NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
 		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
 		
 		configureBindings();
@@ -97,17 +98,17 @@ public class RobotContainer {
 
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,SHOOTER).until(INTAKE::getShooterSensor));
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
-				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP());
-				InputManager.getInstance().getDriverPOV(180).whileTrue(HANGER.hangerDOWN());
+				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP().repeatedly());
+				InputManager.getInstance().getDriverPOV(180).whileTrue(HANGER.hangerDOWN().repeatedly());
 				// Operator Bindings
-				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(SHOOTER.shootNoteToAmp());
+				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim());
-				InputManager.getInstance().getOperatorPOV(270).whileTrue(SHOOTER.ampIntake());
+				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 				
 				// Operator Presets

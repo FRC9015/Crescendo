@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
 import com.revrobotics.*;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +12,7 @@ import frc.robot.Constants.Constants.PivotConstants;
 
 
 public class PivotSubsystem extends SubsystemBase {
-
+    
     //makes motors
     public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
@@ -62,6 +64,10 @@ public class PivotSubsystem extends SubsystemBase {
                 this::stopPivot
         );
     }
+
+    public Command autoAutoAim(){
+        return this.runOnce(this::autoAim);
+    }
     public Command movePivotToIntake(){
         return this.runOnce(this::intake);
     }
@@ -74,6 +80,7 @@ public class PivotSubsystem extends SubsystemBase {
         double motorSpeed = 0.05;
         currentPosition += motorSpeed;
     }
+    
     //stops pivot
     private void stopPivot(){
         pivotMotor1.stopMotor();
@@ -118,6 +125,10 @@ public class PivotSubsystem extends SubsystemBase {
         currentPosition = SetPoint;
     }
 
+    public void autoAim(){
+        setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint()+LIMELIGHT_INTERFACE.offsetMultiplier());
+    }
+
     @Override
     public void periodic(){
         //puts values on dashboard
@@ -127,6 +138,8 @@ public class PivotSubsystem extends SubsystemBase {
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
         //uses robotSelf booleans to decide if to run a command
+
+        
 
         pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
         

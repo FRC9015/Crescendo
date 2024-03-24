@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AutoAim extends Command{
    
     public AutoAim(){
-        addRequirements(PIVOT, SWERVE);
+        addRequirements(PIVOT);
     }
     PIDController w_pid = new PIDController(0.1, 0, 0);
     
@@ -18,11 +18,12 @@ public class AutoAim extends Command{
         LIMELIGHT_INTERFACE.LEDsOn();
         SHOOTER.setSpeakerShooterMotorSpeeds();
         
-        
+    
     }
     @Override
     public void execute() {
         PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint() + LIMELIGHT_INTERFACE.offsetMultiplier());
+        
     }
     
     @Override
