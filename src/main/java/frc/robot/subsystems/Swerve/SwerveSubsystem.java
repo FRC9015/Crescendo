@@ -21,15 +21,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConfiguration;
-import static java.lang.Math.PI;
-import static java.lang.Math.abs;
+
 
 import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
 import static frc.robot.Constants.Constants.robotLength;
 import static frc.robot.Constants.Constants.robotWidth;
-import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
 public class SwerveSubsystem extends SubsystemBase {

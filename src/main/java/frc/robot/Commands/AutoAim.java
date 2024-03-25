@@ -22,7 +22,7 @@ public class AutoAim extends Command{
     }
     @Override
     public void execute() {
-        PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint() + LIMELIGHT_INTERFACE.offsetMultiplier());
+        PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
         
     }
     

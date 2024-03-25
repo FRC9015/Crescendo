@@ -39,6 +39,10 @@ public class AmpSubsystem extends SubsystemBase{
         );
     }
 
+    public Command stopAmp(){
+        return this.runOnce(this::stopAmpShooterMotorSpeeds);
+    }
+
     public void setAmpShooterMotorSpeeds() {
         double motorSpeed = 0.8;// needs to be tuned
         ampMotorTop.set(-motorSpeed);

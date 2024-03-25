@@ -9,9 +9,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,10 +19,6 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class PoseEstimator extends SubsystemBase{
 
     private GenericEntry currentPos = Shuffleboard.getTab("swerve").add("curr_pos",new double[3]).getEntry();
-    private SimpleWidget visionMeasurementToggle =
-            Shuffleboard.getTab("swerve")
-                    .add("Add Vision Measurement", false)
-                    .withWidget(BuiltInWidgets.kToggleButton);
     
     private final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
     private final SwerveSubsystem swerveSubsystem;

@@ -126,7 +126,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void autoAim(){
-        setCurrentPosition(LIMELIGHT_INTERFACE.speakerSetPoint()+LIMELIGHT_INTERFACE.offsetMultiplier());
+        setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
     }
 
     @Override

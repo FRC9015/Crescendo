@@ -91,4 +91,11 @@ public final class Constants {
 		public static final double turnI = 0;
 		public static final double turnD = 0;
 	}
+
+	public static class LimelightConstants {
+		public static final double aprilTag_Height = 57.125;
+		public static final double speakerGoalHeight = 81.8;
+		public static final double LimelightAngle = 32;
+		public static final double LimelightHeight = 11.5;
+	}
 }
