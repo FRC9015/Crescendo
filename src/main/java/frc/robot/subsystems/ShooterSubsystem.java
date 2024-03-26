@@ -96,7 +96,7 @@ public class ShooterSubsystem extends SubsystemBase {
 }
     
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
-        speakerPIDTop.setSetpoint(0.7 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
         shooterIsRunning=true;
     }
