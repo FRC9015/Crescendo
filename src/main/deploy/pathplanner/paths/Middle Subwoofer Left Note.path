@@ -3,61 +3,71 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 1.4,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7099999999999997,
-        "y": 4.5
+        "x": 1.4,
+        "y": 6.53287622848789
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.57,
-        "y": 4.12
+        "x": 1.4,
+        "y": 7.033618849304946
       },
       "prevControl": {
-        "x": 2.469772503867019,
-        "y": 4.12
+        "x": 1.3797227458158472,
+        "y": 7.033618849304946
       },
       "nextControl": {
-        "x": 2.6702274961329806,
-        "y": 4.12
+        "x": 1.586731468931124,
+        "y": 7.033618849304946
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 3.0,
+        "y": 7.033618849304946
       },
       "prevControl": {
-        "x": 2.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 2.6492077384263966,
+        "y": 7.033618849304946
+      },
+      "nextControl": {
+        "x": 3.3507922615736034,
+        "y": 7.033618849304946
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.4,
+        "y": 5.7
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "name": "intake",
+      "waypointRelativePos": 1.5500000000000003,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -69,7 +79,7 @@
             {
               "type": "named",
               "data": {
-                "name": "backwardShooter"
+                "name": "intakeAmp"
               }
             }
           ]
@@ -91,7 +101,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -3,59 +3,69 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 3.22,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7099999999999997,
-        "y": 4.5
+        "x": 2.581672937045963,
+        "y": 6.242561695416204
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.57,
-        "y": 4.12
+        "x": 2.384620776340044,
+        "y": 7.029255584686857
       },
       "prevControl": {
-        "x": 2.469772503867019,
-        "y": 4.12
+        "x": 1.8018845620654862,
+        "y": 7.036539787365289
       },
       "nextControl": {
-        "x": 2.6702274961329806,
-        "y": 4.12
+        "x": 3.0808462464882327,
+        "y": 7.020552766310005
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 3.22,
+        "y": 7.029255584686857
       },
       "prevControl": {
-        "x": 2.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 2.6733198532944416,
+        "y": 7.049256077859011
+      },
+      "nextControl": {
+        "x": 3.817304619631422,
+        "y": 7.007402976651561
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.22,
+        "y": 5.67439388649851
+      },
+      "prevControl": {
+        "x": 3.0814004810377296,
+        "y": 6.460430818596995
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "name": "intake",
+      "waypointRelativePos": 1.0999999999999999,
       "command": {
         "type": "parallel",
         "data": {
@@ -63,13 +73,13 @@
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
+                "name": "intake"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "backwardShooter"
+                "name": "revShooter"
               }
             }
           ]
@@ -91,7 +101,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

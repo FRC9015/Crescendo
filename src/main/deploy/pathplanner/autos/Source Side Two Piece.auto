@@ -28,6 +28,18 @@
           "data": {
             "pathName": "Two Piece Source Side"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToSubWoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
+          }
         }
       ]
     }

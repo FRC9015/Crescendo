@@ -3,73 +3,77 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 1.4,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7099999999999997,
-        "y": 4.5
+        "x": 1.4,
+        "y": 4.809442040084486
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.57,
-        "y": 4.12
+        "x": 1.4,
+        "y": 4.122858715992498
       },
       "prevControl": {
-        "x": 2.469772503867019,
-        "y": 4.12
+        "x": 1.3499999999999999,
+        "y": 4.122858715992498
       },
       "nextControl": {
-        "x": 2.6702274961329806,
-        "y": 4.12
+        "x": 1.45,
+        "y": 4.122858715992498
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 2.8872307611518506,
+        "y": 4.122858715992498
       },
       "prevControl": {
-        "x": 2.4553985700695447,
-        "y": 2.6660181803061036
+        "x": 2.937230761151851,
+        "y": 4.122858715992498
+      },
+      "nextControl": {
+        "x": 2.8726623557949864,
+        "y": 4.122858715992498
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.4,
+        "y": 5.45
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "name": "intake",
+      "waypointRelativePos": 1.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "backwardShooter"
+                "name": "intake"
               }
             }
           ]
@@ -91,8 +95,8 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

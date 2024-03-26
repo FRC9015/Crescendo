@@ -1,17 +1,16 @@
 package frc.robot.Commands.Presets;
 
-
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.RobotContainer.*;
 
-public class AmpPreset extends Command{
-    public AmpPreset(){
+public class PassNotePreset extends Command{
+    public PassNotePreset(){
         addRequirements(PIVOT);
     }
  
     @Override
     public void initialize() {
-       PIVOT.AmpPreset();
+       PIVOT.passNotePreset();
     }
     @Override
     public void execute() {   
@@ -20,6 +19,5 @@ public class AmpPreset extends Command{
     @Override
     public void end(boolean interrupted) {
         PIVOT.intake();
-    }
-    
+    }   
 }

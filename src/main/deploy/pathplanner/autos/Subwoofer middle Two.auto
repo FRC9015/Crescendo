@@ -5,7 +5,7 @@
       "x": 1.35,
       "y": 5.5
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SubWoofer Middle Park"
+            "pathName": "Subwoofer Middle 2 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToSubWoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
           }
         }
       ]
