@@ -1,4 +1,4 @@
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.SWERVE;
@@ -29,20 +29,18 @@ public class LimelightDrive extends Command{
         double[] inputXYZ = InputManager.getInstance().getDriverXYZAxes();
 		double inputX = inputXYZ[0];
 		double inputY = inputXYZ[1];
-		double inputZ = inputXYZ[2];
-		inputZ = MathUtil.applyDeadband(inputZ, 0.2);
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.2);
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double xVelocity = xVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double yVelocity = yVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double rotationalVelocity = L_PID.calculate(LIMELIGHT_INTERFACE.getX());
 		
-        SWERVE.drive(-yVelocity, -xVelocity, -rotationalVelocity);
+        SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
 
     }
 }

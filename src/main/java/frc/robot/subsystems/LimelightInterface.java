@@ -32,6 +32,8 @@ public class LimelightInterface extends SubsystemBase{
     //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
     @Override
     public void periodic() {
+        tagCheck();
+
         //updates the X,Y,Area values
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);
@@ -39,6 +41,7 @@ public class LimelightInterface extends SubsystemBase{
 
         SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
         SmartDashboard.putNumber("Distance", getSpeakerDistance());
+        SmartDashboard.putBoolean("April Tag", tag);
 
     }
 

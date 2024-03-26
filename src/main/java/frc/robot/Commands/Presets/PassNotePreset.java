@@ -1,4 +1,4 @@
-package frc.robot.Commands.Presets;
+package frc.robot.commands.Presets;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.RobotContainer.*;

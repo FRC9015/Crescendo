@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Commands.DefaultDrive;
-import frc.robot.Commands.Handoff;
-import frc.robot.Commands.LimelightDrive;
-import frc.robot.Commands.AutoAim;
-import frc.robot.Commands.Presets.AmpPreset;
-import frc.robot.Commands.Presets.PassNotePreset;
-import frc.robot.Commands.Presets.SubwooferPreset;
+import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.Handoff;
+import frc.robot.commands.LimelightDrive;
+import frc.robot.commands.AutoAim;
+import frc.robot.commands.Presets.AmpPreset;
+import frc.robot.commands.Presets.PassNotePreset;
+import frc.robot.commands.Presets.SubwooferPreset;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.AmpSubsystem;
@@ -107,7 +107,7 @@ public class RobotContainer {
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim().alongWith(new LimelightDrive()));
+				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new LimelightDrive()));
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 				

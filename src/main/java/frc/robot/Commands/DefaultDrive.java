@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import static frc.robot.Constants.Constants.SwerveConstants.*;
 import static frc.robot.RobotContainer.*;
@@ -54,9 +54,9 @@ public class DefaultDrive extends Command {
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double xVelocity = xVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double yVelocity = yVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double rotationalVelocity = (inputZ * angularSpeed );
 

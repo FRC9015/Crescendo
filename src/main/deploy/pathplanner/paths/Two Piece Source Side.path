@@ -63,23 +63,9 @@
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
-              "data": {
-                "name": "intakeNote"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "backwardShooter"
-              }
-            }
-          ]
-        }
-      }
-    },
     {
-      "name": "shoot",
-      "waypointRelativePos": 1.7,
+      "name": "intake",
+      "waypointRelativePos": 0.9,
       "command": {
         "type": "parallel",
         "data": {
@@ -87,16 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "pivotToSubWoofer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "shootNote"
-=======
                 "name": "intake"
->>>>>>> Crescendo-New/main
               }
             }
           ]
