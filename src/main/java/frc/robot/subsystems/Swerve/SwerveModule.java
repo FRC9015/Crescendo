@@ -34,7 +34,6 @@ public class SwerveModule {
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
 
-		// TODO: Look into individually tuning these modules
 		drivePID = new PIDController(driveP, driveI, driveD);
 		turnPPID = new PIDController(turnP, turnI, turnD); 
 

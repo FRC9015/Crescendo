@@ -65,8 +65,8 @@ public final class Constants {
 
 		public static final int candleID1 = 36;
 	}
-	public static final double robotWidth = Units.inchesToMeters(27); // TODO: This must be tuned to specific robot
-	public static final double robotLength = Units.inchesToMeters(27); // TODO: This must be tuned to specific robot
+	public static final double robotWidth = Units.inchesToMeters(27); 
+	public static final double robotLength = Units.inchesToMeters(27); 
 	public static final double wheelRatio = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(

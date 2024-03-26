@@ -41,8 +41,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command shootNoteToSpeaker() {
-        // TODO change this into a Sequential Command. We should set the first command
-        // in the sequence to set the pivot angle.
         return this.startEnd(
                 this::setSpeakerShooterMotorSpeedsSubWoofer,
                 this::stopSpeakerShooterMotors);
