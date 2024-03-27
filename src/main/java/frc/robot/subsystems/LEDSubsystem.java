@@ -62,12 +62,6 @@ public class LEDSubsystem extends SubsystemBase {
         strobeAnimation(Color.black);
     }
 
-    public void indicateShooter(){
-        if (SHOOTER.shooterIsReady()){
-            candle.configBrightnessScalar(0.9);
-            strobeAnimation(Color.GREEN);
-        }
-    }
     public void  clearLEDs(){
         candle.clearAnimation(0);
     }
