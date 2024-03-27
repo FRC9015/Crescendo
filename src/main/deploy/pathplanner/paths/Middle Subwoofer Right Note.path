@@ -3,44 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 1.4,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7099999999999997,
-        "y": 4.5
+        "x": 1.4,
+        "y": 4.809442040084486
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.40647338437534,
-        "y": 4.5
-      },
-      "prevControl": {
-        "x": 2.3062458882423593,
-        "y": 4.5
-      },
-      "nextControl": {
-        "x": 2.506700880508321,
-        "y": 4.5
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.9090833691871465,
+        "x": 1.4,
         "y": 4.122858715992498
       },
       "prevControl": {
-        "x": 3.1770228078225387,
+        "x": 1.3499999999999999,
         "y": 4.122858715992498
       },
       "nextControl": {
-        "x": 2.641143930551755,
+        "x": 1.45,
         "y": 4.122858715992498
       },
       "isLocked": false,
@@ -48,12 +32,28 @@
     },
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 2.8872307611518506,
+        "y": 4.122858715992498
       },
       "prevControl": {
-        "x": 1.71,
-        "y": 4.5
+        "x": 2.937230761151851,
+        "y": 4.122858715992498
+      },
+      "nextControl": {
+        "x": 2.8726623557949864,
+        "y": 4.122858715992498
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.4,
+        "y": 5.45
       },
       "nextControl": null,
       "isLocked": false,
@@ -65,9 +65,9 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 1.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -89,14 +89,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -60.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

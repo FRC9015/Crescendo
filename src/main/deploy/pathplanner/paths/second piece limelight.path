@@ -3,57 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 3.22,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7099999999999997,
-        "y": 4.5
+        "x": 2.581672937045963,
+        "y": 6.242561695416204
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.40647338437534,
-        "y": 4.5
+        "x": 2.384620776340044,
+        "y": 7.029255584686857
       },
       "prevControl": {
-        "x": 2.3062458882423593,
-        "y": 4.5
+        "x": 1.8018845620654862,
+        "y": 7.036539787365289
       },
       "nextControl": {
-        "x": 2.506700880508321,
-        "y": 4.5
+        "x": 3.0808462464882327,
+        "y": 7.020552766310005
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9090833691871465,
-        "y": 4.122858715992498
+        "x": 3.22,
+        "y": 7.029255584686857
       },
       "prevControl": {
-        "x": 3.1770228078225387,
-        "y": 4.122858715992498
+        "x": 2.6733198532944416,
+        "y": 7.049256077859011
       },
       "nextControl": {
-        "x": 2.641143930551755,
-        "y": 4.122858715992498
+        "x": 3.817304619631422,
+        "y": 7.007402976651561
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.5
+        "x": 3.22,
+        "y": 5.67439388649851
       },
       "prevControl": {
-        "x": 1.71,
-        "y": 4.5
+        "x": 3.0814004810377296,
+        "y": 6.460430818596995
       },
       "nextControl": null,
       "isLocked": false,
@@ -65,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 1.0999999999999999,
       "command": {
         "type": "parallel",
         "data": {
@@ -74,6 +74,12 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
               }
             }
           ]
@@ -89,13 +95,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -60.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

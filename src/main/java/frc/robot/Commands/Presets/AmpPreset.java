@@ -1,28 +1,25 @@
-package frc.robot.commands.Presets;
+package frc.robot.Commands.Presets;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
-import static frc.robot.RobotContainer.PIVOT;
+import static frc.robot.RobotContainer.*;
 
-
-public class SubWooferPreset extends Command{
-    public SubWooferPreset(){
+public class AmpPreset extends Command{
+    public AmpPreset(){
         addRequirements(PIVOT);
     }
  
-    
     @Override
     public void initialize() {
-       PIVOT.SubWoofer();
+       PIVOT.AmpPreset();
     }
     @Override
-    public void execute() {
-        
-        
+    public void execute() {   
     }
-    
+
     @Override
     public void end(boolean interrupted) {
         PIVOT.intake();
     }
+    
 }

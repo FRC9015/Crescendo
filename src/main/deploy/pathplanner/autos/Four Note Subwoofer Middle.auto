@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
+      "x": 1.3973572133190786,
       "y": 5.5
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -26,67 +26,55 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SubWoofer Middle Park"
+            "pathName": "Subwoofer Middle 2 Note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "pivotToSubWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootLimelight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
+            "name": "shootNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "second piece limelight"
+            "pathName": "Middle Subwoofer Left Note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "pivotToSubWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootLimelight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
+            "name": "shootNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "third piece Limelight"
+            "pathName": "Middle Subwoofer Right Note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "pivotToSubWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootLimelight"
+            "name": "shootNote"
           }
         }
       ]

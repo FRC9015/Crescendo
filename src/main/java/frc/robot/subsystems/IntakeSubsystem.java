@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Constants.IntakeConstants;
 
-import java.util.function.BooleanSupplier;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final DigitalOutput speakerSensor = new DigitalOutput(0);
@@ -32,11 +31,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public Command intakeNote(){
         return this.startEnd(
-           this::setIntakeMotorSpeeds,
-           this::stopIntakeMotors
+                this::setIntakeMotorSpeeds,
+                this::stopIntakeMotors
         );
     }
 
+    public Command runIntake(){
+        return this.run(this::setIntakeMotorSpeeds);
+    }
+    
     public Command autoIntakeNote(){
         return new SequentialCommandGroup(
                 new InstantCommand(this::setIntakeMotorSpeeds),
@@ -89,7 +92,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public double getHandoffMotorRPM(){
         return handoffMotorEncoder.getVelocity();
     }
-    public boolean noteInPosition() {
+    public boolean getShooterSensor() {
         return speakerSensor.get();
     }
 
@@ -103,17 +106,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      // This method will be called once per scheduler run
-        SmartDashboard.putBoolean("Note In?", speakerSensor.get());
-        SmartDashboard.putBoolean("Note In Handoff?",handoffSensor.get());
+        // This method will be called once per scheduler run
+        SmartDashboard.putBoolean("Shooter Sensor", speakerSensor.get());
+        SmartDashboard.putBoolean("Intake Sensor",handoffSensor.get());
 
     }
 
     @Override
     public void simulationPeriodic() {
-      // This method will be called once per scheduler run during simulation
+        // This method will be called once per scheduler run during simulation
     }
 
-    }
-
-
+}
