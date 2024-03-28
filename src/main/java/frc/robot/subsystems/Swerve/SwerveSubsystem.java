@@ -50,12 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	double[] states = new double[8];
 
-	// PIDController autoHeadingPID = new PIDController(1.4,0.1,0);
 
-	// public void setUpHeadingPID(){
-	// 	autoHeadingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-	// 	autoHeadingPID.enableContinuousInput(-PI, PI);
-	// }
 
 	public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] pos = new SwerveModulePosition[4];
@@ -82,11 +77,7 @@ public class SwerveSubsystem extends SubsystemBase {
 				// This will flip the path being followed to the red side of the field.
 				// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-				var alliance = DriverStation.getAlliance();
-				if (alliance.isPresent()) {
-					return alliance.get() == DriverStation.Alliance.Red;
-				}
-				return false;
+				return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue).equals(DriverStation.Alliance.Red);
 			},
 			this
     );
@@ -101,9 +92,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	public void driveRobotRelative(ChassisSpeeds speeds) {
-		ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, dtSeconds);
+		ChassisSpeeds targetSpeeds = new ChassisSpeeds(-speeds.vxMetersPerSecond,-speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond);
 
-		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds.unaryMinus());
+		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setState(states[i]);
 		}

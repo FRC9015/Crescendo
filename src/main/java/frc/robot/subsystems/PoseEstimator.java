@@ -50,9 +50,6 @@ public class PoseEstimator extends SubsystemBase{
     }
 
     public void updatePoseEstimator() {
-        
-        //swerveDrivePoseEstimator.update(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions());        
-
         if (LIMELIGHT_INTERFACE.tagCheck()) {
             LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
             if (LimelightHelpers.getTV("limelight")) {

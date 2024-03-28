@@ -2,12 +2,14 @@ package frc.robot.commands.Presets;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.PivotSubsystem;
+
 import static frc.robot.RobotContainer.PIVOT;
 
 
 public class SubwooferPreset extends Command {
 
-    public SubwooferPreset(){
+    public SubwooferPreset(PivotSubsystem PIVOT){
         addRequirements(PIVOT);
     }
  

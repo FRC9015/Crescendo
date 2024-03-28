@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 
-import static frc.robot.RobotContainer.*;
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.SHOOTER;
+import static frc.robot.RobotContainer.PIVOT;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 

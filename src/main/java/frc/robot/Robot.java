@@ -62,7 +62,6 @@ Logger.start();
 	public void robotPeriodic() {
 		if (isEnabled()){
 			m_robotContainer.LED_SUBSYSTEM.indicateNote();
-			m_robotContainer.LED_SUBSYSTEM.indicateShooter();
 			m_robotContainer.LED_SUBSYSTEM.updateLEDs();
 		}
 		// Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled

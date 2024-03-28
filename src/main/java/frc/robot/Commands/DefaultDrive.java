@@ -4,9 +4,15 @@
 
 package frc.robot.commands;
 
-import static frc.robot.Constants.Constants.SwerveConstants.*;
-import static frc.robot.RobotContainer.*;
-import static java.lang.Math.*;
+import static frc.robot.Constants.Constants.SwerveConstants.slewRateLimit;
+import static frc.robot.Constants.Constants.SwerveConstants.maxSpeed;
+import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
+import static frc.robot.RobotContainer.SWERVE;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.sin;
+import static java.lang.Math.cos;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -30,7 +36,7 @@ public class DefaultDrive extends Command {
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
-		addRequirements(SWERVE);
+		addRequirements(SWERVE, POSE_ESTIMATOR);
 	}
 
 	@Override
@@ -54,9 +60,9 @@ public class DefaultDrive extends Command {
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double yVelocity = yVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double rotationalVelocity = (inputZ * angularSpeed );
 

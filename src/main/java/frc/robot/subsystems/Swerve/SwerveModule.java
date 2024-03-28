@@ -1,8 +1,9 @@
 package frc.robot.subsystems.Swerve;
 
-import static frc.robot.Constants.Constants.*;
-import static frc.robot.Constants.Constants.SwervePIDControllerConstants.*;
-import static java.lang.Math.*;
+import static frc.robot.Constants.Constants.gearRatio;
+import static frc.robot.Constants.Constants.wheelRatio;
+import static frc.robot.Constants.Constants.SwervePIDControllerConstants;
+import static java.lang.Math.PI;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -34,8 +35,8 @@ public class SwerveModule {
 		name = nameString;
 		encoder = new CANcoder(config.ENCODER);
 
-		drivePID = new PIDController(driveP, driveI, driveD);
-		turnPPID = new PIDController(turnP, turnI, turnD); 
+		drivePID = new PIDController(SwervePIDControllerConstants.driveP, SwervePIDControllerConstants.driveI, SwervePIDControllerConstants.driveD);
+		turnPPID = new PIDController(SwervePIDControllerConstants.turnP, SwervePIDControllerConstants.turnI, SwervePIDControllerConstants.turnD);
 
 		turnPPID.enableContinuousInput(-PI, PI);
 		encoderOffset = config.offset;
@@ -80,7 +81,7 @@ public class SwerveModule {
 	}
 
 	public SwerveModuleState getMeasuredState() {
-		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection()); 
+		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection());
 	}
 
 	public void printOffset() {
