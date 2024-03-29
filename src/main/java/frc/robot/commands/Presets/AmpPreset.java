@@ -7,7 +7,7 @@ import frc.robot.subsystems.PivotSubsystem;
 import static frc.robot.RobotContainer.PIVOT;
 
 public class AmpPreset extends Command{
-    public AmpPreset(PivotSubsystem PIVOT){
+    public AmpPreset(){
         addRequirements(PIVOT);
     }
  

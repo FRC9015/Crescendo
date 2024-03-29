@@ -9,7 +9,7 @@ import static frc.robot.RobotContainer.PIVOT;
 
 public class SubwooferPreset extends Command {
 
-    public SubwooferPreset(PivotSubsystem PIVOT){
+    public SubwooferPreset(){
         addRequirements(PIVOT);
     }
  
