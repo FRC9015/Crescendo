@@ -6,11 +6,13 @@ import static frc.robot.RobotContainer.PIVOT;
 public class PassNotePreset extends Command{
     public PassNotePreset(){
         addRequirements(PIVOT);
+        addRequirements(SHOOTER);
     }
  
     @Override
     public void initialize() {
        PIVOT.passNotePreset();
+       SHOOTER.setSpeakerShooterMotorSpeedsSubWoofer();
     }
     @Override
     public void execute() {   
@@ -19,5 +21,6 @@ public class PassNotePreset extends Command{
     @Override
     public void end(boolean interrupted) {
         PIVOT.intake();
+        SHOOTER.stopShooter();
     }   
 }

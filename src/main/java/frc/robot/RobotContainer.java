@@ -47,13 +47,16 @@ public class RobotContainer {
 			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
-	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+
+	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem();
+	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
+	Trigger shooterSensorTrigger = new Trigger(SHOOTER::);
+
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -81,7 +84,10 @@ public class RobotContainer {
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
+		shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode());
 	}
+
+
 
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be created via the

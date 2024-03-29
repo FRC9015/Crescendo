@@ -10,15 +10,19 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import java.awt.Color;
-import static frc.robot.RobotContainer.*;
 
 public class LEDSubsystem extends SubsystemBase {
     /** Creates a new LED. */
     private static int NUM_LEDS = 110;
     private CANdle candle = new CANdle(Constants.LEDConstants.candleID1);
+    private IntakeSubsystem intake;
+    private ShooterSubsystem shooter;
+
     private Animation bufferedAnimation = new RainbowAnimation(0.7, 0.2,NUM_LEDS);
 
-    public LEDSubsystem() {
+    public LEDSubsystem(IntakeSubsystem intake, ShooterSubsystem shooter) {
+        this.intake = intake;
+        this.shooter = shooter;
         CANdleConfiguration candleConfiguration = new CANdleConfiguration();
         candleConfiguration.statusLedOffWhenActive = true;
         candleConfiguration.disableWhenLOS = false;
@@ -46,14 +50,20 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void indicateNote() {
-        if (INTAKE.getShooterSensor() && INTAKE.getHandoffStatus()){
+        if (intake.getShooterSensor() && intake.getHandoffStatus()){
             setColor(Color.GREEN);
         }
-        else if (INTAKE.getHandoffStatus()) {
+        else if (intake.getHandoffStatus()) {
             setColor(Color.RED);
         }
-        if (INTAKE.getShooterSensor()) {
+        if (intake.getShooterSensor()) {
             setColor(Color.GREEN);
+        }
+    }
+
+    public void indicateShooter(){
+        if (shooter.shooterIsReady()){
+            strobeAnimation(Color.GREEN);
         }
     }
 
@@ -62,8 +72,14 @@ public class LEDSubsystem extends SubsystemBase {
         strobeAnimation(Color.black);
     }
 
-    public void  clearLEDs(){
+    public void clearLEDs(){
         candle.clearAnimation(0);
     }
 
+    @Override
+    public void periodic() {
+        indicateNote();
+        indicateShooter();
+        updateLEDs();
+    }
 }
