@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,7 +20,7 @@ public class PivotSubsystem extends SubsystemBase {
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
     //gets encoders
-    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();//change later
+    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
 
 
     //makes PID for motors

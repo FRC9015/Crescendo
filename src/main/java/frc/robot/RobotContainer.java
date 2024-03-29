@@ -42,7 +42,6 @@ import frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
-	//public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 	public static final Pigeon PIGEON = new Pigeon();
 	public static final PoseEstimator POSE_ESTIMATOR =
 			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
@@ -74,7 +73,8 @@ public class RobotContainer {
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
 		NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
 		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
-		
+
+		SWERVE.setDefaultCommand(new DefaultDrive());
 		configureBindings();
 
 		SWERVE.setUpPathPlanner();
@@ -93,8 +93,6 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-				SWERVE.setDefaultCommand(new DefaultDrive());
-
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
@@ -123,6 +121,9 @@ public class RobotContainer {
 
 	public void disableRobot(){
 		PIVOT.SubWoofer();
+		INTAKE.stopIntake();
+		SHOOTER.stopShooter();
+		AMP.stopAmp();
 	}
 
 	public void enableRobot(){

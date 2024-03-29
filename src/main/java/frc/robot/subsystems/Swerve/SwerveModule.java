@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Swerve;
 
 import static frc.robot.Constants.Constants.gearRatio;
-import static frc.robot.Constants.Constants.wheelRatio;
+import static frc.robot.Constants.Constants.wheelRadius;
 import static frc.robot.Constants.Constants.SwervePIDControllerConstants;
 import static java.lang.Math.PI;
 
@@ -94,7 +94,7 @@ public class SwerveModule {
 		Logger.recordOutput("swerveModules/" + name + "/targetstate", targetState);
 		Logger.recordOutput("swerveModules/" + name + "/messuredstate", getMeasuredState());
 		double curr_velocity =
-				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRatio;
+				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRadius;
 		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
 				* targetState.speedMetersPerSecond;
 

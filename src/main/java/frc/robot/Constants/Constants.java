@@ -67,7 +67,7 @@ public final class Constants {
 	}
 	public static final double robotWidth = Units.inchesToMeters(27); 
 	public static final double robotLength = Units.inchesToMeters(27); 
-	public static final double wheelRatio = Units.inchesToMeters(2);
+	public static final double wheelRadius = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
 			new PIDConstants(0.4, 0.0, 0.0), // Translation PID constants
