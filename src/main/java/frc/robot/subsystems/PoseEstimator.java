@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -81,7 +82,13 @@ public class PoseEstimator extends SubsystemBase{
 
 
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
+        SmartDashboard.putNumber("Distance", getPoseX());
+        SmartDashboard.putNumber("turn", getPoseY());
         Logger.recordOutput("Odom/Pose", getEstimatedPose());
+
+        if(LIMELIGHT_INTERFACE.tagCheck()){
+            updatePoseEstimator();
+        }
     }
 
     public Pose2d getEstimatedPose(){
@@ -97,4 +104,12 @@ public class PoseEstimator extends SubsystemBase{
     public void resetOdomGivenPose2d(Pose2d pose) {
 		swerveDrivePoseEstimator.resetPosition(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions(), pose);
 	  }
+
+    public double getPoseX(){
+        return swerveDrivePoseEstimator.getEstimatedPosition().getTranslation().getX();
+    }
+
+    public double getPoseY(){
+        return swerveDrivePoseEstimator.getEstimatedPosition().getTranslation().getX();
+    }
 }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -31,11 +32,11 @@ public class HangerSubsystem extends SubsystemBase{
         }
 
         public void hangerUp(){
-            setpoint += 3;
+            setpoint = -500;
         }
 
         public void hangerDown(){
-            setpoint -= 3;
+            setpoint = 0;
         }
 
         public void stopHanger(){
@@ -45,7 +46,7 @@ public class HangerSubsystem extends SubsystemBase{
         @Override
         public void periodic(){
 
-            //hangerPIDController.setReference(setpoint, ControlType.kPosition);
+            hangerPIDController.setReference(setpoint, ControlType.kPosition);
             SmartDashboard.putNumber("hanger Position", hangerEncoder.getPosition());
         }
 }

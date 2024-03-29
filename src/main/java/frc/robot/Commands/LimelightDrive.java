@@ -3,6 +3,7 @@ package frc.robot.Commands;
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.SWERVE;
 
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -19,7 +20,7 @@ public class LimelightDrive extends Command{
         addRequirements(SWERVE);
     }
 
-    PIDController L_PID = new PIDController(0.1, 0, 0);
+    PIDController L_PID = new PIDController(0.05, 0, 0);
 
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
@@ -34,9 +35,9 @@ public class LimelightDrive extends Command{
 		double inputDir = Math.atan2(inputY, inputX);
 		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double yVelocity = yVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double rotationalVelocity = L_PID.calculate(LIMELIGHT_INTERFACE.getX());
 		

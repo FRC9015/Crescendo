@@ -107,7 +107,7 @@ public class RobotContainer {
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new LimelightDrive()));
+				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 				

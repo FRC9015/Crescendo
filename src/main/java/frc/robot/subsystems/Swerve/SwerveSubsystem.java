@@ -162,7 +162,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public Command slowModeOn(){
 		return this.runOnce(
-				()-> slowSpeedMultiplier = 0.5
+				()-> slowSpeedMultiplier = 0.25
 		);
 	}
 

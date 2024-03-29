@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.Constants.LimelightConstants;
 
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -32,15 +34,18 @@ public class LimelightInterface extends SubsystemBase{
     //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
     @Override
     public void periodic() {
-        tagCheck();
-
+        
+        if(getArea() > 0.1){
+            tag = true;
+        }else{
+            tag = false;
+        }
         //updates the X,Y,Area values
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
 
-        SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
-        SmartDashboard.putNumber("Distance", getSpeakerDistance());
+        SmartDashboard.putNumber("SpeakerSetPoint", getAngleToSpeaker());
         SmartDashboard.putBoolean("April Tag", tag);
 
     }
@@ -58,11 +63,6 @@ public class LimelightInterface extends SubsystemBase{
     }
 
     public boolean tagCheck(){
-        if(getArea() > 0.1){
-            tag = true;
-        }else{
-            tag = false;
-        }
         return tag;
     }
 
@@ -97,9 +97,15 @@ public class LimelightInterface extends SubsystemBase{
 
     }
 
-    public double getSetPoint(){
-        double distance = getSpeakerDistance();
+    public double getAngleToSpeaker(){
+        double distance = POSE_ESTIMATOR.getPoseX();
 
-        return (78.3 * Math.exp(-0.0177*distance)) + 25.04;
+        return 58.9589 - (7.70143 * distance);
+    }
+
+    public double getSetPoint(){
+        double angle = getAngleToSpeaker();
+    
+        return (0.484411 - (0.0058831 * angle));
     }
 }

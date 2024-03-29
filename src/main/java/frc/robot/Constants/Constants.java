@@ -70,8 +70,8 @@ public final class Constants {
 	public static final double wheelRadius = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-			new PIDConstants(0.4, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(1.25, 0, 0), // Rotation PID constants
+			new PIDConstants(2, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(1.25, 0.0, 0.0), // Rotation PID constants
 			SwerveConstants.maxSpeed, // Max module speed, in m/s
 			Units.feetToMeters(10/12), // Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -93,9 +93,9 @@ public final class Constants {
 	}
 
 	public static class LimelightConstants {
-		public static final double aprilTag_Height = 57.125;
+		public static final double aprilTag_Height = 57.5;
 		public static final double speakerGoalHeight = 81.8;
 		public static final double LimelightAngle = 32;
-		public static final double LimelightHeight = 11.5;
+		public static final double LimelightHeight = 12.5;
 	}
 }
