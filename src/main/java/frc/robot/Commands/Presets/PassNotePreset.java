@@ -6,7 +6,7 @@ import frc.robot.subsystems.PivotSubsystem;
 import static frc.robot.RobotContainer.*;
 
 public class PassNotePreset extends Command{
-    public PassNotePreset(PivotSubsystem PIVOT){
+    public PassNotePreset(){
         addRequirements(PIVOT);
     }
  
