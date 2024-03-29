@@ -1,23 +1,26 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 
 import frc.robot.Constants.Constants.PivotConstants;
 
-public class PivotSubsystem extends SubsystemBase {
 
+public class PivotSubsystem extends SubsystemBase {
+    
     //makes motors
     public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
     public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
     //gets encoders
     public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
-    private final DigitalOutput pivotSensor = new DigitalOutput(2); // TODO Reset when activated in periodic
 
 
     //makes PID for motors
@@ -61,6 +64,10 @@ public class PivotSubsystem extends SubsystemBase {
                 this::movePivotDown,
                 this::stopPivot
         );
+    }
+
+    public Command autoAutoAim(){
+        return this.runOnce(this::autoAim);
     }
     public Command movePivotToIntake(){
         return this.runOnce(this::intake);
@@ -116,15 +123,18 @@ public class PivotSubsystem extends SubsystemBase {
         currentPosition = SetPoint;
     }
 
+    public void autoAim(){
+        setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+    }
+
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putBoolean("pivot zeroed", pivotSensor.get());
+        SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
         
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
-        //uses robotSelf booleans to decide if to run a command
 
         pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
         

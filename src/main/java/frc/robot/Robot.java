@@ -4,14 +4,15 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,11 +20,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
-	private Command autonomousCommand;
+public class Robot extends LoggedRobot{
+	private Command m_autonomousCommand;
 
-	private RobotContainer robotContainer;
-
+	private RobotContainer m_robotContainer;
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -33,21 +33,22 @@ public class Robot extends LoggedRobot {
 	public void robotInit() {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
+		m_robotContainer = new RobotContainer();
+
 		Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
-		if (isReal()) {
-			Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-			new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-		} else {
-			setUseTiming(false); // Run as fast as possible
-			//String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+if (isReal()) {
+    //Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+} else {
+    setUseTiming(false); // Run as fast as possible
+    String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+    Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+    Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+}
 
-		}
-
-		// Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-		Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-		
-		robotContainer = new RobotContainer();
+// Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+Logger.start();
 	}
 
 	/**
@@ -59,44 +60,44 @@ public class Robot extends LoggedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-
-		if (isEnabled()) {
-			RobotContainer.LEDS.indicateNote();
-			RobotContainer.LEDS.indicateShooter();
-			RobotContainer.LEDS.updateLEDs();
+		if (isEnabled()){
+			m_robotContainer.LED_SUBSYSTEM.indicateNote();
+			m_robotContainer.LED_SUBSYSTEM.updateLEDs();
 		}
-
 		// Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
 		// commands, running already-scheduled commands, removing finished or interrupted commands,
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
+		
 	}
 
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {
-		robotContainer.disableRobot();
+		m_robotContainer.disableRobot();
 	}
+
 	@Override
 	public void disabledPeriodic() {}
+
 	/** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
 	@Override
 	public void autonomousInit() {
+		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-		// schedule the autonomous command (example)
-		autonomousCommand = robotContainer.getAutonomousCommand();
-
-		if(autonomousCommand !=null){
-			autonomousCommand.schedule();
+		if(m_autonomousCommand != null){
+			m_autonomousCommand.schedule();
 		}
+
+		
+	
+		// schedule the autonomous command (example)
 	}
 
 	/** This function is called periodically during autonomous. */
 	@Override
-	public void autonomousPeriodic() {
-
-	}
+	public void autonomousPeriodic() {}
 
 	@Override
 	public void teleopInit() {
@@ -104,18 +105,16 @@ public class Robot extends LoggedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.cancel();
 		}
-		robotContainer.enableRobot();
-		
-		
+
+		m_robotContainer.enableRobot();
 	}
 
 	/** This function is called periodically during operator control. */
 	@Override
-	public void teleopPeriodic() {
-	}
+	public void teleopPeriodic() {}
 
 	@Override
 	public void testInit() {
@@ -133,6 +132,5 @@ public class Robot extends LoggedRobot {
 
 	/** This function is called periodically whilst in simulation. */
 	@Override
-	public void simulationPeriodic() {
-	}
+	public void simulationPeriodic() {}
 }

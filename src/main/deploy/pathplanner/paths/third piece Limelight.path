@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.35,
-        "y": 5.55
+        "x": 3.22,
+        "y": 5.67
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.35,
-        "y": 5.55
+        "x": 2.7488309102616433,
+        "y": 5.179068104365135
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 5.55
+        "x": 2.484097705225823,
+        "y": 4.038562638842631
       },
       "prevControl": {
-        "x": 1.9,
-        "y": 5.55
+        "x": 1.1704061657530866,
+        "y": 4.038562638842631
+      },
+      "nextControl": {
+        "x": 2.8659254456254897,
+        "y": 4.038562638842631
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.22,
+        "y": 5.67
+      },
+      "prevControl": {
+        "x": 2.3896008946587544,
+        "y": 6.0414943366000315
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake Note",
-      "waypointRelativePos": 0.35,
+      "name": "intake",
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +57,13 @@
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
+                "name": "intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
               }
             }
           ]
@@ -50,7 +72,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -61,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Comp Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
