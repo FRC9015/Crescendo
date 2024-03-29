@@ -41,8 +41,6 @@ public class PoseEstimator extends SubsystemBase{
                 VecBuilder.fill(0.4, 0.4, 0.1));
 
         initShuffleboard();
-
-        //swerveSubsystem.setUpHeadingPID();
     }
 
     private void initShuffleboard(){
