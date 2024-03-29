@@ -41,7 +41,7 @@ public class InputManager {
     }
 
     private static InputManager Instance;
-    public static CommandGenericHID driveController;
+    private CommandGenericHID driveController;
     private CommandGenericHID operatorController;
 
     private double pressThreshold = InputConstants.defaultTriggerPressThreshold;
