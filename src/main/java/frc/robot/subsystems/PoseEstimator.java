@@ -39,7 +39,7 @@ public class PoseEstimator extends SubsystemBase{
                 swerveSubsystem.getPositions(),
                 initialPose,
                 VecBuilder.fill(0.1, 0.1, 0.1),
-                VecBuilder.fill(0.4, 0.4, 0.1));
+                VecBuilder.fill(1, 1, 0.1));
 
         initShuffleboard();
     }
@@ -82,8 +82,6 @@ public class PoseEstimator extends SubsystemBase{
 
 
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
-        SmartDashboard.putNumber("Distance", getPoseX());
-        SmartDashboard.putNumber("turn", getPoseY());
         Logger.recordOutput("Odom/Pose", getEstimatedPose());
 
         if(LIMELIGHT_INTERFACE.tagCheck()){

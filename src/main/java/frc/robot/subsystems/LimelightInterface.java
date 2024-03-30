@@ -1,13 +1,21 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.Constants.FieldConstants;
 import frc.robot.Constants.Constants.LimelightConstants;
 
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
+import java.lang.reflect.Field;
+
 import org.littletonrobotics.junction.AutoLogOutput;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -18,6 +26,8 @@ public class LimelightInterface extends SubsystemBase{
     private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
     private static boolean tag = false;
+
+    private double noteVelocity = 15;
     //takes the X,Y, and area values from the limelight networktable
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
@@ -45,8 +55,10 @@ public class LimelightInterface extends SubsystemBase{
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
 
-        SmartDashboard.putNumber("SpeakerSetPoint", getAngleToSpeaker());
+        SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
         SmartDashboard.putBoolean("April Tag", tag);
+        SmartDashboard.putNumber("distance", getSpeakerDistance());
+        SmartDashboard.putString("Angle", getSpeakerAngle().toString());
 
     }
 
@@ -86,26 +98,34 @@ public class LimelightInterface extends SubsystemBase{
     }
 
     public double getSpeakerDistance(){
+       var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
+    
+        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().getDistance(speakerPose); 
+    }
 
-        double distance = 
-            (LimelightConstants.aprilTag_Height - LimelightConstants.LimelightHeight)
-                / Math.tan(
-                    (Math.PI / 180.0)
-                        * (LimelightConstants.LimelightAngle + getTY()));
-        
-        return distance/Math.cos(getTX() * (Math.PI / 180));
+    public Rotation2d getSpeakerAngle(){
+        var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
 
+        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().minus(speakerPose).getAngle();
     }
 
     public double getAngleToSpeaker(){
-        double distance = POSE_ESTIMATOR.getPoseX();
+        double distance = getSpeakerDistance();
 
-        return 58.9589 - (7.70143 * distance);
+        return 56.3231 - (6.9771 * distance);
     }
 
     public double getSetPoint(){
-        double angle = getAngleToSpeaker();
-    
-        return (0.484411 - (0.0058831 * angle));
+        
+        return (0.484411 - (0.0058831 * getTargetAngle()));
+    }
+
+    public double getTargetAngle(){
+
+        double flightTime = getSpeakerDistance()/noteVelocity;
+        double dropDistance = (9.8/2) * (flightTime*flightTime);
+        double newHeight = dropDistance  + LimelightConstants.speakerGoalHeight;
+
+        return Units.radiansToDegrees(Math.atan(Math.abs(newHeight/getSpeakerDistance())));
     }
 }

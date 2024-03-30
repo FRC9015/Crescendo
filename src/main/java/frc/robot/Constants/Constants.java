@@ -4,6 +4,8 @@
 
 package frc.robot.Constants;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -46,6 +48,8 @@ public final class Constants {
 
 		public static final int ampShooterMotor1ID = 53;
 		public static final int ampShooterMotor2ID = 54;
+
+		public static final double shooterHeight = Units.inchesToMeters(20);
 	}
 
 	public static class PivotConstants {
@@ -70,8 +74,8 @@ public final class Constants {
 	public static final double wheelRadius = Units.inchesToMeters(2);
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-			new PIDConstants(2, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(1.25, 0.0, 0.0), // Rotation PID constants
+			new PIDConstants(1, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(1.4, 0.0, 0.0), // Rotation PID constants
 			SwerveConstants.maxSpeed, // Max module speed, in m/s
 			Units.feetToMeters(10/12), // Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -94,8 +98,17 @@ public final class Constants {
 
 	public static class LimelightConstants {
 		public static final double aprilTag_Height = 57.5;
-		public static final double speakerGoalHeight = 81.8;
-		public static final double LimelightAngle = 32;
 		public static final double LimelightHeight = 12.5;
+		public static final double speakerGoalHeight = Units.inchesToMeters(95 - LimelightHeight);
+		public static final double LimelightAngle = 32;
+		
+	}
+
+	public static class FieldConstants {
+		public static final double Speaker_X_Blue = Units.inchesToMeters(-1.5 + 5);
+		public static final double Speaker_X_Red = Units.inchesToMeters(652.3- 5);
+		public static final double SpeakerY = Units.inchesToMeters(218.42);
+		public static final Translation2d Speaker_Red_Pose = new Translation2d(Speaker_X_Red,SpeakerY);
+		public static final Translation2d Speaker_Blue_Pose = new Translation2d(Speaker_X_Blue,SpeakerY);
 	}
 }

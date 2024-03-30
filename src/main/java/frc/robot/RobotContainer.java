@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -110,7 +112,8 @@ public class RobotContainer {
 				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-				
+				InputManager.getInstance().getOperatorPOV(0).onTrue(PIVOT.raisePivot());
+				InputManager.getInstance().getOperatorPOV(180).onTrue(PIVOT.lowerPivot());		
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
@@ -136,7 +139,13 @@ public class RobotContainer {
 		
 	}
 
-	public void teleopRunning(){
-		LED_SUBSYSTEM.updateLEDs();
+	
+
+	public static boolean IsRed(){
+		var alliance = DriverStation.getAlliance();
+				if (alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				}
+				return false;
 	}
 }

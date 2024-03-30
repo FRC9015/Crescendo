@@ -3,69 +3,69 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.22,
+        "x": 2.88,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.581672937045963,
-        "y": 6.242561695416204
+        "x": 2.9405777057871774,
+        "y": 6.606771829337803
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.384620776340044,
-        "y": 7.029255584686857
+        "x": 2.88,
+        "y": 7.116666016828042
       },
       "prevControl": {
-        "x": 1.8018845620654862,
-        "y": 7.036539787365289
+        "x": 2.8872307611518506,
+        "y": 7.26235007039668
       },
       "nextControl": {
-        "x": 3.0808462464882327,
-        "y": 7.020552766310005
+        "x": 2.8304776327133214,
+        "y": 6.118898415724019
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.22,
-        "y": 7.029255584686857
+        "x": 2.88,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 2.6733198532944416,
-        "y": 7.049256077859011
-      },
-      "nextControl": {
-        "x": 3.817304619631422,
-        "y": 7.007402976651561
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.22,
-        "y": 5.67439388649851
-      },
-      "prevControl": {
-        "x": 3.0814004810377296,
-        "y": 6.460430818596995
+        "x": 2.7414004810377293,
+        "y": 6.286036932098485
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.05,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.55,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.85,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 1.0999999999999999,
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -88,8 +88,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -99,7 +99,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Limelight",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

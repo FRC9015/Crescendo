@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8539869673657065,
-        "y": 2.7168512297668608
+        "x": 0.7512091727295315,
+        "y": 1.663218397925442
       },
       "isLocked": false,
       "linkedName": null
@@ -49,10 +49,33 @@
       "waypointRelativePos": 0.75,
       "rotationDegrees": 0,
       "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.05,
+      "rotationDegrees": 0,
+      "rotateFast": false
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.75,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 2.5,
@@ -65,7 +88,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Centerline Paths",
+  "folder": "CenterLine",
   "previewStartingState": {
     "rotation": -58.32453126189079,
     "velocity": 0

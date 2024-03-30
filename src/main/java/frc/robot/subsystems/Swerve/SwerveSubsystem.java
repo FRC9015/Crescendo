@@ -70,7 +70,7 @@ public class SwerveSubsystem extends SubsystemBase {
 			this::getCurrentPose, 
 			this::resetOdom, 
 			this::getChassisSpeedsAuto, 
-			this::driveRobotRelative, 
+			this::PathplannerDrive, 
 			Constants.PATH_FOLLOWER_CONFIG,
 			() -> {
 				// Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -91,8 +91,10 @@ public class SwerveSubsystem extends SubsystemBase {
 		return ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, rotationalVelocity, POSE_ESTIMATOR.getEstimatedPose().getRotation()),0.02);
 	}
 
-	public void driveRobotRelative(ChassisSpeeds speeds) {
+	public void PathplannerDrive(ChassisSpeeds speeds) {
 		ChassisSpeeds targetSpeeds = new ChassisSpeeds(-speeds.vxMetersPerSecond,-speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond);
+		
+		targetSpeeds = ChassisSpeeds.discretize(targetSpeeds, dtSeconds);
 
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(targetSpeeds);
 		for (int i = 0; i < modules.length; i++) {
@@ -137,7 +139,7 @@ public class SwerveSubsystem extends SubsystemBase {
 				path,
 				this::getCurrentPose, // Robot pose supplier
 				this::getChassisSpeedsAuto,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-				this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+				this::PathplannerDrive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
 				new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
 						new PIDConstants(0, 0.0, 0.0), // Translation PID constants
 						new PIDConstants(0, 0.0, 0.0), // Rotation PID constants
@@ -162,7 +164,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public Command slowModeOn(){
 		return this.runOnce(
-				()-> slowSpeedMultiplier = 0.25
+				()-> slowSpeedMultiplier = 0.2
 		);
 	}
 

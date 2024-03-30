@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +36,7 @@ public class PivotSubsystem extends SubsystemBase {
     TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
 
     private double currentPosition = 0;
+
 
     public PivotSubsystem(){
 
@@ -120,12 +122,14 @@ public class PivotSubsystem extends SubsystemBase {
 
     public void setCurrentPosition(double SetPoint){
         pivotPIDController.setP(2);
-        currentPosition = SetPoint;
+        currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }
 
     public void autoAim(){
-        setCurrentPosition(LIMELIGHT_INTERFACE.getAngleToSpeaker());
+        setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
     }
+
+     
 
     @Override
     public void periodic(){

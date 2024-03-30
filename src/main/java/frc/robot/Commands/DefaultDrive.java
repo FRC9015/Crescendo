@@ -21,6 +21,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
@@ -58,7 +59,7 @@ public class DefaultDrive extends Command {
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.2);
 		double inputDir = Math.atan2(inputY, inputX);
-		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
+		double forwardDirectionSign = (RobotContainer.IsRed() ? 1.0 : -1.0);
 
 		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 

@@ -1,6 +1,7 @@
 package frc.robot.Commands;
 
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.RobotContainer.SWERVE;
 
 
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
+import frc.robot.RobotContainer;
+
 import static frc.robot.Constants.Constants.SwerveConstants;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -20,10 +23,14 @@ public class LimelightDrive extends Command{
         addRequirements(SWERVE);
     }
 
-    PIDController L_PID = new PIDController(0.05, 0, 0);
+    PIDController L_PID = new PIDController(0.05, 0.005, 0);
 
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
+    @Override
+    public void initialize() {
+        L_PID.reset();
+    }
 
     @Override
     public void execute() {
@@ -33,13 +40,13 @@ public class LimelightDrive extends Command{
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.2);
 		double inputDir = Math.atan2(inputY, inputX);
-		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
+		double forwardDirectionSign = (RobotContainer.IsRed() ? 1.0 : -1.0);
 
 		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double rotationalVelocity = L_PID.calculate(LIMELIGHT_INTERFACE.getX());
+		double rotationalVelocity = L_PID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
 		
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
 
