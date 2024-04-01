@@ -84,9 +84,9 @@ public class PoseEstimator extends SubsystemBase{
         SmartDashboard.putString("BOtPose",getEstimatedPose().toString());
         Logger.recordOutput("Odom/Pose", getEstimatedPose());
 
-        if(LIMELIGHT_INTERFACE.tagCheck()){
-            updatePoseEstimator();
-        }
+        // if(LIMELIGHT_INTERFACE.tagCheck()){
+        //     updatePoseEstimator();
+        // }
     }
 
     public Pose2d getEstimatedPose(){

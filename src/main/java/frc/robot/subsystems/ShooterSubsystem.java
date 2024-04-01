@@ -56,9 +56,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
-                new WaitCommand(1.5),
+                new WaitCommand(0.8),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.5),
+                new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }
@@ -66,9 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command autoShootNoteLimelight(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
-                new WaitCommand(0.5),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.3),
+                new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }

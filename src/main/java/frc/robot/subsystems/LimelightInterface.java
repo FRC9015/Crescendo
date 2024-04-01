@@ -7,6 +7,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants.FieldConstants;
 import frc.robot.Constants.Constants.LimelightConstants;
+import frc.robot.Constants.Constants.ShooterConstants;
 
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
@@ -27,7 +28,7 @@ public class LimelightInterface extends SubsystemBase{
 
     private static boolean tag = false;
 
-    private double noteVelocity = 15;
+    
     //takes the X,Y, and area values from the limelight networktable
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
@@ -122,7 +123,7 @@ public class LimelightInterface extends SubsystemBase{
 
     public double getTargetAngle(){
 
-        double flightTime = getSpeakerDistance()/noteVelocity;
+        double flightTime = getSpeakerDistance()/ShooterConstants.noteVelocity;
         double dropDistance = (9.8/2) * (flightTime*flightTime);
         double newHeight = dropDistance  + LimelightConstants.speakerGoalHeight;
 

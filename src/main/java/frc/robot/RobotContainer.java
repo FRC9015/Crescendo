@@ -34,7 +34,6 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -100,7 +99,7 @@ public class RobotContainer {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
-				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
+				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator).repeatedly());
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
 				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP().repeatedly());

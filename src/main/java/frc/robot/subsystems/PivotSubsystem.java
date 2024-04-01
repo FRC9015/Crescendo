@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
 import frc.robot.Constants.Constants.PivotConstants;
 
@@ -126,7 +127,9 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void autoAim(){
+        POSE_ESTIMATOR.updatePoseEstimator();
         setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+        
     }
 
      

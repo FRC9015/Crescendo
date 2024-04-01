@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.5
+      "x": 0.7,
+      "y": 4.5
     },
-    "rotation": 0.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -26,13 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SubWoofer Middle Park"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "bb"
+            "pathName": "Centerline 4 Shoot Source Side"
           }
         },
         {
@@ -51,36 +45,6 @@
           "type": "named",
           "data": {
             "name": "pivotToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Limelight Second Rotation"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootLimelight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Limelight Third Rotation"
           }
         },
         {
