@@ -4,7 +4,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.math.controller.BangBangController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -15,11 +17,13 @@ import frc.robot.Constants.Constants.ShooterConstants;
 
 
 public class ShooterSubsystem extends SubsystemBase {
+    private final DigitalOutput speakerSensor = new DigitalOutput(0);
+
     private final double motorMaxFreeSpeed = 6784;
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
-    private BangBangController speakerPIDTop = new BangBangController();
-    private BangBangController speakerPIDBottom = new BangBangController();
+    private PIDController speakerPIDTop = new PIDController(500,0,20);
+    private PIDController speakerPIDBottom = new PIDController(500,0,20);
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
             MotorType.kBrushless);
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
@@ -48,48 +52,41 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command shootNoteToSpeaker() {
-        // TODO change this into a Sequential Command. We should set the first command
-        // in the sequence to set the pivot angle.
         return this.startEnd(
                 this::setSpeakerShooterMotorSpeedsSubWoofer,
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command autoShootNoteToSpeaker() {
+    public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
-                new WaitCommand(3),
-                new InstantCommand(this::setAmpIntakeSpeeds),
-                new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds),
+                new WaitCommand(1.5),
+                new InstantCommand(amp::setAmpIntakeSpeeds),
+                new WaitCommand(0.5),
+                new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
-    public Command shootNoteToAmp() {
-        return this.startEnd(
-                this::setAmpShooterMotorSpeeds,
-                this::stopAmpShooterMotorSpeeds
-        );
+    public Command autoShootNoteLimelight(AmpSubsystem amp) {
+        return new SequentialCommandGroup(
+                new InstantCommand(this::setSpeakerShooterMotorSpeeds),
+                new WaitCommand(0.5),
+                new InstantCommand(amp::setAmpIntakeSpeeds),
+                new WaitCommand(0.3),
+                new InstantCommand(amp::stopAmpShooterMotorSpeeds),
+                new InstantCommand(this::stopSpeakerShooterMotors));
     }
 
-    public Command autoShootNoteToAmp(){
-        return new SequentialCommandGroup(
-                new InstantCommand(this::setAmpShooterMotorSpeeds),
-                new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds));
+    public Command revShooter(){
+        return this.runOnce(this::revShooterMotors);
     }
+
 
     public Command stopShooter() {
         return this.runOnce(
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command ampIntake(){
-        return this.startEnd(
-                this::setAmpIntakeSpeeds,
-                this::stopAmpShooterMotorSpeeds
-        );
-    }
 
     public Command shooterBackward(){
         return this.startEnd(
@@ -97,12 +94,6 @@ public class ShooterSubsystem extends SubsystemBase {
                 this::stopSpeakerShooterMotors);
     }
 
-    public Command autoAmpIntake(){
-        return new SequentialCommandGroup(
-                new InstantCommand(this::setAmpIntakeSpeeds),
-                new WaitCommand(1),
-                new InstantCommand(this::stopAmpShooterMotorSpeeds));
-    }
 
     public Command autoBackwardShooter(){
         return new SequentialCommandGroup(
@@ -116,8 +107,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void setIdleShooterSpeeds() {
-        speakerPIDTop.setSetpoint(0.2 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.2 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.3 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.3 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = true;
     }
@@ -144,11 +135,6 @@ public class ShooterSubsystem extends SubsystemBase {
         idleMode = false;
     }
 
-    private void setAmpShooterMotorSpeeds() {
-        double motorSpeed = 0.5;// needs to be tuned
-        ampShooterMotorTop.set(-motorSpeed);
-        ampShooterMotorBottom.set(motorSpeed);
-    }
 
     private void stopAmpShooterMotorSpeeds() {
         ampShooterMotorTop.stopMotor();
@@ -168,6 +154,16 @@ public class ShooterSubsystem extends SubsystemBase {
         idleMode = false;
     }
 
+    public void revShooterMotors(){
+        speakerPIDTop.setSetpoint(0.6 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.4 * motorMaxFreeSpeed);
+        shooterIsRunning = true;
+        idleMode = false;
+    }
+    public boolean getShooterSensor() {
+        return speakerSensor.get();
+    }
+
     public boolean shooterIsReady(){
         return (speakerPIDTop.atSetpoint() && speakerPIDBottom.atSetpoint() && shooterIsRunning && !idleMode);
     }
@@ -179,6 +175,8 @@ public class ShooterSubsystem extends SubsystemBase {
             speakerMotorTop.setVoltage(speakerPIDTop.calculate(motorVelocity(speakerMotorTopEncoder)) * 10);
             speakerMotorBottom.setVoltage(speakerPIDBottom.calculate(motorVelocity(speakerMotorBottomEncoder)) * 10);
         }
+        SmartDashboard.putBoolean("Shooter Sensor", speakerSensor.get());
+
     }
 
 

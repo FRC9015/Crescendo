@@ -55,7 +55,7 @@ public class RobotContainer {
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
-	Trigger shooterSensorTrigger = new Trigger(SHOOTER::);
+	Trigger shooterSensorTrigger = new Trigger(SHOOTER::getShooterSensor);
 
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -69,7 +69,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("revShooter", SHOOTER.revShooter());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
-		NamedCommands.registerCommand("intake", new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
+		NamedCommands.registerCommand("intake", new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor));
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
 		NamedCommands.registerCommand("ampShoot", AMP.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
@@ -84,7 +84,7 @@ public class RobotContainer {
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
-		shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode());
+		shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode()).onFalse(SHOOTER.stopShooter());
 	}
 
 
@@ -101,7 +101,7 @@ public class RobotContainer {
 	private void configureBindings() {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());

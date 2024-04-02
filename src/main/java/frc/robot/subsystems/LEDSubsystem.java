@@ -34,29 +34,21 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setColor(Color color){
-        bufferedAnimation = new TwinkleAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, TwinkleAnimation.TwinklePercent.Percent100);
-        //candle.modulateVBatOutput(0.9);
+        bufferedAnimation = new ColorFlowAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, ColorFlowAnimation.Direction.Forward);
     }
-    public void setNoteAnimation() {
-        // create a rainbow animation:
-        // - 90% brightness
-        // - 1/2 speed
-        // - 64 LEDs
-        RainbowAnimation rainbowAnim = new RainbowAnimation(0.9, 0.5, 64);
-        candle.animate(rainbowAnim);
-    }
+
     public void strobeAnimation(Color color){
         bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
     }
 
     public void indicateNote() {
-        if (intake.getShooterSensor() && intake.getHandoffStatus()){
+        if (shooter.getShooterSensor() && intake.getHandoffStatus()){
             setColor(Color.GREEN);
         }
         else if (intake.getHandoffStatus()) {
             setColor(Color.RED);
         }
-        if (intake.getShooterSensor()) {
+        if (shooter.getShooterSensor()) {
             setColor(Color.GREEN);
         }
     }
@@ -70,10 +62,6 @@ public class LEDSubsystem extends SubsystemBase {
     public void updateLEDs() {
         candle.animate(bufferedAnimation);
         strobeAnimation(Color.black);
-    }
-
-    public void clearLEDs(){
-        candle.clearAnimation(0);
     }
 
     @Override
