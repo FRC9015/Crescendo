@@ -49,7 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command shootNoteToSpeaker() {
         return this.startEnd(
                 this::setSpeakerShooterMotorSpeedsSubWoofer,
-                this::stopSpeakerShooterMotors);
+                this::setIdleShooterSpeeds);
     }
 
     public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
@@ -59,7 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 new InstantCommand(amp::setAmpIntakeSpeeds),
                 new WaitCommand(0.5),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
-                new InstantCommand(this::stopSpeakerShooterMotors));
+                new InstantCommand(this::setIdleShooterSpeeds));
     }
 
     public Command autoShootNoteLimelight(AmpSubsystem amp) {
@@ -69,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 new InstantCommand(amp::setAmpIntakeSpeeds),
                 new WaitCommand(0.3),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
-                new InstantCommand(this::stopSpeakerShooterMotors));
+                new InstantCommand(this::setIdleShooterSpeeds));
     }
 
     public Command revShooter(){
@@ -86,7 +86,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command shooterBackward(){
         return this.startEnd(
                 this::backwardsShooter,
-                this::stopSpeakerShooterMotors);
+                this::setIdleShooterSpeeds);
     }
 
 
@@ -94,19 +94,16 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(this::backwardsShooter),
                 new WaitCommand(3),
-                new InstantCommand(this::stopSpeakerShooterMotors));
+                new InstantCommand(this::setIdleShooterSpeeds));
     }
 
     public Command enableIdleMode(){
-        if (motorVelocity(speakerMotorBottomEncoder)<(0.2 * motorMaxFreeSpeed)){
-            return this.runOnce(this::setIdleShooterSpeeds);
-        }
-        return this.revShooter();
+        return this.runOnce(this::setIdleShooterSpeeds);
     }
 
-    private void setIdleShooterSpeeds() {
-        speakerPIDTop.setSetpoint(0.4 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.3 * motorMaxFreeSpeed);
+    public void setIdleShooterSpeeds() {
+        speakerPIDTop.setSetpoint(0.2 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.2 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = true;
     }
@@ -135,8 +132,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     private void backwardsShooter(){
-        speakerPIDTop.setSetpoint(-0.8 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(-0.8 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(-0.4 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(-0.4 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = false;
     }
