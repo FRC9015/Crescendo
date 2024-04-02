@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,8 +23,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double motorMaxFreeSpeed = 6784;
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
-    private PIDController speakerPIDTop = new PIDController(500,0,20);
-    private PIDController speakerPIDBottom = new PIDController(500,0,20);
+    private PIDController speakerPIDTop = new PIDController((10/motorMaxFreeSpeed),0,0);
+    private PIDController speakerPIDBottom = new PIDController((10/motorMaxFreeSpeed),0,0);
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
             MotorType.kBrushless);
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
@@ -175,11 +176,13 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (shooterIsRunning) {
-            speakerMotorTop.setVoltage(speakerPIDTop.calculate(motorVelocity(speakerMotorTopEncoder)) * 10);
-            speakerMotorBottom.setVoltage(speakerPIDBottom.calculate(motorVelocity(speakerMotorBottomEncoder)) * 10);
+            double setPointTop = MathUtil.clamp(speakerPIDTop.calculate(motorVelocity(speakerMotorTopEncoder)),-10,10);
+            double setPointBottom = MathUtil.clamp(speakerPIDBottom.calculate(motorVelocity(speakerMotorBottomEncoder)),-10,10);
+
+            speakerMotorTop.setVoltage(setPointTop);
+            speakerMotorBottom.setVoltage(setPointBottom);
         }
         SmartDashboard.putBoolean("Shooter Sensor", speakerSensor.get());
-
     }
 
 
