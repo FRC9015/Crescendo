@@ -84,7 +84,7 @@ public class RobotContainer {
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 
-		shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode()).onFalse(SHOOTER.stopShooter());
+		shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode());
 	}
 
 

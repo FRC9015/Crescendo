@@ -103,11 +103,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command enableIdleMode(){
-        return this.runOnce(this::setIdleShooterSpeeds);
+        if (motorVelocity(speakerMotorBottomEncoder)<(0.2 * motorMaxFreeSpeed)){
+            return this.runOnce(this::setIdleShooterSpeeds);
+        }
+        return this.revShooter();
     }
 
     private void setIdleShooterSpeeds() {
-        speakerPIDTop.setSetpoint(0.3 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.4 * motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.3 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = true;
