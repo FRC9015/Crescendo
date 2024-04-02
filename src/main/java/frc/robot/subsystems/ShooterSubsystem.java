@@ -30,10 +30,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkFlex speakerMotorBottom = new CANSparkFlex(ShooterConstants.speakerShooterMotor2ID,
             MotorType.kBrushless);
 
-    private final CANSparkFlex ampShooterMotorTop = new CANSparkFlex(ShooterConstants.ampShooterMotor1ID,
-            MotorType.kBrushless);
-    private final CANSparkFlex ampShooterMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
-            MotorType.kBrushless);
 
     RelativeEncoder speakerMotorTopEncoder = speakerMotorTop.getEncoder();
     RelativeEncoder speakerMotorBottomEncoder = speakerMotorBottom.getEncoder();
@@ -41,8 +37,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         speakerMotorTop.setSmartCurrentLimit(40);
         speakerMotorBottom.setSmartCurrentLimit(40);
-        ampShooterMotorTop.setSmartCurrentLimit(30);
-        ampShooterMotorBottom.setSmartCurrentLimit(30);
         speakerPIDTop.setTolerance(200);
         speakerPIDBottom.setTolerance(200);
     }
@@ -118,7 +112,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
-        speakerPIDTop.setSetpoint(0.7 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = false;
@@ -139,17 +133,6 @@ public class ShooterSubsystem extends SubsystemBase {
         idleMode = false;
     }
 
-
-    private void stopAmpShooterMotorSpeeds() {
-        ampShooterMotorTop.stopMotor();
-        ampShooterMotorBottom.stopMotor();
-    }
-
-    private void setAmpIntakeSpeeds(){
-        double motorSpeed = 0.8; //needs to be tuned
-        ampShooterMotorTop.set(motorSpeed);
-        ampShooterMotorBottom.set(motorSpeed);
-    }
 
     private void backwardsShooter(){
         speakerPIDTop.setSetpoint(-0.8 * motorMaxFreeSpeed);
