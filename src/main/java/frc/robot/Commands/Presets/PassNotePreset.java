@@ -21,6 +21,6 @@ public class PassNotePreset extends Command{
     @Override
     public void end(boolean interrupted) {
         PIVOT.intake();
-        SHOOTER.stopShooter();
+        SHOOTER.setIdleShooterSpeeds();
     }   
 }
