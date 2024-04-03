@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4,
+        "x": 1.95,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.26,
+        "x": 1.9999999999999998,
         "y": 5.5
       },
       "isLocked": false,
@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 3.3097145165009048,
-        "y": 5.5
+        "x": 3.418977556677385,
+        "y": 4.989678834725904
       },
       "prevControl": {
-        "x": 3.0597145165009048,
-        "y": 5.5
+        "x": 3.468977556677385,
+        "y": 4.989678834725904
       },
       "nextControl": {
-        "x": 3.5597145165009048,
-        "y": 5.5
+        "x": 3.368977556677385,
+        "y": 4.989678834725904
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.204579942434064,
+        "x": 1.95,
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.004579942434064,
-        "y": 5.5
+        "x": 1.9983121224129283,
+        "y": 5.487118275427639
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -58,6 +58,12 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
               }
             }
           ]
@@ -72,14 +78,14 @@
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 0.0,
+    "velocity": 0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Limelight",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

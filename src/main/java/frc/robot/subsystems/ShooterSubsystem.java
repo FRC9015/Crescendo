@@ -67,7 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.4),
+                new WaitCommand(0.45),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }
@@ -162,8 +162,8 @@ public class ShooterSubsystem extends SubsystemBase {
             speakerMotorTop.setVoltage(outputTop);
             speakerMotorBottom.setVoltage(outputBottom);
             // If Issues Persist, Log Data With the Following Code:
-//            Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
-//            Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
+           Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
+           Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
 //            Logger.recordOutput("Shooter/TopMotor/PID/Setpoint", speakerPIDTop.getSetpoint());
 //            Logger.recordOutput("Shooter/BottomMotor/PID/Setpoint", speakerPIDBottom.getSetpoint());
 //            Logger.recordOutput("Shooter/TopMotor/PID/Output", outputTop);
@@ -180,5 +180,4 @@ public class ShooterSubsystem extends SubsystemBase {
     public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
     }
-
 }

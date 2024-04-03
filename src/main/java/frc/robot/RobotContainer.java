@@ -111,8 +111,8 @@ public class RobotContainer {
 				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-				InputManager.getInstance().getOperatorPOV(0).onTrue(PIVOT.raisePivot());
-				InputManager.getInstance().getOperatorPOV(180).onTrue(PIVOT.lowerPivot());		
+				InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
+				InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());		
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());

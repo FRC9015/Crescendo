@@ -14,8 +14,11 @@ import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import java.lang.reflect.Field;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -32,7 +35,7 @@ public class LimelightInterface extends SubsystemBase{
     //takes the X,Y, and area values from the limelight networktable
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
-    NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
+    NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area\][]
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("limelight");
@@ -101,7 +104,7 @@ public class LimelightInterface extends SubsystemBase{
     public double getSpeakerDistance(){
        var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
     
-        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().getDistance(speakerPose); 
+        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().getDistance(speakerPose) - Units.inchesToMeters(14); 
     }
 
     public Rotation2d getSpeakerAngle(){
@@ -125,8 +128,11 @@ public class LimelightInterface extends SubsystemBase{
 
         double flightTime = getSpeakerDistance()/ShooterConstants.noteVelocity;
         double dropDistance = (9.8/2) * (flightTime*flightTime);
+        Logger.recordOutput("DropDistance", dropDistance);
         double newHeight = dropDistance  + LimelightConstants.speakerGoalHeight;
+        var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
 
+        Logger.recordOutput("Target", new Pose3d(speakerPose.getX(), speakerPose.getY(), newHeight, new Rotation3d()));
         return Units.radiansToDegrees(Math.atan(Math.abs(newHeight/getSpeakerDistance())));
     }
 }

@@ -30,21 +30,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "autoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootLimelight"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "second piece limelight"
+            "pathName": "bb"
           }
         },
         {
@@ -60,9 +48,39 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "third piece Limelight"
+            "pathName": "Limelight Second Rotation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Limelight Third Rotation"
           }
         },
         {

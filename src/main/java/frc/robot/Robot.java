@@ -10,6 +10,9 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import com.pathplanner.lib.commands.FollowPathCommand;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -38,7 +41,7 @@ public class Robot extends LoggedRobot{
 		Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
 if (isReal()) {
-    //Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+    Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 } else {
     setUseTiming(false); // Run as fast as possible
@@ -49,6 +52,7 @@ if (isReal()) {
 
 // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
 Logger.start();
+
 	}
 
 	/**

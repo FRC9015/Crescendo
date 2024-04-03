@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 
+import org.littletonrobotics.junction.Logger;
+
 import frc.robot.Constants.Constants.PivotConstants;
 
 
@@ -43,7 +45,7 @@ public class PivotSubsystem extends SubsystemBase {
 
         //sets PID values of both controllers
         pivotPIDController.setP(2);
-        pivotPIDController.setI(0);
+        pivotPIDController.setI(0.0);
         pivotPIDController.setD(0);
         pivotPIDController.setOutputRange(-1,1.45);
         pivotPIDController.setFF(0.00015);
@@ -127,7 +129,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void autoAim(){
-        POSE_ESTIMATOR.updatePoseEstimator();
+      
         setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
         
     }
@@ -138,7 +140,7 @@ public class PivotSubsystem extends SubsystemBase {
     public void periodic(){
         //puts values on dashboard
         SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
-        
+        Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()-currentPosition);
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);

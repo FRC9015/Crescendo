@@ -18,6 +18,8 @@ import static frc.robot.Constants.Constants.SwerveConstants;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import org.littletonrobotics.junction.Logger;
+
 public class LimelightDrive extends Command{
     public LimelightDrive(){
         addRequirements(SWERVE);
@@ -47,7 +49,7 @@ public class LimelightDrive extends Command{
 		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 		double rotationalVelocity = L_PID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
-		
+		Logger.recordOutput("AutoAim/PID/Error", L_PID.getPositionError());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
 
     }

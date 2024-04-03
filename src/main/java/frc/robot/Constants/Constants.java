@@ -50,9 +50,9 @@ public final class Constants {
 		public static final int ampShooterMotor1ID = 53;
 		public static final int ampShooterMotor2ID = 54;
 
-		public static final double shooterHeight = 20;
+		public static final double shooterHeight = 0;
 
-		public static final double noteVelocity = 10.5;
+		public static final double noteVelocity = 20;
 	}
 
 	public static class PivotConstants {
@@ -78,8 +78,8 @@ public final class Constants {
 	public static final double gearRatio = 6.12;
 	public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
 			new PIDConstants(1, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(1.4, 0.0, 0.0), // Rotation PID constants
-			SwerveConstants.maxSpeed, // Max module speed, in m/s
+			new PIDConstants(5, 0.0, 0.0), // Rotation PID constants
+			4, // Max module speed, in m/s
 			Units.feetToMeters(15/12), // Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
 			);
@@ -102,7 +102,7 @@ public final class Constants {
 	public static class LimelightConstants {
 		public static final double aprilTag_Height = 57.5;
 		public static final double LimelightHeight = 12.5;
-		public static final double speakerGoalHeight = Units.inchesToMeters(95 - ShooterConstants.shooterHeight);
+		public static final double speakerGoalHeight = Units.inchesToMeters(80 - ShooterConstants.shooterHeight);
 		public static final double LimelightAngle = 32;
 		
 	}

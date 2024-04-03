@@ -48,6 +48,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Centerline 4 second note"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "autoAim"

@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -17,7 +20,7 @@ public class HangerSubsystem extends SubsystemBase{
         private final RelativeEncoder hangerEncoder = hangerMotor.getEncoder();
         public HangerSubsystem(){
 
-            hangerPIDController.setP(1);
+            hangerPIDController.setP(5);
             hangerPIDController.setI(0);
             hangerPIDController.setD(0);
        }
@@ -48,5 +51,6 @@ public class HangerSubsystem extends SubsystemBase{
 
             hangerPIDController.setReference(setpoint, ControlType.kPosition);
             SmartDashboard.putNumber("hanger Position", hangerEncoder.getPosition());
+            Logger.recordOutput("Hanger/speed", hangerEncoder.getVelocity());
         }
 }

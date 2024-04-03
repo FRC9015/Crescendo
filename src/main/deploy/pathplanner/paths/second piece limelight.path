@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.88,
+        "x": 3.07,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8903702705364593,
+        "x": 3.0803702705364593,
         "y": 5.549833344564648
       },
       "isLocked": false,
@@ -16,27 +16,27 @@
     },
     {
       "anchor": {
-        "x": 2.2644750051404867,
-        "y": 6.864916655003378
+        "x": 1.7873161567086222,
+        "y": 6.788876896298603
       },
       "prevControl": {
-        "x": 1.933946044762838,
-        "y": 6.75239615785354
+        "x": 1.4567871963309735,
+        "y": 6.676356399148765
       },
       "nextControl": {
-        "x": 4.534356270167834,
-        "y": 7.637642192033963
+        "x": 4.05719742173597,
+        "y": 7.561602433329188
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.88,
+        "x": 3.07,
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.8903702705364593,
+        "x": 3.0803702705364593,
         "y": 5.521703220277189
       },
       "nextControl": null,
@@ -65,6 +65,12 @@
               "data": {
                 "name": "revShooter"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotToIntake"
+              }
             }
           ]
         }
@@ -74,8 +80,8 @@
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 2.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
