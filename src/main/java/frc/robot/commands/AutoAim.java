@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 
-import static frc.robot.RobotContainer.*;
+import static frc.robot.RobotContainer.PIVOT;
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.SHOOTER;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -9,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AutoAim extends Command{
    
     public AutoAim(){
-        addRequirements(PIVOT);
+        addRequirements(PIVOT,LIMELIGHT_INTERFACE,SHOOTER);
     }
     PIDController w_pid = new PIDController(0.1, 0, 0);
     
