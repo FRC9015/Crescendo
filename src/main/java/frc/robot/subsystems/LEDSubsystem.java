@@ -34,11 +34,11 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setColor(Color color){
-        bufferedAnimation = new ColorFlowAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, ColorFlowAnimation.Direction.Forward);
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS);
     }
 
     public void strobeAnimation(Color color){
-        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.1,NUM_LEDS);
     }
 
     public void indicateNote() {
@@ -55,13 +55,13 @@ public class LEDSubsystem extends SubsystemBase {
 
     public void indicateShooter(){
         if (shooter.shooterIsReady()){
-            strobeAnimation(Color.GREEN);
+            setColor(Color.BLUE);
         }
     }
 
     public void updateLEDs() {
         candle.animate(bufferedAnimation);
-        strobeAnimation(Color.black);
+        strobeAnimation(Color.BLACK);
     }
 
     @Override
