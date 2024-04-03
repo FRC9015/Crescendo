@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DefaultDrive;
-import frc.robot.commands.Handoff;
-import frc.robot.commands.LimelightDrive;
-import frc.robot.commands.AutoAim;
-import frc.robot.commands.Presets.AmpPreset;
-import frc.robot.commands.Presets.PassNotePreset;
-import frc.robot.commands.Presets.SubwooferPreset;
+import frc.robot.Commands.DefaultDrive;
+import frc.robot.Commands.Handoff;
+import frc.robot.Commands.LimelightDrive;
+import frc.robot.Commands.AutoAim;
+import frc.robot.Commands.Presets.AmpPreset;
+import frc.robot.Commands.Presets.PassNotePreset;
+import frc.robot.Commands.Presets.SubwooferPreset;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.AmpSubsystem;
@@ -47,11 +47,12 @@ public class RobotContainer {
 			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
-	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
+
+	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
 	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
-	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem();
+	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
 
@@ -66,7 +67,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("revShooter", SHOOTER.revShooter());
 		NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
 		NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
-		NamedCommands.registerCommand("intake", new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
+		NamedCommands.registerCommand("intake", new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor));
 		NamedCommands.registerCommand("stopIntake",INTAKE.stopIntake());
 		NamedCommands.registerCommand("ampShoot", AMP.shootNoteToAmp());
 		NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
@@ -80,8 +81,9 @@ public class RobotContainer {
 		SWERVE.setUpPathPlanner();
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
-
 	}
+
+
 
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -95,7 +97,7 @@ public class RobotContainer {
 	private void configureBindings() {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(INTAKE::getShooterSensor));
+				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
@@ -122,14 +124,14 @@ public class RobotContainer {
 	public void disableRobot(){
 		PIVOT.SubWoofer();
 		INTAKE.stopIntake();
-		SHOOTER.stopShooter();
+		SHOOTER.stopSpeakerShooterMotors();
 		AMP.stopAmp();
 	}
 
 	public void enableRobot(){
 		PIVOT.intake();
 		INTAKE.stopIntake();
-		SHOOTER.stopShooter();
+		SHOOTER.setIdleShooterSpeeds();
 		AMP.stopAmp();
 		
 	}

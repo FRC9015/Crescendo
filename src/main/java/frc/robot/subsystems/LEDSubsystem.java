@@ -10,15 +10,19 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import java.awt.Color;
-import static frc.robot.RobotContainer.*;
 
 public class LEDSubsystem extends SubsystemBase {
     /** Creates a new LED. */
     private static int NUM_LEDS = 110;
     private CANdle candle = new CANdle(Constants.LEDConstants.candleID1);
+    private IntakeSubsystem intake;
+    private ShooterSubsystem shooter;
+
     private Animation bufferedAnimation = new RainbowAnimation(0.7, 0.2,NUM_LEDS);
 
-    public LEDSubsystem() {
+    public LEDSubsystem(IntakeSubsystem intake, ShooterSubsystem shooter) {
+        this.intake = intake;
+        this.shooter = shooter;
         CANdleConfiguration candleConfiguration = new CANdleConfiguration();
         candleConfiguration.statusLedOffWhenActive = true;
         candleConfiguration.disableWhenLOS = false;
@@ -30,40 +34,40 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setColor(Color color){
-        bufferedAnimation = new TwinkleAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS, TwinkleAnimation.TwinklePercent.Percent100);
-        //candle.modulateVBatOutput(0.9);
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0,1,NUM_LEDS);
     }
-    public void setNoteAnimation() {
-        // create a rainbow animation:
-        // - 90% brightness
-        // - 1/2 speed
-        // - 64 LEDs
-        RainbowAnimation rainbowAnim = new RainbowAnimation(0.9, 0.5, 64);
-        candle.animate(rainbowAnim);
-    }
+
     public void strobeAnimation(Color color){
-        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.25,NUM_LEDS);
+        bufferedAnimation = new StrobeAnimation(color.getRed(), color.getGreen(), color.getBlue(),0, 0.1,NUM_LEDS);
     }
 
     public void indicateNote() {
-        if (INTAKE.getShooterSensor() && INTAKE.getHandoffStatus()){
+        if (shooter.getShooterSensor() && intake.getHandoffStatus()){
             setColor(Color.GREEN);
         }
-        else if (INTAKE.getHandoffStatus()) {
+        else if (intake.getHandoffStatus()) {
             setColor(Color.RED);
         }
-        if (INTAKE.getShooterSensor()) {
+        if (shooter.getShooterSensor()) {
             setColor(Color.GREEN);
+        }
+    }
+
+    public void indicateShooter(){
+        if (shooter.shooterIsReady()){
+            setColor(Color.BLUE);
         }
     }
 
     public void updateLEDs() {
         candle.animate(bufferedAnimation);
-        strobeAnimation(Color.black);
+        strobeAnimation(Color.BLACK);
     }
 
-    public void  clearLEDs(){
-        candle.clearAnimation(0);
+    @Override
+    public void periodic() {
+        indicateNote();
+        indicateShooter();
+        updateLEDs();
     }
-
 }

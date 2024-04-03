@@ -15,7 +15,6 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final DigitalOutput speakerSensor = new DigitalOutput(0);
     private final DigitalOutput handoffSensor = new DigitalOutput(1);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
@@ -89,16 +88,6 @@ public class IntakeSubsystem extends SubsystemBase {
         handoffMotor.stopMotor();
     }
 
-    public double getHandoffMotorRPM(){
-        return handoffMotorEncoder.getVelocity();
-    }
-    public boolean getShooterSensor() {
-        return speakerSensor.get();
-    }
-
-    public boolean intakeRunning(){
-        return (getHandoffMotorRPM()>=0.3*6784);
-    }
     public boolean getHandoffStatus(){
 
         return handoffSensor.get();
@@ -107,7 +96,6 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putBoolean("Shooter Sensor", speakerSensor.get());
         SmartDashboard.putBoolean("Intake Sensor",handoffSensor.get());
 
     }
