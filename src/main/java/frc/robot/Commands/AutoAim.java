@@ -31,7 +31,7 @@ public class AutoAim extends Command{
     @Override
     public void end(boolean interrupted) {
         LIMELIGHT_INTERFACE.LEDsOff();
-        SHOOTER.stopSpeakerShooterMotors();
+        SHOOTER.setIdleShooterSpeeds();
         PIVOT.intake();        
     }
     

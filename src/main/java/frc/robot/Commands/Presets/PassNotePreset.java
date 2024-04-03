@@ -2,11 +2,11 @@ package frc.robot.commands.Presets;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.RobotContainer.PIVOT;
+import static frc.robot.RobotContainer.SHOOTER;
 
 public class PassNotePreset extends Command{
     public PassNotePreset(){
-        addRequirements(PIVOT);
-        addRequirements(SHOOTER);
+        addRequirements(PIVOT,SHOOTER);
     }
  
     @Override
