@@ -48,6 +48,7 @@ public class SwerveModule {
 
 		driveEncoder = drive.getEncoder();
 		driveEncoder.setPosition(0.0);
+		driveEncoder.setVelocityConversionFactor(Units.rotationsPerMinuteToRadiansPerSecond(1)/gearRatio*wheelRatio);
 
 		drive.setSmartCurrentLimit(40);
 		turn.setSmartCurrentLimit(30);
@@ -61,19 +62,20 @@ public class SwerveModule {
 		turn.burnFlash();
 	}
 
-	public Rotation2d getDirection() {
-		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
+	public double getDirection() {
+		Rotation2d turnAbsolutePosition = new Rotation2d(Units.rotationsToRadians(encoder.getAbsolutePosition().getValueAsDouble()))
 				.minus(encoderOffset);
+		return turnAbsolutePosition.getRadians();
 	}
 	public SwerveModulePosition getPosition(){
-		return new SwerveModulePosition(-getDriveDistance(), getDirection());
+		return new SwerveModulePosition(-getDriveDistance(), new Rotation2d(getDirection()));
 
 	}
 	public double getDriveDistance(){
-		return driveEncoder.getPosition() / gearRatio * 2 * Math.PI * Units.inchesToMeters(2);
+		return driveEncoder.getPosition() * 2 * PI * wheelRatio / gearRatio;
 	}
 	public void setState(SwerveModuleState state) {
-		this.targetState = SwerveModuleState.optimize(state, getDirection());
+		this.targetState = SwerveModuleState.optimize(state,  new Rotation2d(getDirection()));
 	}
 
 	public SwerveModuleState getTargetState(){
@@ -81,12 +83,12 @@ public class SwerveModule {
 	}
 
 	public SwerveModuleState getMeasuredState() {
-		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection());
+		return new SwerveModuleState(driveEncoder.getVelocity(),  new Rotation2d(getDirection())); 
 	}
 
 	public void printOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
-				+ getDirection().plus(encoderOffset).getRotations());
+				+  new Rotation2d(getDirection()).plus(encoderOffset).getRotations());
 	}
 
 	public void periodic() {
@@ -95,11 +97,11 @@ public class SwerveModule {
 		Logger.recordOutput("swerveModules/" + name + "/messuredstate", getMeasuredState());
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRadius;
-		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
+		double target_vel = Math.abs(Math.cos(( new Rotation2d(getDirection()).getRadians() - targetState.angle.getRadians())))
 				* targetState.speedMetersPerSecond;
 
 		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
-		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
+		turn.setVoltage(turnPPID.calculate( new Rotation2d(getDirection()).getRadians(), targetState.angle.getRadians()));
 	}
 
 	

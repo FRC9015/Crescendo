@@ -67,7 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.45),
+                new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }
