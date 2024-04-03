@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
@@ -39,6 +40,11 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorBottom.setSmartCurrentLimit(40);
         speakerPIDTop.setTolerance(100);
         speakerPIDBottom.setTolerance(100);
+
+        speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        speakerMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+        speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
+        speakerMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
     }
 
     public Command shootNoteToSpeaker() {
@@ -156,13 +162,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
             speakerMotorTop.setVoltage(outputTop);
             speakerMotorBottom.setVoltage(outputBottom);
-
-            Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
-            Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
-            Logger.recordOutput("Shooter/TopMotor/PID/Setpoint", speakerPIDTop.getSetpoint());
-            Logger.recordOutput("Shooter/BottomMotor/PID/Setpoint", speakerPIDBottom.getSetpoint());
-            Logger.recordOutput("Shooter/TopMotor/PID/Output", outputTop);
-            Logger.recordOutput("Shooter/BottomMotor/PID/Output", outputBottom);
+            // If Issues Persist, Log Data With the Following Code:
+//            Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
+//            Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
+//            Logger.recordOutput("Shooter/TopMotor/PID/Setpoint", speakerPIDTop.getSetpoint());
+//            Logger.recordOutput("Shooter/BottomMotor/PID/Setpoint", speakerPIDBottom.getSetpoint());
+//            Logger.recordOutput("Shooter/TopMotor/PID/Output", outputTop);
+//            Logger.recordOutput("Shooter/BottomMotor/PID/Output", outputBottom);
         }
         if (idleMode && !getShooterSensor()){
             stopSpeakerShooterMotors();

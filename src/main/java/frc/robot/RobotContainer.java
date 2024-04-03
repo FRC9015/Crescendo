@@ -55,8 +55,6 @@ public class RobotContainer {
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
-	Trigger shooterSensorTrigger = new Trigger(SHOOTER::getShooterSensor);
-
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -83,8 +81,6 @@ public class RobotContainer {
 		SWERVE.setUpPathPlanner();
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
-
-		//shooterSensorTrigger.onTrue(SHOOTER.enableIdleMode());
 	}
 
 
