@@ -227,7 +227,7 @@ public SwerveSubsystem(){
 
 	public Optional<LimelightDrive> getRotationTargetOverride(){
     // Some condition that should decide if we want to override rotation
-    if(INTAKE.getShooterSensor()) {
+    if(SHOOTER.getShooterSensor()) {
         // Return an optional containing the rotation override (this should be a field relative rotation)
         return Optional.of(new LimelightDrive());
     } else {

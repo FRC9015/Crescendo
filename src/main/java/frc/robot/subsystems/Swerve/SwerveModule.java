@@ -48,7 +48,7 @@ public class SwerveModule {
 
 		driveEncoder = drive.getEncoder();
 		driveEncoder.setPosition(0.0);
-		driveEncoder.setVelocityConversionFactor(Units.rotationsPerMinuteToRadiansPerSecond(1)/gearRatio*wheelRatio);
+		driveEncoder.setVelocityConversionFactor(Units.rotationsPerMinuteToRadiansPerSecond(1)/gearRatio*wheelRadius);
 
 		drive.setSmartCurrentLimit(40);
 		turn.setSmartCurrentLimit(30);
@@ -72,7 +72,7 @@ public class SwerveModule {
 
 	}
 	public double getDriveDistance(){
-		return driveEncoder.getPosition() * 2 * PI * wheelRatio / gearRatio;
+		return driveEncoder.getPosition() * 2 * PI * wheelRadius / gearRatio;
 	}
 	public void setState(SwerveModuleState state) {
 		this.targetState = SwerveModuleState.optimize(state,  new Rotation2d(getDirection()));
