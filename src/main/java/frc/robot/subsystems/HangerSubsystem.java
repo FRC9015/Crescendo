@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -19,10 +20,11 @@ public class HangerSubsystem extends SubsystemBase{
         private final SparkPIDController hangerPIDController = hangerMotor.getPIDController();
         private final RelativeEncoder hangerEncoder = hangerMotor.getEncoder();
         public HangerSubsystem(){
-
             hangerPIDController.setP(5);
             hangerPIDController.setI(0);
             hangerPIDController.setD(0);
+            
+            hangerMotor.setIdleMode(IdleMode.kBrake);
        }
 
         double setpoint = 0;

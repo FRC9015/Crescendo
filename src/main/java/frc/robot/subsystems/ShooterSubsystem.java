@@ -21,7 +21,7 @@ import org.littletonrobotics.junction.Logger;
 public class ShooterSubsystem extends SubsystemBase {
     private final DigitalOutput speakerSensor = new DigitalOutput(0);
 
-    private final double motorMaxFreeSpeed = 6784;
+    private final double motorMaxFreeSpeed = 6784;//RPM
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
     private PIDController speakerPIDTop = new PIDController((25/motorMaxFreeSpeed),0,0);
