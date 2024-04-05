@@ -11,8 +11,8 @@ public class ModuleIOSim implements ModuleIO{
     private static final double LOOP_PERIOD_SECS = 0.02;
 
     // moments of inertia for moments are guesses and should be replaced
-    private DCMotorSim driveSim = new DCMotorSim(DCMotor.getNeoVortex(1), Constants.gearRatio, 0.025);
-    private DCMotorSim turnSim = new DCMotorSim(DCMotor.getNeoVortex(1), Constants.gearRatio, 0.004);
+    private DCMotorSim driveSim = new DCMotorSim(DCMotor.getNeoVortex(1), Constants.gearRatio, 0.25);
+    private DCMotorSim turnSim = new DCMotorSim(DCMotor.getNeoVortex(1), Constants.gearRatio, 0.04);
 
     private final Rotation2d turnAbsoluteInitPosition = new Rotation2d(Math.random() * 2 * Math.PI);
     private double driveAppliedVolts = 0.0;
