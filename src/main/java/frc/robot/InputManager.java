@@ -114,7 +114,7 @@ public class InputManager {
             return new double[]{
                     driveController.getRawAxis(0),
                     driveController.getRawAxis(1),
-                    driveController.getRawAxis(2)};
+                    driveController.getRawAxis(4)};
         }
 
         return new double[]{
