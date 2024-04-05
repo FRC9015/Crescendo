@@ -123,6 +123,10 @@ public class InputManager {
                 driveController.getRawAxis(4)};
     }
 
+    public double getDriverAxis(int axis){
+        return driveController.getRawAxis(axis);
+    }
+
     /**
      * Gets the X, Y, and Z axes of the operator controller
      * where the Z axis is the rotational axis.
