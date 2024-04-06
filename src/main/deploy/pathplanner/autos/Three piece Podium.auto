@@ -32,13 +32,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "pivotToSubWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootLimelight"
+            "name": "shootNote"
           }
         },
         {
@@ -56,13 +56,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
+            "name": "pivotToSubWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootLimelight"
+            "name": "shootNote"
           }
         }
       ]

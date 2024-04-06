@@ -9,7 +9,6 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -31,7 +30,6 @@ import org.littletonrobotics.junction.Logger;
 import static frc.robot.Constants.Constants.SwerveConstants.dtSeconds;
 import static frc.robot.Constants.Constants.robotLength;
 import static frc.robot.Constants.Constants.robotWidth;
-import static frc.robot.RobotContainer.INTAKE;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.RobotContainer.SHOOTER;
 

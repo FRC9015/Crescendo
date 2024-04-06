@@ -121,7 +121,7 @@ public class LimelightInterface extends SubsystemBase{
 
     public double getSetPoint(){
         
-        return (0.484411 - (0.0058831 * getTargetAngle()));
+        return (0.484411 - (0.0058831 * getAngleToSpeaker()));
     }
 
     public double getTargetAngle(){

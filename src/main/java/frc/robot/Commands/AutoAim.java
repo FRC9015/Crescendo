@@ -22,14 +22,14 @@ public class AutoAim extends Command{
     @Override
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
-        SHOOTER.setSpeakerShooterMotorSpeeds();
+
         
     
     }
     @Override
     public void execute() {
         PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
-
+        SHOOTER.setSpeakerShooterMotorSpeeds();
         Logger.recordOutput("AutoAim/SpeakerPose/Blue", FieldConstants.Speaker_Blue_Pose);
     }
     

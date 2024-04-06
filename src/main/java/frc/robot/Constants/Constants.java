@@ -52,7 +52,7 @@ public final class Constants {
 
 		public static final double shooterHeight = 0;
 
-		public static final double noteVelocity = 20;
+		public static final double noteVelocity = 26;
 	}
 
 	public static class PivotConstants {
@@ -90,7 +90,7 @@ public final class Constants {
 	}
 
 	public static class SwervePIDControllerConstants {
-		public static final double driveP = 1.5;
+		public static final double driveP = 2.5;
 		public static final double driveI = 0;
 		public static final double driveD = 0;
 
@@ -102,7 +102,7 @@ public final class Constants {
 	public static class LimelightConstants {
 		public static final double aprilTag_Height = 57.5;
 		public static final double LimelightHeight = 12.5;
-		public static final double speakerGoalHeight = Units.inchesToMeters(80 - ShooterConstants.shooterHeight);
+		public static final double speakerGoalHeight = Units.inchesToMeters(110 - ShooterConstants.shooterHeight);
 		public static final double LimelightAngle = 32;
 		
 	}

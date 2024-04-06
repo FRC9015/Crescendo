@@ -28,6 +28,18 @@
           "data": {
             "pathName": "two Piece amp Side"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToSubWoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
+          }
         }
       ]
     }

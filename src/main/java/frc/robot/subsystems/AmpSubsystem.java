@@ -19,10 +19,23 @@ public class AmpSubsystem extends SubsystemBase{
         ampMotorTop.setSmartCurrentLimit(30);
         ampMotorBottom.setSmartCurrentLimit(30);
 
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 1000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 1000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 10000);
+        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 10000);
+
+
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 10000);
+        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 10000);
+
     }
 
     public Command ampIntake(){

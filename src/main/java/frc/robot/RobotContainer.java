@@ -25,7 +25,6 @@ import frc.robot.Commands.Presets.SubwooferPreset;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.AmpSubsystem;
-import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -51,7 +50,7 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
-	public static final CameraSubsystem CAMERA = new CameraSubsystem();
+
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();

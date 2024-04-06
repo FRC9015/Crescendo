@@ -5,6 +5,7 @@ import static frc.robot.Constants.Constants.wheelRadius;
 import static frc.robot.Constants.Constants.SwervePIDControllerConstants;
 import static java.lang.Math.PI;
 
+import com.revrobotics.CANSparkLowLevel;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -43,8 +44,13 @@ public class SwerveModule {
 		drive.restoreFactoryDefaults();
 		turn.restoreFactoryDefaults();
 
-		drive.setCANTimeout(250);
-		turn.setCANTimeout(250);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6,10000);
 
 		driveEncoder = drive.getEncoder();
 		driveEncoder.setPosition(0.0);
@@ -100,8 +106,12 @@ public class SwerveModule {
 		double target_vel = Math.abs(Math.cos(( new Rotation2d(getDirection()).getRadians() - targetState.angle.getRadians())))
 				* targetState.speedMetersPerSecond;
 
-		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
+		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV );
 		turn.setVoltage(turnPPID.calculate( new Rotation2d(getDirection()).getRadians(), targetState.angle.getRadians()));
+
+		Logger.recordOutput("swerveModules/" + name + "PIDCalculate", drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
+		Logger.recordOutput("swerveModules/" + name + "/AppliedDriveOutput",drive.getAppliedOutput());
+		Logger.recordOutput("swerveModules/" + name + "/AppliedDriveOutput",turn.getAppliedOutput());
 	}
 
 	

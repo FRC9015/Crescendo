@@ -39,7 +39,7 @@ public class PoseEstimator extends SubsystemBase{
                 swerveSubsystem.getPositions(),
                 initialPose,
                 VecBuilder.fill(0.1, 0.1, 0.1),
-                VecBuilder.fill(1, 1, 0.1));
+                VecBuilder.fill(0.25, 0.25, 0.25));
 
         initShuffleboard();
     }

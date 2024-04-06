@@ -37,7 +37,7 @@ public class HangerSubsystem extends SubsystemBase{
         }
 
         public void hangerUp(){
-            setpoint = -500;
+            setpoint = -500 * 4 /3;
         }
 
         public void hangerDown(){
