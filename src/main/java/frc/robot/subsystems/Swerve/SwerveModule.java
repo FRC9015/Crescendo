@@ -5,6 +5,7 @@ import static frc.robot.Constants.Constants.wheelRadius;
 import static frc.robot.Constants.Constants.SwervePIDControllerConstants;
 import static java.lang.Math.PI;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import org.littletonrobotics.junction.Logger;
 
@@ -63,6 +64,8 @@ public class SwerveModule {
 
 		drive.setCANTimeout(0);
 		turn.setCANTimeout(0);
+
+		drive.setIdleMode(CANSparkBase.IdleMode.kCoast);
 
 		drive.burnFlash();
 		turn.burnFlash();

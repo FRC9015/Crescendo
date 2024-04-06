@@ -33,6 +33,8 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -101,8 +103,9 @@ public class RobotContainer {
 				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator).repeatedly());
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
-				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP().repeatedly());
-				InputManager.getInstance().getDriverPOV(180).whileTrue(HANGER.hangerDOWN().repeatedly());
+				InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
+				InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
+				InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
 				
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());

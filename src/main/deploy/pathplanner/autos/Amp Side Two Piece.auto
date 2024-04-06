@@ -18,27 +18,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "pivotToIntake"
+            "waitTime": 12.0
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "two Piece amp Side"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToSubWoofer"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootNote"
           }
         }
       ]

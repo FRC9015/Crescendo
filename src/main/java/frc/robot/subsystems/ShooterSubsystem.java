@@ -49,7 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Command shootNoteToSpeaker() {
         return this.startEnd(
-                this::setSpeakerShooterMotorSpeedsSubWoofer,
+                this::setSpeakerShooterMotorSpeeds,
                 this::setIdleShooterSpeeds);
     }
 

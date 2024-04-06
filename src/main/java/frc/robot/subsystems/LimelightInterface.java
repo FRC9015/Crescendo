@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.Interpolator;
+import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,6 +41,9 @@ public class LimelightInterface extends SubsystemBase{
     NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area\][]
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+    InterpolatingTreeMap<Double, Double> shooterInterp;
+
     NetworkTable table = inst.getTable("limelight");
     
     //makes variables for the X Y and Area values of the limelight
@@ -64,6 +70,17 @@ public class LimelightInterface extends SubsystemBase{
         SmartDashboard.putNumber("distance", getSpeakerDistance());
         SmartDashboard.putString("Angle", getSpeakerAngle().toString());
 
+    }
+
+
+public LimelightInterface(){
+        shooterInterp = new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
+
+        shooterInterp.put(0.9826, 0.0);
+        shooterInterp.put(1.5525, 0.09);
+        shooterInterp.put(2.2,.19);
+        shooterInterp.put(2.7,.24);
+        shooterInterp.put(2.9,.26);
     }
 
     public double getX(){
@@ -120,8 +137,8 @@ public class LimelightInterface extends SubsystemBase{
     }
 
     public double getSetPoint(){
-        
-        return (0.484411 - (0.0058831 * getAngleToSpeaker()));
+        return shooterInterp.get(getSpeakerDistance());
+        //return (0.484411 - (0.0058831 * getAngleToSpeaker()));
     }
 
     public double getTargetAngle(){
