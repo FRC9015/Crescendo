@@ -28,8 +28,8 @@ public class Module {
 
 		if (Robot.isSimulation()){
 			driveFeedFoward = new SimpleMotorFeedforward(0.0, 0.13); // Sample Values for ks and kv
-			driveFeedback = new PIDController(1.5, 0.0, 0.0); // Sample PID Values
-			turnFeedback = new PIDController(1.5, 0.0, 0.0); // Sample PID Values
+			driveFeedback = new PIDController(0.35, 0.0, 0.0); // Sample PID Values
+			turnFeedback = new PIDController(0.35, 0.0, 0.0); // Sample PID Values
 		}else{
 			driveFeedFoward = new SimpleMotorFeedforward(0.0, 0.0);
 			driveFeedback = new PIDController(0.0, 0.0, 0.0);

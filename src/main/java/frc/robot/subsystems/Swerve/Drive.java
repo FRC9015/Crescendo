@@ -78,8 +78,8 @@ public class Drive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Pivot", new Pose3d(new Translation3d(-0.13, 0.31, 0.41),
-                new Rotation3d(0, InputManager.getInstance().getDriverAxis(3), 0)));
+        Logger.recordOutput("Pivot", new Pose3d(new Translation3d(-0.13 -0.25, 0.31 -0.25, 0.41),
+                new Rotation3d(0, InputManager.getInstance().getDriverAxis(5) - 1.3, 0)));
 
         Logger.recordOutput("Odom/Pose",getPose());
 
