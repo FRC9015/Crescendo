@@ -5,33 +5,36 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.Commands.JoystickDrive;
+import frc.robot.Commands.Handoff;
+//import frc.robot.Commands.LimelightDrive;
+import frc.robot.Commands.AutoAim;
+import frc.robot.Commands.Presets.AmpPreset;
+import frc.robot.Commands.Presets.PassNotePreset;
+import frc.robot.Commands.Presets.SubwooferPreset;
+import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.AmpSubsystem;
+import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.Drive;
 import frc.robot.subsystems.Swerve.GyroIO;
 import frc.robot.subsystems.Swerve.ModuleIO;
 import frc.robot.subsystems.Swerve.ModuleIOSim;
 
 import java.util.function.BooleanSupplier;
-//import frc.robot.Commands.DefaultDrive;
-import frc.robot.Commands.Handoff;
-//import frc.robot.Commands.LimelightDrive;
-//import frc.robot.Commands.AutoAim;
-import frc.robot.Commands.Presets.AmpPreset;
-import frc.robot.Commands.Presets.PassNotePreset;
-import frc.robot.Commands.Presets.SubwooferPreset;
-import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.AmpSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.Swerve.*;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,7 +49,10 @@ public class RobotContainer {
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
 
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
+
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
+	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
+	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -114,22 +120,24 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-				// Driver Bindings
-				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
-				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
+		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
+		InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
+		//InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator).repeatedly());
+		InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
+		InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
 
-				// Operator Bindings
-				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-				//InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
-				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
-				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-				InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
-				InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-				// Operator Presets
-				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
+		// Operator Bindings
+		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
+		//InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
+		InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
+		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
+		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
+		InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
+		// Operator Presets
+		InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
+		InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
 	}
 
 	public Command getAutonomousCommand() {
