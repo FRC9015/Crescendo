@@ -10,6 +10,7 @@ import frc.robot.Robot;
 import org.littletonrobotics.junction.Logger;
 
 public class Module {
+	static final double ODOMETRY_FREQUENCY = 250.0;
 	private final ModuleIO moduleIO;
 	private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 	private final int index;
