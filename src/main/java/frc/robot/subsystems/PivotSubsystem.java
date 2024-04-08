@@ -5,12 +5,19 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 
+import frc.robot.InputManager;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.Constants.Constants.PivotConstants;
@@ -37,7 +44,7 @@ public class PivotSubsystem extends SubsystemBase {
     TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
     TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
 
-    private double currentPosition = 0;
+    private double setPosition = 0;
 
 
     public PivotSubsystem(){
@@ -53,6 +60,7 @@ public class PivotSubsystem extends SubsystemBase {
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
         pivotEncoder.setPositionConversionFactor(1.0/15);
+
     }
 
     //raises the pivot
@@ -82,7 +90,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot up
     private void movePivotUp(){
-        currentPosition += 0.05;
+        setPosition += 0.05;
     }
     //stops pivot
     private void stopPivot(){
@@ -91,7 +99,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot
     private void movePivotDown(){
-        currentPosition -= 0.05;
+        setPosition -= 0.05;
     }
 
     //uses SparkMax PID to set the motors to a position
@@ -100,36 +108,36 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         pivotPIDController.setP(2);
-        currentPosition = 0.24;
+        setPosition = 0.425;
     }
 
     //uses SparkMax PID to set the motors to a position
     public void SubWoofer(){
         pivotPIDController.setP(0.4);
-        currentPosition = 0;
+        setPosition = 0;
 
     }
 
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(1.5);
-        currentPosition = 1.3;
+        setPosition = 2.8;
 
     }
 
     public void passNotePreset(){
         pivotPIDController.setP(2);
-        currentPosition = 0.48;
+        setPosition = 1.1;
     }
 
-    public void setCurrentPosition(double SetPoint){
+    public void setSetPosition(double SetPoint){
         pivotPIDController.setP(2);
-        currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
+        setPosition = MathUtil.clamp(SetPoint, 0, 2.5);
     }
 
     public void autoAim(){
 
-        setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+        setSetPosition(LIMELIGHT_INTERFACE.getSetPoint());
 
     }
 
@@ -139,12 +147,15 @@ public class PivotSubsystem extends SubsystemBase {
     public void periodic(){
         //puts values on dashboard
         SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
-        Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()-currentPosition);
+        Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()- setPosition);
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
 
-        pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
+        pivotPIDController.setReference(setPosition, CANSparkFlex.ControlType.kPosition);
+
+        Logger.recordOutput("Pivot", new Pose3d(new Translation3d(-0.13 -0.25, 0.31 -0.25, 0.41),
+                new Rotation3d(0, -setPosition, 0)));
 
     }
 }

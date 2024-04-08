@@ -28,7 +28,7 @@ public class AutoAim extends Command{
     }
     @Override
     public void execute() {
-        PIVOT.setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+        PIVOT.setSetPosition(LIMELIGHT_INTERFACE.getSetPoint());
 
         Logger.recordOutput("AutoAim/SpeakerPose/Blue", FieldConstants.Speaker_Blue_Pose);
     }
