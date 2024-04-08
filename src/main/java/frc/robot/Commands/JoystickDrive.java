@@ -1,6 +1,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -14,6 +15,9 @@ import frc.robot.subsystems.Swerve.Drive;
 import java.util.function.DoubleSupplier;
 
 public class JoystickDrive extends Command {
+
+    private SlewRateLimiter xVelocityFilter = new SlewRateLimiter(Constants.SwerveConstants.slewRateLimit);
+    private SlewRateLimiter yVelocityFilter = new SlewRateLimiter(Constants.SwerveConstants.slewRateLimit);
 
     private DoubleSupplier xSupplier;
     private DoubleSupplier ySupplier;
@@ -52,14 +56,17 @@ public class JoystickDrive extends Command {
                         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                         .getTranslation();
 
+        double xVelocity = xVelocityFilter.calculate(linearVelocity.getX() * Constants.SwerveConstants.maxSpeed);
+        double yVelocity = yVelocityFilter.calculate(linearVelocity.getY() * Constants.SwerveConstants.maxSpeed);
+
         // Convert to field relative speeds & send command
         boolean isFlipped =
                 DriverStation.getAlliance().isPresent()
                         && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
         drive.runVelocity(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                        linearVelocity.getX() * Constants.SwerveConstants.maxSpeed,
-                        linearVelocity.getY() * Constants.SwerveConstants.maxSpeed,
+                        xVelocity,
+                        yVelocity,
                         omega * Constants.SwerveConstants.angularSpeed,
                         isFlipped
                                 ? drive.getRotation().plus(new Rotation2d(Math.PI))
