@@ -27,14 +27,14 @@ public class Module {
 		this.moduleIO = io;
 		this.index = index;
 
-		if (Robot.isSimulation()){
+		if (Robot.isReal()){
 			driveFeedFoward = new SimpleMotorFeedforward(0.0, 0.13); // Sample Values for ks and kv
 			driveFeedback = new PIDController(1.5, 0.0, 0.0); // Sample PID Values
 			turnFeedback = new PIDController(1.5, 0.0, 0.0); // Sample PID Values
 		}else{
-			driveFeedFoward = new SimpleMotorFeedforward(0.0, 0.0);
-			driveFeedback = new PIDController(0.0, 0.0, 0.0);
-			turnFeedback = new PIDController(0.0, 0.0, 0.0);
+			driveFeedFoward = new SimpleMotorFeedforward(0.0, 0.13);
+			driveFeedback = new PIDController(1.5, 0.0, 0.0);
+			turnFeedback = new PIDController(1.5, 0.0, 0.0);
 		}
 
 		turnFeedback.enableContinuousInput(-Math.PI, Math.PI);
