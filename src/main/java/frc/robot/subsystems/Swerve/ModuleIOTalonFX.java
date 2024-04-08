@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.SwerveModuleConfiguration;
 
 import java.util.Queue;
 
@@ -43,34 +44,18 @@ public class ModuleIOTalonFX implements ModuleIO {
     private final Rotation2d absoluteEncoderOffset;
 
     public ModuleIOTalonFX(int index) {
-        switch (index) {
-            case 0:
-                driveTalon = new TalonFX(0);
-                turnTalon = new TalonFX(1);
-                cancoder = new CANcoder(2);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
-                break;
-            case 1:
-                driveTalon = new TalonFX(3);
-                turnTalon = new TalonFX(4);
-                cancoder = new CANcoder(5);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
-                break;
-            case 2:
-                driveTalon = new TalonFX(6);
-                turnTalon = new TalonFX(7);
-                cancoder = new CANcoder(8);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
-                break;
-            case 3:
-                driveTalon = new TalonFX(9);
-                turnTalon = new TalonFX(10);
-                cancoder = new CANcoder(11);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
-                break;
-            default:
-                throw new RuntimeException("Invalid module index");
-        }
+        SwerveModuleConfiguration config = switch (index) {
+            case 0 -> SwerveModuleConfiguration.NW;
+            case 1 -> SwerveModuleConfiguration.NE;
+            case 2 -> SwerveModuleConfiguration.SW;
+            case 3 -> SwerveModuleConfiguration.SE;
+            default -> throw new RuntimeException("Invalid module index");
+        };
+
+        driveTalon = new TalonFX(config.DRIVE_MOTOR);
+        turnTalon = new TalonFX(config.TURN_MOTOR);
+        cancoder = new CANcoder(config.ENCODER);
+        absoluteEncoderOffset = config.offset;
 
         var driveConfig = new TalonFXConfiguration();
         driveConfig.CurrentLimits.SupplyCurrentLimit = 40.0;

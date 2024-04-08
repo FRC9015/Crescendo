@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.Commands.JoystickDrive;
 import frc.robot.Commands.Handoff;
-//import frc.robot.Commands.LimelightDrive;
+import frc.robot.Commands.LimelightDrive;
 import frc.robot.Commands.AutoAim;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
@@ -28,10 +28,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.Swerve.Drive;
-import frc.robot.subsystems.Swerve.GyroIO;
-import frc.robot.subsystems.Swerve.ModuleIO;
-import frc.robot.subsystems.Swerve.ModuleIOSim;
+import frc.robot.subsystems.Swerve.*;
 
 import java.util.function.BooleanSupplier;
 
@@ -77,24 +74,22 @@ public class RobotContainer {
 		NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
 		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
 
-		//SWERVE.setDefaultCommand(new DefaultDrive());
 		configureBindings();
 
-		if (Robot.isSimulation()){
+		if (Robot.isReal()){
+			DRIVE = new Drive(
+					new GyroIO() {},
+					new ModuleIOTalonFX(0),
+					new ModuleIOTalonFX(1),
+					new ModuleIOTalonFX(2),
+					new ModuleIOTalonFX(3));
+		}else{
 			DRIVE = new Drive(
 					new GyroIO() {},
 					new ModuleIOSim(),
 					new ModuleIOSim(),
 					new ModuleIOSim(),
 					new ModuleIOSim());
-		}else{
-			DRIVE =
-					new Drive(
-							new GyroIO() {},
-							new ModuleIO() {},
-							new ModuleIO() {},
-							new ModuleIO() {},
-							new ModuleIO() {});
 		}
 
 		DRIVE.setDefaultCommand(new JoystickDrive(
@@ -103,7 +98,6 @@ public class RobotContainer {
 				() -> -InputManager.getInstance().getDriverXYZAxes()[0],
 				() -> -InputManager.getInstance().getDriverXYZAxes()[2]));
 
-		//SWERVE.setUpPathPlanner();
 		autoChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Autonomous").add(autoChooser);
 	}
@@ -129,7 +123,7 @@ public class RobotContainer {
 		// Operator Bindings
 		InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
 		InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-		//InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
+		InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
 		InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 		InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
 		InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
