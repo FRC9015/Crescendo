@@ -107,12 +107,14 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         pivotPIDController.setP(2);
+        pivotPIDController.setI(0.0);
         currentPosition = 0.24;
     }
 
     //uses SparkMax PID to set the motors to a position
     public void SubWoofer(){
         pivotPIDController.setP(0.4);
+        pivotPIDController.setI(0.0);
         currentPosition = 0;
         
     }
@@ -120,17 +122,20 @@ public class PivotSubsystem extends SubsystemBase {
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(1.5);
+        pivotPIDController.setI(0.0);
         currentPosition = 1.3;
         
     }
 
     public void passNotePreset(){
         pivotPIDController.setP(2);
+        pivotPIDController.setI(0.0);
         currentPosition = 0.48;
     }
 
     public void setCurrentPosition(double SetPoint){
-        pivotPIDController.setP(2);
+        pivotPIDController.setP(7);
+        pivotPIDController.setI(0.0004);
         currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }
 

@@ -76,11 +76,22 @@ public class LimelightInterface extends SubsystemBase{
 public LimelightInterface(){
         shooterInterp = new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
 
-        shooterInterp.put(0.9826, 0.0);
-        shooterInterp.put(1.5525, 0.09);
+        shooterInterp.put(0.9826, 0.0);//subwoofer
+        shooterInterp.put(1.5525, 0.09);//starting line
         shooterInterp.put(2.2,.19);
         shooterInterp.put(2.7,.24);
         shooterInterp.put(2.9,.26);
+        shooterInterp.put(3.2, 0.27);//podium
+        shooterInterp.put(3.4, 0.276);//middle stage
+        shooterInterp.put(3.6, 0.28);
+        shooterInterp.put(3.8,0.285);
+        shooterInterp.put(4.0,0.288);
+        shooterInterp.put(4.5,0.302);
+        shooterInterp.put(5.0,0.307);
+        shooterInterp.put(5.5,0.313);
+        shooterInterp.put(6.0,0.315);
+        
+        
     }
 
     public double getX(){

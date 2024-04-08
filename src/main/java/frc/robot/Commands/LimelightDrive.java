@@ -8,6 +8,7 @@ import static frc.robot.RobotContainer.SWERVE;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import frc.robot.RobotContainer;
@@ -23,7 +24,7 @@ public class LimelightDrive extends Command{
         addRequirements(SWERVE);
     }
 
-    PIDController L_PID = new PIDController(0.05, 0.005, 0);
+    PIDController L_PID = new PIDController(0.03, 0.0, 0);
 
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
@@ -49,6 +50,6 @@ public class LimelightDrive extends Command{
 		double rotationalVelocity = L_PID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
 		Logger.recordOutput("AutoAim/PID/Error", L_PID.getPositionError());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
-
+        SmartDashboard.putNumber("Drive error", L_PID.getPositionError());
     }
 }
