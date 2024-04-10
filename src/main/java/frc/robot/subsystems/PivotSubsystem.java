@@ -49,7 +49,7 @@ public class PivotSubsystem extends SubsystemBase {
 
         //sets PID values of both controllers
         pivotPIDController.setP(2);
-        pivotPIDController.setI(0.0);
+        pivotPIDController.setI(0);
         pivotPIDController.setD(0);
         pivotPIDController.setOutputRange(-1,1.45);
         pivotPIDController.setFF(0.00015);
@@ -62,12 +62,11 @@ public class PivotSubsystem extends SubsystemBase {
 
     }
 
-    //raises the pivot
     public Command raisePivot(){
-        return this.run(
+        return run(
                 this::movePivotUp);
     }
-    //lowers the pivot
+    
     public Command lowerPivot(){
         return run(
                 this::movePivotDown);
