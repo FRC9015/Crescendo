@@ -99,11 +99,4 @@ public class PoseEstimator extends SubsystemBase{
 		swerveDrivePoseEstimator.resetPosition(pigeon.getYawAsRotation2d(), swerveSubsystem.getPositions(), pose);
 	  }
 
-    public double getPoseX(){
-        return swerveDrivePoseEstimator.getEstimatedPosition().getTranslation().getX();
-    }
-
-    public double getPoseY(){
-        return swerveDrivePoseEstimator.getEstimatedPosition().getTranslation().getX();
-    }
 }
