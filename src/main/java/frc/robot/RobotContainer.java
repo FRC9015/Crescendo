@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,12 +31,11 @@ import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
-
 import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * "declarative" paradigm, very little robot logic should be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
@@ -50,9 +48,7 @@ public class RobotContainer {
 
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
-
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
-
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
