@@ -24,13 +24,13 @@ public class LimelightDrive extends Command{
         addRequirements(SWERVE);
     }
 
-    PIDController L_PID = new PIDController(0.03, 0.0, 0);
+    PIDController limelightPID = new PIDController(0.03, 0.0, 0);
 
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     @Override
     public void initialize() {
-        L_PID.reset();
+        limelightPID.reset();
     }
 
     @Override
@@ -47,9 +47,9 @@ public class LimelightDrive extends Command{
 
 		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double rotationalVelocity = L_PID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
-		Logger.recordOutput("AutoAim/PID/Error", L_PID.getPositionError());
+		double rotationalVelocity = limelightPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
+		Logger.recordOutput("AutoAim/PID/Error", limelightPID.getPositionError());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
-        SmartDashboard.putNumber("Drive error", L_PID.getPositionError());
+        SmartDashboard.putNumber("Drive error", limelightPID.getPositionError());
     }
 }
