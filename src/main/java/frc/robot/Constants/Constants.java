@@ -38,20 +38,14 @@ public final class Constants {
 		public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2) / rotationLimit;
 		public static final double slewRateLimit = 20;
 		public static final double dtSeconds = 0.02;
-		
-		
 	}
 
 	public static class ShooterConstants {
-
 		public static final int speakerShooterMotorTopID = 51;
 		public static final int speakerShooterMotor2ID = 52;
-
 		public static final int ampShooterMotor1ID = 53;
 		public static final int ampShooterMotor2ID = 54;
-
 		public static final double shooterHeight = 0;
-
 		public static final double noteVelocity = 26;
 	}
 
@@ -65,13 +59,12 @@ public final class Constants {
 		public static final int intakeMotor1ID = 41;
 		public static final int hangerID = 42;
 		public static final int handoffMotorID = 43;
-
 	}
 
 	public static class LEDConstants {
-
 		public static final int candleID1 = 36;
 	}
+	
 	public static final double robotWidth = Units.inchesToMeters(27); 
 	public static final double robotLength = Units.inchesToMeters(27); 
 	public static final double wheelRadius = Units.inchesToMeters(2);
@@ -83,7 +76,6 @@ public final class Constants {
 			Units.feetToMeters(15/12), // Drive base radius in meters. Distance from robot center to furthest module.
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
 			);
-
 	
 	public static class PigeonConstants {
 		public static final int pigeonID = 30;
@@ -104,7 +96,6 @@ public final class Constants {
 		public static final double LimelightHeight = 12.5;
 		public static final double speakerGoalHeight = Units.inchesToMeters(110 - ShooterConstants.shooterHeight);
 		public static final double LimelightAngle = 32;
-		
 	}
 
 	public static class FieldConstants {
