@@ -35,10 +35,10 @@ public class LimelightInterface extends SubsystemBase{
     private static boolean tag = false;
 
     
-    //takes the X,Y, and area values from the limelight networktable
+    //takes the X, Y, and area values from the limelight network table
     NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
     NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
-    NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area\][]
+    NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
@@ -149,7 +149,7 @@ public LimelightInterface(){
 
     public double getSetPoint(){
         return shooterInterp.get(getSpeakerDistance());
-        //return (0.484411 - (0.0058831 * getAngleToSpeaker()));
+        // DO NOT DELETE THE FOLLOWING EQUATION:  return (0.484411 - (0.0058831 * getAngleToSpeaker()));
     }
 
     public double getTargetAngle(){
