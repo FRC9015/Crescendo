@@ -21,7 +21,7 @@ import org.littletonrobotics.junction.Logger;
 public class ShooterSubsystem extends SubsystemBase {
     private final DigitalOutput speakerSensor = new DigitalOutput(0);
 
-    private final double motorMaxFreeSpeed = 6784;
+    private final double motorMaxFreeSpeed = 6784;//RPM
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
     private PIDController speakerPIDTop = new PIDController((25/motorMaxFreeSpeed),0,0);
@@ -49,16 +49,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Command shootNoteToSpeaker() {
         return this.startEnd(
-                this::setSpeakerShooterMotorSpeedsSubWoofer,
+                this::setSpeakerShooterMotorSpeeds,
                 this::setIdleShooterSpeeds);
     }
 
     public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
-                new WaitCommand(1.5),
+                new WaitCommand(0.8),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.5),
+                new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }
@@ -66,9 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command autoShootNoteLimelight(AmpSubsystem amp) {
         return new SequentialCommandGroup(
                 new InstantCommand(this::setSpeakerShooterMotorSpeeds),
-                new WaitCommand(0.5),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
-                new WaitCommand(0.3),
+                new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
                 new InstantCommand(this::setIdleShooterSpeeds));
     }
@@ -163,8 +162,8 @@ public class ShooterSubsystem extends SubsystemBase {
             speakerMotorTop.setVoltage(outputTop);
             speakerMotorBottom.setVoltage(outputBottom);
             // If Issues Persist, Log Data With the Following Code:
-//            Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
-//            Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
+           Logger.recordOutput("Shooter/TopMotor/Speed",speakerMotorTopEncoder.getVelocity());
+           Logger.recordOutput("Shooter/BottomMotor/Speed",speakerMotorBottomEncoder.getVelocity());
 //            Logger.recordOutput("Shooter/TopMotor/PID/Setpoint", speakerPIDTop.getSetpoint());
 //            Logger.recordOutput("Shooter/BottomMotor/PID/Setpoint", speakerPIDBottom.getSetpoint());
 //            Logger.recordOutput("Shooter/TopMotor/PID/Output", outputTop);
@@ -181,5 +180,4 @@ public class ShooterSubsystem extends SubsystemBase {
     public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
     }
-
 }

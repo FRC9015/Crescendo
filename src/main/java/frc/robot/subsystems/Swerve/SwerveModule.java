@@ -5,6 +5,8 @@ import static frc.robot.Constants.Constants.wheelRadius;
 import static frc.robot.Constants.Constants.SwervePIDControllerConstants;
 import static java.lang.Math.PI;
 
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkLowLevel;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -43,11 +45,17 @@ public class SwerveModule {
 		drive.restoreFactoryDefaults();
 		turn.restoreFactoryDefaults();
 
-		drive.setCANTimeout(250);
-		turn.setCANTimeout(250);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5,10000);
+		turn.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6,10000);
 
 		driveEncoder = drive.getEncoder();
 		driveEncoder.setPosition(0.0);
+		driveEncoder.setVelocityConversionFactor(Units.rotationsPerMinuteToRadiansPerSecond(1)/gearRatio*wheelRadius);
 
 		drive.setSmartCurrentLimit(40);
 		turn.setSmartCurrentLimit(30);
@@ -57,23 +65,26 @@ public class SwerveModule {
 		drive.setCANTimeout(0);
 		turn.setCANTimeout(0);
 
+		drive.setIdleMode(CANSparkBase.IdleMode.kCoast);
+
 		drive.burnFlash();
 		turn.burnFlash();
 	}
 
-	public Rotation2d getDirection() {
-		return Rotation2d.fromRotations(encoder.getAbsolutePosition().getValue())
+	public double getDirection() {
+		Rotation2d turnAbsolutePosition = new Rotation2d(Units.rotationsToRadians(encoder.getAbsolutePosition().getValueAsDouble()))
 				.minus(encoderOffset);
+		return turnAbsolutePosition.getRadians();
 	}
 	public SwerveModulePosition getPosition(){
-		return new SwerveModulePosition(-getDriveDistance(), getDirection());
+		return new SwerveModulePosition(-getDriveDistance(), new Rotation2d(getDirection()));
 
 	}
 	public double getDriveDistance(){
-		return driveEncoder.getPosition() / gearRatio * 2 * Math.PI * Units.inchesToMeters(2);
+		return driveEncoder.getPosition() * 2 * PI * wheelRadius / gearRatio;
 	}
 	public void setState(SwerveModuleState state) {
-		this.targetState = SwerveModuleState.optimize(state, getDirection());
+		this.targetState = SwerveModuleState.optimize(state,  new Rotation2d(getDirection()));
 	}
 
 	public SwerveModuleState getTargetState(){
@@ -81,12 +92,12 @@ public class SwerveModule {
 	}
 
 	public SwerveModuleState getMeasuredState() {
-		return new SwerveModuleState((driveEncoder.getVelocity()/ gearRatio * 2 * Math.PI * Units.inchesToMeters(2)), getDirection());
+		return new SwerveModuleState(driveEncoder.getVelocity(),  new Rotation2d(getDirection())); 
 	}
 
 	public void printOffset() {
 		System.out.println("ERROR Offset for Cancoder: " + this.name + " is: "
-				+ getDirection().plus(encoderOffset).getRotations());
+				+  new Rotation2d(getDirection()).plus(encoderOffset).getRotations());
 	}
 
 	public void periodic() {
@@ -95,11 +106,15 @@ public class SwerveModule {
 		Logger.recordOutput("swerveModules/" + name + "/messuredstate", getMeasuredState());
 		double curr_velocity =
 				Units.rotationsPerMinuteToRadiansPerSecond(driveEncoder.getVelocity()) / gearRatio * wheelRadius;
-		double target_vel = Math.abs(Math.cos((getDirection().getRadians() - targetState.angle.getRadians())))
+		double target_vel = Math.abs(Math.cos(( new Rotation2d(getDirection()).getRadians() - targetState.angle.getRadians())))
 				* targetState.speedMetersPerSecond;
 
-		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
-		turn.setVoltage(turnPPID.calculate(getDirection().getRadians(), targetState.angle.getRadians()));
+		drive.setVoltage(drivePID.calculate(curr_velocity, target_vel) + target_vel * kV );
+		turn.setVoltage(turnPPID.calculate( new Rotation2d(getDirection()).getRadians(), targetState.angle.getRadians()));
+
+		Logger.recordOutput("swerveModules/" + name + "PIDCalculate", drivePID.calculate(curr_velocity, target_vel) + target_vel * kV);
+		Logger.recordOutput("swerveModules/" + name + "/AppliedDriveOutput",drive.getAppliedOutput());
+		Logger.recordOutput("swerveModules/" + name + "/AppliedDriveOutput",turn.getAppliedOutput());
 	}
 
 	

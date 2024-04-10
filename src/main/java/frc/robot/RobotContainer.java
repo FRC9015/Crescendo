@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,7 +24,6 @@ import frc.robot.Commands.Presets.SubwooferPreset;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.AmpSubsystem;
-import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -31,11 +31,11 @@ import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
-
+import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * "declarative" paradigm, very little robot logic should be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
@@ -48,9 +48,7 @@ public class RobotContainer {
 
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
-
 	public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
-	public static final CameraSubsystem CAMERA = new CameraSubsystem();
 	public static final LimelightInterface LIMELIGHT_INTERFACE = new LimelightInterface();
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
@@ -98,19 +96,21 @@ public class RobotContainer {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
-				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).onTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator));
+				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator).repeatedly());
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
-				InputManager.getInstance().getDriverPOV(0).whileTrue(HANGER.hangerUP().repeatedly());
-				InputManager.getInstance().getDriverPOV(180).whileTrue(HANGER.hangerDOWN().repeatedly());
+				InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
+				InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
+				InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
 				
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new LimelightDrive()));
+				InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
 				InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
 				InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-				
+				InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
+				InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());		
 				// Operator Presets
 				InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
 				InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
@@ -136,7 +136,13 @@ public class RobotContainer {
 		
 	}
 
-	public void teleopRunning(){
-		LED_SUBSYSTEM.updateLEDs();
+	
+
+	public static boolean IsRed(){
+		var alliance = DriverStation.getAlliance();
+				if (alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				}
+				return false;
 	}
 }

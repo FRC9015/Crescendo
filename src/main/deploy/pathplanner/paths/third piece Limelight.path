@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.22,
-        "y": 5.67
+        "x": 3.07,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7488309102616433,
-        "y": 5.179068104365135
+        "x": 2.581904979018476,
+        "y": 4.960542024012176
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.484097705225823,
-        "y": 4.038562638842631
+        "x": 2.8806111279485536,
+        "y": 4.009191274196502
       },
       "prevControl": {
-        "x": 1.1704061657530866,
-        "y": 4.038562638842631
+        "x": 1.183391903873903,
+        "y": 4.358833002761237
       },
       "nextControl": {
-        "x": 2.8659254456254897,
-        "y": 4.038562638842631
+        "x": 2.955046167942687,
+        "y": 3.9938570170303285
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.22,
-        "y": 5.67
+        "x": 2.2680735334851323,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 2.3896008946587544,
-        "y": 6.0414943366000315
+        "x": 2.3136064593809165,
+        "y": 5.528735751349053
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
         "data": {
@@ -65,6 +65,12 @@
               "data": {
                 "name": "revShooter"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotToIntake"
+              }
             }
           ]
         }
@@ -72,10 +78,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
@@ -83,7 +89,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Limelight",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

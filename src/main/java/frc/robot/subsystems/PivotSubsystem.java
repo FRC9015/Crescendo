@@ -4,11 +4,18 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+
+import org.littletonrobotics.junction.Logger;
 
 import frc.robot.Constants.Constants.PivotConstants;
 
@@ -34,7 +41,9 @@ public class PivotSubsystem extends SubsystemBase {
     TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
     TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
 
+
     private double currentPosition = 0;
+
 
     public PivotSubsystem(){
 
@@ -49,21 +58,18 @@ public class PivotSubsystem extends SubsystemBase {
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
         pivotEncoder.setPositionConversionFactor(1.0/15);
+
+
     }
 
-    //raises the pivot
     public Command raisePivot(){
-        return startEnd(
-                this::movePivotUp,
-                this::stopPivot
-        );
+        return run(
+                this::movePivotUp);
     }
-    //lowers the pivot
+    
     public Command lowerPivot(){
-        return startEnd(
-                this::movePivotDown,
-                this::stopPivot
-        );
+        return run(
+                this::movePivotDown);
     }
 
     public Command autoAutoAim(){
@@ -76,9 +82,13 @@ public class PivotSubsystem extends SubsystemBase {
     public Command movePivotToSubWoofer(){
         return this.runOnce(this::SubWoofer);
     }
+
+    public Command printPivotAngle(){
+        return new InstantCommand(() -> System.out.println("Current Pivot Position: " + currentPosition + " Distance to Speaker: " + LIMELIGHT_INTERFACE.getSpeakerDistance()));
+    }
     //moves pivot up
     private void movePivotUp(){
-        currentPosition += 0.05;
+        currentPosition += 0.005;
     }
     //stops pivot
     private void stopPivot(){
@@ -87,7 +97,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
     //moves pivot
     private void movePivotDown(){
-        currentPosition -= 0.05;
+        currentPosition -= 0.005;
     }
 
     //uses SparkMax PID to set the motors to a position
@@ -96,12 +106,14 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         pivotPIDController.setP(2);
+        pivotPIDController.setI(0.0);
         currentPosition = 0.24;
     }
 
     //uses SparkMax PID to set the motors to a position
     public void SubWoofer(){
         pivotPIDController.setP(0.4);
+        pivotPIDController.setI(0.0);
         currentPosition = 0;
         
     }
@@ -109,29 +121,36 @@ public class PivotSubsystem extends SubsystemBase {
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(1.5);
+        pivotPIDController.setI(0.0);
         currentPosition = 1.3;
         
     }
 
     public void passNotePreset(){
         pivotPIDController.setP(2);
+        pivotPIDController.setI(0.0);
         currentPosition = 0.48;
     }
 
     public void setCurrentPosition(double SetPoint){
-        pivotPIDController.setP(2);
-        currentPosition = SetPoint;
+        pivotPIDController.setP(7);
+        pivotPIDController.setI(0.0004);
+        currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }
 
     public void autoAim(){
+      
         setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+        
     }
+
+     
 
     @Override
     public void periodic(){
         //puts values on dashboard
         SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
-        
+        Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()-currentPosition);
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);

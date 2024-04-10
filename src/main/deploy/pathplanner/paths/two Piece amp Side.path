@@ -8,36 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7100000000000009,
-        "y": 6.584919221302506
+        "x": 1.764499271395681,
+        "y": 6.872899327194004
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8362413424028268,
-        "y": 6.774308490941738
+        "x": 3.1890104567328996,
+        "y": 7.063813197393838
       },
       "prevControl": {
-        "x": 2.617112787832497,
-        "y": 6.655940197417219
-      },
-      "nextControl": {
-        "x": 3.0553698969731564,
-        "y": 6.892676784466258
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.71,
-        "y": 6.584919221302506
-      },
-      "prevControl": {
-        "x": 1.71,
-        "y": 6.584919221302506
+        "x": 1.7791849537187452,
+        "y": 6.843527962547876
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,11 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.6,
+      "maxWaypointRelativePos": 0.95,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 360.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -66,15 +62,15 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 60.0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": null,
@@ -82,5 +78,5 @@
     "rotation": 60.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

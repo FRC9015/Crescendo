@@ -8,20 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.26,
-        "y": 5.5
+        "x": 2.8435255450812584,
+        "y": 5.5214256302514375
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2223040843597217,
+        "x": 3.375272340606793,
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.2223040843597217,
+        "x": 3.4012411138324197,
+        "y": 5.505409779785842
+      },
+      "nextControl": {
+        "x": 3.349303567381166,
+        "y": 5.494590220214158
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.073216078404946,
         "y": 5.5
+      },
+      "prevControl": {
+        "x": 3.109637091797106,
+        "y": 5.506857224894573
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.2,
       "command": {
         "type": "parallel",
         "data": {
@@ -56,10 +72,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
@@ -67,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Limelight",
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0

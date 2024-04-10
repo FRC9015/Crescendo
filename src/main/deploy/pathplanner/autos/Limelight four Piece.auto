@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.35,
+      "y": 5.5
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shootNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SubWoofer Middle Park"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "second piece limelight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "third piece Limelight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

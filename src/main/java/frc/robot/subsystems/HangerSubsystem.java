@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import org.littletonrobotics.junction.Logger;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -15,10 +18,11 @@ public class HangerSubsystem extends SubsystemBase{
         private final SparkPIDController hangerPIDController = hangerMotor.getPIDController();
         private final RelativeEncoder hangerEncoder = hangerMotor.getEncoder();
         public HangerSubsystem(){
-
-            hangerPIDController.setP(1);
+            hangerPIDController.setP(5);
             hangerPIDController.setI(0);
             hangerPIDController.setD(0);
+            
+            hangerMotor.setIdleMode(IdleMode.kBrake);
        }
 
         double setpoint = 0;
@@ -31,11 +35,11 @@ public class HangerSubsystem extends SubsystemBase{
         }
 
         public void hangerUp(){
-            setpoint += 3;
+            setpoint = ((((-500 * 4 /3) / 5)* 4 )/ 34)*46;
         }
 
         public void hangerDown(){
-            setpoint -= 3;
+            setpoint = 0;
         }
 
         public void stopHanger(){
@@ -45,7 +49,8 @@ public class HangerSubsystem extends SubsystemBase{
         @Override
         public void periodic(){
 
-            //hangerPIDController.setReference(setpoint, ControlType.kPosition);
+            hangerPIDController.setReference(setpoint, ControlType.kPosition);
             SmartDashboard.putNumber("hanger Position", hangerEncoder.getPosition());
+            Logger.recordOutput("Hanger/speed", hangerEncoder.getVelocity());
         }
 }

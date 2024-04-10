@@ -18,9 +18,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "pivotToIntake"
+            "waitTime": 12.0
           }
         },
         {

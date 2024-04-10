@@ -15,10 +15,11 @@ public class SubwooferPreset extends Command {
     @Override
     public void initialize() {
        PIVOT.SubWoofer();
-       SHOOTER.setSpeakerShooterMotorSpeedsSubWoofer();
+
     }
     @Override
-    public void execute() {   
+    public void execute() {
+        SHOOTER.setSpeakerShooterMotorSpeedsSubWoofer();
     }
 
     @Override

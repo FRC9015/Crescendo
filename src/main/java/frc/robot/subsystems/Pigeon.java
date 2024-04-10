@@ -19,12 +19,7 @@ public class Pigeon extends SubsystemBase{
 	public void zeroYaw() {
 		pigeon.setYaw(0);
 	}
-	public void resetYaw(double angle){ pigeon.setYaw(angle); 
+	public void resetYaw(double angle){ 
+		pigeon.setYaw(angle); 
 	}
-
-	@Override
-	public void periodic(){
-		SmartDashboard.putString("yaw", getYawAsRotation2d().toString());
-	}
-
 }

@@ -12,10 +12,10 @@ public class PassNotePreset extends Command{
     @Override
     public void initialize() {
        PIVOT.passNotePreset();
-       SHOOTER.setSpeakerShooterMotorSpeedsSubWoofer();
     }
     @Override
-    public void execute() {   
+    public void execute() {
+        SHOOTER.setSpeakerShooterMotorSpeedsSubWoofer();
     }
 
     @Override

@@ -1,28 +1,37 @@
 package frc.robot.Commands;
 
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.RobotContainer.SWERVE;
+
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
+import frc.robot.RobotContainer;
+
 import static frc.robot.Constants.Constants.SwerveConstants;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+
+import org.littletonrobotics.junction.Logger;
 
 public class LimelightDrive extends Command{
     public LimelightDrive(){
         addRequirements(SWERVE);
     }
 
-    PIDController L_PID = new PIDController(0.1, 0, 0);
+    PIDController limelightPID = new PIDController(0.03, 0.0, 0);
 
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
+    @Override
+    public void initialize() {
+        limelightPID.reset();
+    }
 
     @Override
     public void execute() {
@@ -32,15 +41,15 @@ public class LimelightDrive extends Command{
 		double inputMagnitude = Math.hypot(inputX, inputY);
 		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.2);
 		double inputDir = Math.atan2(inputY, inputX);
-		double forwardDirectionSign = (DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red) ? 1.0 : -1.0);
+		double forwardDirectionSign = (RobotContainer.IsRed() ? 1.0 : -1.0);
 
-		double xVelocity = xVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double yVelocity = yVelocityFilter.calculate(cos(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
+		double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-		double rotationalVelocity = L_PID.calculate(LIMELIGHT_INTERFACE.getX());
-		
+		double rotationalVelocity = limelightPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
+		Logger.recordOutput("AutoAim/PID/Error", limelightPID.getPositionError());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
-
+        SmartDashboard.putNumber("Drive error", limelightPID.getPositionError());
     }
 }
