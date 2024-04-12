@@ -78,7 +78,7 @@ public class RobotContainer {
 
 		if (Robot.isReal()){
 			DRIVE = new Drive(
-					new GyroIO() {},
+					new GyroIOPigeon2(true) {},
 					new ModuleIOTalonFX(0),
 					new ModuleIOTalonFX(1),
 					new ModuleIOTalonFX(2),
