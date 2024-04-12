@@ -31,6 +31,8 @@ import frc.robot.subsystems.LimelightInterface;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
+import org.opencv.video.TrackerGOTURN;
+
 import java.util.function.BooleanSupplier;
 
 /**
@@ -53,6 +55,7 @@ public class RobotContainer {
 	public static final LEDSubsystem LED_SUBSYSTEM = new LEDSubsystem(INTAKE,SHOOTER);
 	public static final HangerSubsystem HANGER = new HangerSubsystem();
 	public static final AmpSubsystem AMP = new AmpSubsystem();
+
 
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -102,6 +105,9 @@ public class RobotContainer {
 				InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
 				InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
 				InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
+				new Trigger(INTAKE::getHandoffStatus)
+						.onTrue(new InstantCommand(()->InputManager.getInstance().rumbleDriveController(1.0)))
+						.onFalse(new InstantCommand(()->InputManager.getInstance().rumbleDriveController(0.0)));
 				
 				// Operator Bindings
 				InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());

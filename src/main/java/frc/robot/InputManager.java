@@ -2,7 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Constants.InputConstants;
 import frc.robot.Constants.Constants.OperatorConstants;
@@ -49,7 +51,6 @@ public class InputManager {
     private InputManager(){
         driveController = new CommandGenericHID(OperatorConstants.driverControllerPort);
         operatorController = new CommandGenericHID(OperatorConstants.operatorControllerPort);
-
         Preferences.initDouble(InputConstants.triggerPressThresholdKey, pressThreshold);
     }
 
@@ -102,6 +103,15 @@ public class InputManager {
             case RT_Button8 -> operatorController.axisGreaterThan(3, Preferences.getDouble(InputConstants.triggerPressThresholdKey, pressThreshold));
             default -> operatorController.button(button.buttonID);
         };
+    }
+
+    public void rumbleDriveController(double rumbleValue){
+        if (driveController.getHID().getType() != GenericHID.HIDType.kXInputGamepad) {
+            return;
+        }
+
+        CommandXboxController driverXboxController = (CommandXboxController) driveController;
+        driverXboxController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, rumbleValue);
     }
 
     /**
