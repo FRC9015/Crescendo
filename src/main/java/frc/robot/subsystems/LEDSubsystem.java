@@ -9,6 +9,9 @@ import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
+
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
 import java.awt.Color;
 
 public class LEDSubsystem extends SubsystemBase {
@@ -56,6 +59,9 @@ public class LEDSubsystem extends SubsystemBase {
     public void indicateShooter(){
         if (shooter.shooterIsReady()){
             setColor(Color.BLUE);
+        }
+        if(shooter.shooterIsReady() && LIMELIGHT_INTERFACE.Error){
+            setColor(Color.MAGENTA);
         }
     }
 

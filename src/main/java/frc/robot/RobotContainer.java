@@ -21,6 +21,7 @@ import frc.robot.Commands.AutoAim;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
 import frc.robot.Commands.Presets.SubwooferPreset;
+import frc.robot.Constants.TunerConstants;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.AmpSubsystem;
@@ -28,7 +29,6 @@ import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightInterface;
-import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import java.util.function.BooleanSupplier;
@@ -41,10 +41,8 @@ import java.util.function.BooleanSupplier;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	public static final SwerveSubsystem SWERVE = new SwerveSubsystem();
+	public static final SwerveSubsystem SWERVE = TunerConstants.DriveTrain;
 	public static final Pigeon PIGEON = new Pigeon();
-	public static final PoseEstimator POSE_ESTIMATOR =
-			new PoseEstimator(SWERVE, PIGEON, new Pose2d(1, 1, PIGEON.getYawAsRotation2d()));
 
 	public static final PivotSubsystem PIVOT = new PivotSubsystem();
 	public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
@@ -96,7 +94,6 @@ public class RobotContainer {
 				// Driver Bindings
 				InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
 				InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE,AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
-				InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new InstantCommand(POSE_ESTIMATOR::updatePoseEstimator).repeatedly());
 				InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
 				InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
 				InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());

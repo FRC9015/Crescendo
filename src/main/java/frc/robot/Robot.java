@@ -12,8 +12,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathfindingCommand;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -71,6 +71,25 @@ public class Robot extends LoggedRobot{
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
+
+		 if (RobotContainer.LIMELIGHT_INTERFACE.tagCheck()) {
+            LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
+            if (LimelightHelpers.getTV("limelight")) {
+
+                double tl = result.latency_pipeline;
+                double cl = result.latency_capture;
+
+                double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
+                
+                
+                m_robotContainer.SWERVE.addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
+
+                Logger.recordOutput("limelight/botPose", result.getBotPose2d_wpiBlue());
+                
+            }
+		
+        }
+		Logger.recordOutput("Pose/BotPose", m_robotContainer.SWERVE.getPose());
 	}
 
 	/** This function is called once each time the robot enters Disabled mode. */

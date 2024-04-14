@@ -102,8 +102,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setIdleShooterSpeeds() {
-        speakerPIDTop.setSetpoint(0.3 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.3 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = true;
     }

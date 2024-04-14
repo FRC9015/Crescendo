@@ -30,12 +30,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "bb"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "autoAim"
@@ -80,7 +74,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Limelight Third Rotation"
+            "pathName": "third piece Limelight"
           }
         },
         {

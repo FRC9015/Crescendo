@@ -15,16 +15,15 @@ import frc.robot.Constants.Constants.FieldConstants;
 public class AutoAim extends Command{
    
     public AutoAim(){
-        addRequirements(PIVOT,LIMELIGHT_INTERFACE,SHOOTER);
+        addRequirements(PIVOT,SHOOTER);
     }
-    PIDController w_pid = new PIDController(0.1, 0, 0);
     
     @Override
     public void initialize() {
         LIMELIGHT_INTERFACE.LEDsOn();
 
         
-    
+
     }
     @Override
     public void execute() {

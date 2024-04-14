@@ -8,7 +8,6 @@ import static frc.robot.Constants.Constants.SwerveConstants.slewRateLimit;
 import static frc.robot.Constants.Constants.SwerveConstants.maxSpeed;
 import static frc.robot.Constants.Constants.SwerveConstants.angularSpeed;
 import static frc.robot.RobotContainer.SWERVE;
-import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
@@ -31,18 +30,18 @@ public class DefaultDrive extends Command {
 	SlewRateLimiter xVelocityFilter = new SlewRateLimiter(slewRateLimit);
 	SlewRateLimiter yVelocityFilter = new SlewRateLimiter(slewRateLimit);
 
-	PIDController headingPID = new PIDController(1.4,0.1,0);
+//	PIDController headingPID = new PIDController(1.4,0.1,0);
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
     public DefaultDrive() {
-		addRequirements(SWERVE, POSE_ESTIMATOR);
+		addRequirements(SWERVE);
 	}
 
 	@Override
 	public void initialize() {
 		
-		headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		headingPID.enableContinuousInput(-PI, PI);
+		// headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// headingPID.enableContinuousInput(-PI, PI);
 	
 	}
 
@@ -53,11 +52,11 @@ public class DefaultDrive extends Command {
 		double inputX = inputXYZ[0];
 		double inputY = inputXYZ[1];
 		double inputZ = inputXYZ[2];
-		inputZ = MathUtil.applyDeadband(inputZ, 0.15);
+		inputZ = MathUtil.applyDeadband(inputZ, 0.1);
 		double inputMagnitude = Math.hypot(inputX, inputY);
-		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.15);
+		inputMagnitude = MathUtil.applyDeadband(inputMagnitude, 0.1);
 		double inputDir = Math.atan2(inputY, inputX);
-		double forwardDirectionSign = (RobotContainer.IsRed() ? 1.0 : -1.0);
+		double forwardDirectionSign = (RobotContainer.IsRed() ? -1.0 : 1.0);
 
 		double xVelocity = xVelocityFilter.calculate(cos(inputDir) * inputMagnitude * maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
@@ -65,16 +64,18 @@ public class DefaultDrive extends Command {
 
 		double rotationalVelocity = (inputZ * angularSpeed );
 
-		if(abs(rotationalVelocity) > 1e-10){
-			headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-			headingPID.reset();
-		}else if(abs(xVelocity) > 1e-10 || abs(yVelocity) > 1e-10){
-			rotationalVelocity = -headingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		}
+		// if(abs(rotationalVelocity) > 1e-10){
+		// 	headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// 	headingPID.reset();
+		// }else if(abs(xVelocity) > 1e-10 || abs(yVelocity) > 1e-10){
+		// 	rotationalVelocity = -headingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// }
 		
-		Logger.recordOutput("Swerve/heading/target", headingPID.getSetpoint());
-		Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
-		Logger.recordOutput("Swerve/Recorded", POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
+		// Logger.recordOutput("Swerve/heading/target", headingPID.getSetpoint());
+		// Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
+
+		
+		
 		SWERVE.drive(-yVelocity, -xVelocity, -rotationalVelocity);
 		
 	}

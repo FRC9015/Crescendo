@@ -12,7 +12,7 @@ import frc.robot.Constants.Constants.FieldConstants;
 import frc.robot.Constants.Constants.LimelightConstants;
 import frc.robot.Constants.Constants.ShooterConstants;
 
-import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+import static frc.robot.RobotContainer.SWERVE;
 
 import java.lang.reflect.Field;
 
@@ -33,6 +33,7 @@ public class LimelightInterface extends SubsystemBase{
     private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
     private static boolean tag = false;
+    public boolean Error = false;
 
     
     //takes the X, Y, and area values from the limelight network table
@@ -47,9 +48,6 @@ public class LimelightInterface extends SubsystemBase{
     NetworkTable table = inst.getTable("limelight");
     
     //makes variables for the X Y and Area values of the limelight
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
    
     //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
     @Override
@@ -60,18 +58,13 @@ public class LimelightInterface extends SubsystemBase{
         }else{
             tag = false;
         }
-        //updates the X,Y,Area values
-        x = tx.getDouble(0.0);
-        y = ty.getDouble(0.0);
-        area = ta.getDouble(0.0);
-
+   
         SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
         SmartDashboard.putBoolean("April Tag", tag);
         SmartDashboard.putNumber("distance", getSpeakerDistance());
         SmartDashboard.putString("Angle", getSpeakerAngle().toString());
 
     }
-
 
 public LimelightInterface(){
         shooterInterp = new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
@@ -90,7 +83,6 @@ public LimelightInterface(){
         shooterInterp.put(5.0,0.307);
         shooterInterp.put(5.5,0.313);
         shooterInterp.put(6.0,0.315);
-        
         
     }
 
@@ -118,7 +110,6 @@ public LimelightInterface(){
         table.getEntry("ledMode").setNumber(1);
     }
 
-    
     @AutoLogOutput
     public double getTY(){
         return LimelightHelpers.getLimelightNTDouble("limelight", "ty");
@@ -132,13 +123,13 @@ public LimelightInterface(){
     public double getSpeakerDistance(){
        var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
     
-        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().getDistance(speakerPose) - Units.inchesToMeters(14); 
+        return SWERVE.getState().Pose.getTranslation().getDistance(speakerPose) - Units.inchesToMeters(14); 
     }
 
     public Rotation2d getSpeakerAngle(){
         var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose: FieldConstants.Speaker_Blue_Pose);
 
-        return POSE_ESTIMATOR.getEstimatedPose().getTranslation().minus(speakerPose).getAngle();
+        return SWERVE.getState().Pose.getTranslation().minus(speakerPose).getAngle();
     }
 
     public double getAngleToSpeaker(){
