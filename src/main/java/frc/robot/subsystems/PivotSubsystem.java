@@ -133,7 +133,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void setCurrentPosition(double SetPoint){
-        pivotPIDController.setP(7);
+        pivotPIDController.setP(2);
         pivotPIDController.setI(0.0004);
         currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }

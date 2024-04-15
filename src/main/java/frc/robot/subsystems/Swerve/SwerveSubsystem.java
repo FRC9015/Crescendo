@@ -114,8 +114,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
             this::getRobotRelativeChassisSpeeds, 
            (speeds) -> this.setControl(AutoRequest.withSpeeds(speeds)),
             new HolonomicPathFollowerConfig(
-                new PIDConstants(6.25,0,0),
-                new PIDConstants(0.5,0,0), 
+                new PIDConstants(5,0,0),
+                new PIDConstants(7,0,0), 
             TunerConstants.kSpeedAt12VoltsMps,
             driveBaseRadius,
             new ReplanningConfig()), 
@@ -146,5 +146,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 		for (int i = 0; i < 4; i++)
 			states[i * 2] = getModule(i).getCurrentState().angle.getRadians();
 		Logger.recordOutput("Measured States", states);
+
+        Logger.recordOutput("Rotation/Rotational", getPose().getRotation());
     }
 }

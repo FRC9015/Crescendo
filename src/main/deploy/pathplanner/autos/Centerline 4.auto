@@ -32,25 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootLimelight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Centerline 4 second note"
+            "name": "LimelightDrive"
           }
         },
         {

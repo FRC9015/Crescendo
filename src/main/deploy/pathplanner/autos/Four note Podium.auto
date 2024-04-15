@@ -32,6 +32,18 @@
         {
           "type": "named",
           "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoAim"
           }
         },
@@ -50,7 +62,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle podium"
+            "pathName": "test path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
           }
         },
         {
@@ -75,6 +99,18 @@
           "type": "path",
           "data": {
             "pathName": "Amp Podium"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
           }
         },
         {

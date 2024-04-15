@@ -16,7 +16,7 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final DigitalOutput handoffSensor = new DigitalOutput(1);
+    private final DigitalOutput handoffSensor = new DigitalOutput(2);
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
     };

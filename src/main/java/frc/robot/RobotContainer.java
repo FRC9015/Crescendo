@@ -18,6 +18,7 @@ import frc.robot.Commands.DefaultDrive;
 import frc.robot.Commands.Handoff;
 import frc.robot.Commands.LimelightDrive;
 import frc.robot.Commands.AutoAim;
+import frc.robot.Commands.AutoDrive;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
 import frc.robot.Commands.Presets.SubwooferPreset;
@@ -70,6 +71,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
 		NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
 		NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
+		NamedCommands.registerCommand("LimelightDrive", new AutoDrive());
 
 		SWERVE.setDefaultCommand(new DefaultDrive());
 		configureBindings();

@@ -12,9 +12,39 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "test path"
+            "pathName": "Limelight podium"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
           }
         }
       ]

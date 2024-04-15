@@ -16,44 +16,44 @@
     },
     {
       "anchor": {
-        "x": 4.28579767541079,
-        "y": 1.689935021396219
+        "x": 5.567817346814818,
+        "y": 1.704503426753082
       },
       "prevControl": {
-        "x": 2.7415467075832107,
+        "x": 4.011556869673876,
+        "y": 1.5611636459637832
+      },
+      "nextControl": {
+        "x": 6.675016153936479,
+        "y": 1.806482264251131
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.794719133360182,
+        "y": 2.622312964235512
+      },
+      "prevControl": {
+        "x": 7.16305773339142,
+        "y": 2.1925450062080256
+      },
+      "nextControl": {
+        "x": 10.56196699518784,
+        "y": 3.0877934278419032
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.28579767541079,
         "y": 1.9303137097844736
       },
-      "nextControl": {
-        "x": 5.35825320261403,
-        "y": 1.5229961893315642
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.474214215509177,
-        "y": 2.513049924059032
-      },
       "prevControl": {
-        "x": 6.842552815540414,
-        "y": 2.083281966031546
-      },
-      "nextControl": {
-        "x": 10.241462077336834,
-        "y": 2.9785303876654234
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.1567462602538336,
-        "y": 2.156123992815865
-      },
-      "prevControl": {
-        "x": 4.999649537897124,
-        "y": 0.8158306999843811
+        "x": 5.116196780752035,
+        "y": 1.078061996407933
       },
       "nextControl": null,
       "isLocked": false,
@@ -95,13 +95,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 2.5,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -50.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
@@ -110,5 +110,5 @@
     "rotation": -57.72435568542241,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

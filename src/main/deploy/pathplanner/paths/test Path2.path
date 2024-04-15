@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.95,
+        "x": 1.25,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0,
+        "x": 2.2500000000000036,
         "y": 5.5
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.95,
-        "y": 5.5
+        "x": 2.64,
+        "y": 6.706057751896833
       },
       "prevControl": {
-        "x": 1.9000000000000004,
-        "y": 5.5
+        "x": 1.6400000000000001,
+        "y": 6.706057751896833
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Limelight",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
