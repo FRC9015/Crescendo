@@ -1,0 +1,30 @@
+package frc.robot;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
+public class Zone {
+    private Translation2d point1;
+    private Translation2d point2;
+    private double fieldWidth = 16.21;
+
+    public Zone(Translation2d point1, Translation2d point2){
+        this.point1 = point1;
+        this.point2 = point2;
+
+        if (RobotContainer.IsRed()){
+            this.point1 = new Translation2d(fieldWidth - point1.getX(), point1.getY());
+            this.point2 = new Translation2d(fieldWidth - point2.getX(), point2.getY());
+        }
+    }
+
+    public boolean isIn(Pose2d pose){
+        boolean betweenX =
+                pose.getX() > Math.min(point1.getX(), point2.getX()) && pose.getX() < Math.max(point1.getX(), point2.getX());
+
+        boolean betweenY =
+                pose.getY() > Math.min(point1.getY(), point2.getY()) && pose.getY() < Math.max(point1.getY(), point2.getY());
+
+        return betweenX && betweenY;
+    }
+}
