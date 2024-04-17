@@ -6,15 +6,29 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class Zone {
     private Translation2d point1;
     private Translation2d point2;
+    private Translation2d originalPoint1;
+    private Translation2d originalPoint2;
     private double fieldWidth = 16.21;
 
     public Zone(Translation2d point1, Translation2d point2){
         this.point1 = point1;
         this.point2 = point2;
+        this.originalPoint1 = point1;
+        this.originalPoint2 = point2;
 
         if (RobotContainer.IsRed()){
             this.point1 = new Translation2d(fieldWidth - point1.getX(), point1.getY());
             this.point2 = new Translation2d(fieldWidth - point2.getX(), point2.getY());
+        }
+    }
+
+    public void updateToAlliance(){
+        if (RobotContainer.IsRed()){
+            this.point1 = new Translation2d(fieldWidth - originalPoint1.getX(), originalPoint1.getY());
+            this.point2 = new Translation2d(fieldWidth - originalPoint2.getX(), originalPoint2.getY());
+        }else{
+            this.point1 = new Translation2d(originalPoint1.getX(), originalPoint1.getY());
+            this.point2 = new Translation2d(originalPoint2.getX(), originalPoint2.getY());
         }
     }
 

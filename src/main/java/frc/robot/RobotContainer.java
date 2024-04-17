@@ -17,9 +17,11 @@ import frc.robot.Commands.*;
 import frc.robot.Commands.Presets.AmpPreset;
 import frc.robot.Commands.Presets.PassNotePreset;
 import frc.robot.Commands.Presets.SubwooferPreset;
+import frc.robot.Constants.Constants;
 import frc.robot.Constants.TunerConstants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
+import frc.robot.Constants.Constants.FieldConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -110,6 +112,9 @@ public class RobotContainer {
         InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
         InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
         InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
+
+
+        new Trigger(()-> FieldConstants.WING.isIn(SWERVE.getPose())).whileTrue(new LimelightDrive());
     }
 
     public Command getAutonomousCommand() {
@@ -128,6 +133,6 @@ public class RobotContainer {
         INTAKE.stopIntake();
         SHOOTER.setIdleShooterSpeeds();
         AMP.stopAmp();
-
+        FieldConstants.WING.updateToAlliance();
     }
 }
