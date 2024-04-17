@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -98,7 +99,7 @@ public class RobotContainer {
         InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
         InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
         InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
-        InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new AutoAim().alongWith(new LimelightDrive()));
+        InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new ConditionalCommand(new LimelightDrive(),new AmpAim(),()-> FieldConstants.WING.isIn(SWERVE.getPose())));
 
         // Operator Bindings
         InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
@@ -114,7 +115,7 @@ public class RobotContainer {
         InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
 
 
-        new Trigger(()-> FieldConstants.WING.isIn(SWERVE.getPose())).whileTrue(new LimelightDrive());
+
     }
 
     public Command getAutonomousCommand() {

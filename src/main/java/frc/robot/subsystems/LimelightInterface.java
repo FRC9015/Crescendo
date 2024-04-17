@@ -117,7 +117,11 @@ public class LimelightInterface extends SubsystemBase {
 
         return SWERVE.getState().Pose.getTranslation().getDistance(speakerPose) - Units.inchesToMeters(14);
     }
+    public double getAmpDistance() {
+        var ampPose = (RobotContainer.IsRed() ? FieldConstants.Amp_Red_Pose : FieldConstants.Amp_Blue_Pose); //first should be red
 
+        return SWERVE.getState().Pose.getTranslation().getDistance(ampPose) - Units.inchesToMeters(14);
+    }
     public Rotation2d getSpeakerAngle() {
         var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose : FieldConstants.Speaker_Blue_Pose);
 
@@ -130,6 +134,13 @@ public class LimelightInterface extends SubsystemBase {
         Translation2d leadingSpeakerPose = speakerPose.minus(new Translation2d(0, SWERVE.getYVelocity() * flightTime));
         Logger.recordOutput("LeadTarget", leadingSpeakerPose);
         return SWERVE.getState().Pose.getTranslation().minus(leadingSpeakerPose).getAngle();
+    }
+    public Rotation2d getLeadingAmpAngle() {
+        Translation2d ampPose = (RobotContainer.IsRed() ? FieldConstants.Amp_Red_Pose : FieldConstants.Amp_Blue_Pose);
+        double flightTime = getAmpDistance() / ShooterConstants.noteVelocity;
+        Translation2d leadingAmpPose = ampPose.minus(new Translation2d(0, SWERVE.getYVelocity() * flightTime));
+        Logger.recordOutput("LeadAmpTarget", leadingAmpPose);
+        return SWERVE.getState().Pose.getTranslation().minus(leadingAmpPose).getAngle();
     }
 
     public double getAngleToSpeaker() {
