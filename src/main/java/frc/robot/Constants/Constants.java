@@ -9,6 +9,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Zone;
 
 
 /**
@@ -40,7 +41,7 @@ public final class Constants {
 
     public static class InputConstants {
         public static String triggerPressThresholdKey = "PressThreshold";
-        public static double defaultTriggerPressThreshold = 0.1;
+        public static double defaultTriggerPressThreshold = 0.2;
     }
 
     public static class SwerveConstants {
@@ -103,5 +104,8 @@ public final class Constants {
         public static final double SpeakerY = Units.inchesToMeters(218.42);
         public static final Translation2d Speaker_Red_Pose = new Translation2d(Speaker_X_Red, SpeakerY);
         public static final Translation2d Speaker_Blue_Pose = new Translation2d(Speaker_X_Blue, SpeakerY);
+
+
+        public static final Zone WING = new Zone(new Translation2d(0.9,7.46), new Translation2d(5.1,2.23));
     }
 }
