@@ -5,8 +5,13 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.Interpolator;
+import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,7 +49,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     private double currentPosition = 0;
 
-
+    private InterpolatingTreeMap<Double,Double> pivotInterp;
     public PivotSubsystem(){
 
         //sets PID values of both controllers
@@ -58,8 +63,12 @@ public class PivotSubsystem extends SubsystemBase {
         pivotMotor2.follow(pivotMotor1,true);
         //makes encoder account for gear box/Chain
         pivotEncoder.setPositionConversionFactor(1.0/15);
-
-
+        pivotInterp = new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
+        pivotInterp.put(0.0,0.0);
+        pivotInterp.put(0.24,0.4);
+        pivotInterp.put(0.48,1.0);
+        pivotInterp.put(1.3,2.8);
+;
     }
 
     public Command raisePivot(){
@@ -102,8 +111,6 @@ public class PivotSubsystem extends SubsystemBase {
 
     //uses SparkMax PID to set the motors to a position
     public void intake(){
-        motor1Goal = new TrapezoidProfile.State(0.5,0.5);
-        motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
         pivotPIDController.setP(2);
         pivotPIDController.setI(0.0);
@@ -156,6 +163,7 @@ public class PivotSubsystem extends SubsystemBase {
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
 
         pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
-        
+        Logger.recordOutput("Pivot", new Pose3d(new Translation3d(-0.13 -0.25, 0.31 -0.25, 0.41),
+                new Rotation3d(0, -pivotInterp.get(currentPosition), 0)));
     }
 }

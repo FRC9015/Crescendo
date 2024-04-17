@@ -89,19 +89,19 @@ public class RobotContainer {
      */
     private void configureBindings() {
         // Driver Bindings
-        InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).whileTrue(INTAKE.outtakeNote());
+        InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
         InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
         InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
-        InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
+        InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
         InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
         InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
         InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
-        InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).whileTrue(new LimelightDrive());
+        InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new AutoAim().alongWith(new LimelightDrive()));
 
         // Operator Bindings
         InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
         InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-        InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue((new AutoAim()).alongWith(new LimelightDrive()));
+
         InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
         InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
         InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
