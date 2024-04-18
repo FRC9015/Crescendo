@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +20,7 @@ import org.littletonrobotics.junction.Logger;
 
 
 public class ShooterSubsystem extends SubsystemBase {
-    private final DigitalOutput speakerSensor = new DigitalOutput(0);
+    private final DigitalInput speakerSensor = new DigitalInput(4);
 
     private final double motorMaxFreeSpeed = 6784;//RPM
     private boolean shooterIsRunning = false;
@@ -55,12 +56,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Command autoShootNoteToSpeaker(AmpSubsystem amp) {
         return new SequentialCommandGroup(
+                new InstantCommand(() -> Logger.recordOutput("Commands/autoShootNoteToSpeak", true)),
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
                 new WaitCommand(0.8),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
                 new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
-                new InstantCommand(this::setIdleShooterSpeeds));
+                new InstantCommand(this::setIdleShooterSpeeds)).finallyDo(()-> Logger.recordOutput("Commands/autoShootNoteToSpeak", false));
     }
 
     public Command autoShootNoteLimelight(AmpSubsystem amp) {
@@ -101,6 +103,12 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.runOnce(this::setIdleShooterSpeeds).onlyWhile(this::getShooterSensor);
     }
 
+    public Command setPassing(){
+        return startEnd(
+            this::setPassingShooterMotorSpeeds,
+            this::setIdleShooterSpeeds);
+    }
+
     public void setIdleShooterSpeeds() {
         speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
@@ -121,6 +129,12 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterIsRunning = true;
         idleMode = false;
 
+    }
+    public void setPassingShooterMotorSpeeds(){
+        speakerPIDTop.setSetpoint(0.4 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.4 * motorMaxFreeSpeed);
+        shooterIsRunning = true;
+        idleMode = false;
     }
 
     public void stopSpeakerShooterMotors() {
@@ -145,7 +159,7 @@ public class ShooterSubsystem extends SubsystemBase {
         idleMode = false;
     }
     public boolean getShooterSensor() {
-        return speakerSensor.get();
+        return !speakerSensor.get();
     }
 
     public boolean shooterIsReady(){
@@ -172,7 +186,7 @@ public class ShooterSubsystem extends SubsystemBase {
         if (idleMode && !getShooterSensor()){
             stopSpeakerShooterMotors();
         }
-        SmartDashboard.putBoolean("Shooter Sensor", speakerSensor.get());
+        SmartDashboard.putBoolean("Shooter Sensor", getShooterSensor());
     }
 
 

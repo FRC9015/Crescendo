@@ -88,9 +88,16 @@ public class PivotSubsystem extends SubsystemBase {
         return this.runOnce(this::intake);
     }
 
-    public Command movePivotToSubWoofer(){
+    public Command movePivotToSubWooferAuto(){
         return this.runOnce(this::SubWoofer);
     }
+
+    public Command movePivotToSubWoofer(){
+        return startEnd(
+            this::SubWoofer,
+            this::intake
+        );
+    }    
 
     public Command printPivotAngle(){
         return new InstantCommand(() -> System.out.println("Current Pivot Position: " + currentPosition + " Distance to Speaker: " + LIMELIGHT_INTERFACE.getSpeakerDistance()));
@@ -99,11 +106,7 @@ public class PivotSubsystem extends SubsystemBase {
     private void movePivotUp(){
         currentPosition += 0.005;
     }
-    //stops pivot
-    private void stopPivot(){
-        pivotMotor1.stopMotor();
-        pivotMotor2.stopMotor();
-    }
+
     //moves pivot
     private void movePivotDown(){
         currentPosition -= 0.005;

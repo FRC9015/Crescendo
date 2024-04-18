@@ -57,12 +57,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
         NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
         NamedCommands.registerCommand("intake", new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor));
+		        NamedCommands.registerCommand("intakeTimeout", new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor).withTimeout(2));
         NamedCommands.registerCommand("stopIntake", INTAKE.stopIntake());
         NamedCommands.registerCommand("ampShoot", AMP.shootNoteToAmp());
         NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
         NamedCommands.registerCommand("backwardShooter", SHOOTER.autoBackwardShooter());
         NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
-        NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWoofer());
+        NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWooferAuto());
         NamedCommands.registerCommand("LimelightDrive", new AutoDrive());
 
         SWERVE.setDefaultCommand(new DefaultDrive());
@@ -97,9 +98,10 @@ public class RobotContainer {
         InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
         InputManager.getInstance().getDriverButton(InputManager.Button.LT_Button7).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
         InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
-        InputManager.getInstance().getDriverPOV(0).onTrue(HANGER.hangerUP());
-        InputManager.getInstance().getDriverPOV(180).onTrue(HANGER.hangerDOWN());
-        InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new ConditionalCommand(new LimelightDrive(),new AmpAim(),()-> FieldConstants.WING.isIn(SWERVE.getPose())));
+        InputManager.getInstance().getDriverPOV(0).whileTrue(new ConditionalCommand(HANGER.hangerUPTest(), HANGER.hangerUP(),DriverStation::isTest));
+        InputManager.getInstance().getDriverPOV(180).whileTrue(new ConditionalCommand(HANGER.hangerDOWNTest(), HANGER.hangerDOWN(),DriverStation::isTest));
+        InputManager.getInstance().getDriverButton(InputManager.Button.RT_Button8).whileTrue(new ConditionalCommand(new LimelightDrive().alongWith(new AutoAim()),new AmpAim().alongWith(PIVOT.movePivotToSubWoofer()).alongWith(SHOOTER.setPassing()),()-> FieldConstants.WING.isIn(SWERVE.getPose())));
+		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(HANGER::panic));
 
         // Operator Bindings
         InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());

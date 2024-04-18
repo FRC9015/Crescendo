@@ -110,6 +110,7 @@ public final class Constants {
         public static final double Amp_Y = Units.inchesToMeters(325);
         public static final Translation2d Amp_Blue_Pose = new Translation2d(Amp_X_Blue,Amp_Y);
         public static final Translation2d Amp_Red_Pose = new Translation2d(Amp_X_Red,Amp_Y);
+        
         public static final Zone WING = new Zone(new Translation2d(0.9,7.46), new Translation2d(5.1,2.23));
     }
 }
