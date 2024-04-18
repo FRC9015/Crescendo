@@ -35,6 +35,9 @@ public class AutoDrive extends Command {
         return (abs(Units.radiansToDegrees(limelightPID.getPositionError())) < 3);
     }
 
-
+    @Override
+    public void end(boolean interrupted) {
+        SWERVE.drive(0,0,0);
+    }
 }
 

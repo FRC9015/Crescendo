@@ -41,7 +41,7 @@ public final class Constants {
 
     public static class InputConstants {
         public static String triggerPressThresholdKey = "PressThreshold";
-        public static double defaultTriggerPressThreshold = 0.2;
+        public static double defaultTriggerPressThreshold = 0.5;
     }
 
     public static class SwerveConstants {

@@ -115,6 +115,7 @@ public class RobotContainer {
         InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
         InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new SubwooferPreset());
         InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
+        InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).whileTrue(new AutoAim().alongWith(new LimelightDrive()));
 
 
 

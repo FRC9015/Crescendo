@@ -78,8 +78,8 @@ public class InputManager {
         }
 
         return switch (button) {
-            case LT_Button7 -> driveController.axisGreaterThan(2, Preferences.getDouble(InputConstants.triggerPressThresholdKey, pressThreshold));
-            case RT_Button8 -> driveController.axisGreaterThan(3, Preferences.getDouble(InputConstants.triggerPressThresholdKey, pressThreshold));
+            case LT_Button7 -> driveController.axisGreaterThan(2,pressThreshold);
+            case RT_Button8 -> driveController.axisGreaterThan(3,pressThreshold);
             default -> driveController.button(button.buttonID);
         };
     }
@@ -98,8 +98,8 @@ public class InputManager {
         }
 
         return switch (button) {
-            case LT_Button7 -> operatorController.axisGreaterThan(2, Preferences.getDouble(InputConstants.triggerPressThresholdKey, pressThreshold));
-            case RT_Button8 -> operatorController.axisGreaterThan(3, Preferences.getDouble(InputConstants.triggerPressThresholdKey, pressThreshold));
+            case LT_Button7 -> operatorController.axisGreaterThan(2,pressThreshold);
+            case RT_Button8 -> operatorController.axisGreaterThan(3, pressThreshold);
             default -> operatorController.button(button.buttonID);
         };
     }
