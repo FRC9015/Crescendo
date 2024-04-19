@@ -105,23 +105,7 @@ public class Robot extends LoggedRobot {
 
 
         Logger.recordOutput("inWing", Constants.FieldConstants.WING.isIn(RobotContainer.SWERVE.getPose()));
-        if (RobotContainer.LIMELIGHT_INTERFACE.tagCheck()) {
-            LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
-            if (LimelightHelpers.getTV("limelight")) {
 
-                double tl = result.latency_pipeline;
-                double cl = result.latency_capture;
-
-                double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
-
-
-                RobotContainer.SWERVE.addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
-
-                Logger.recordOutput("limelight/botPose", result.getBotPose2d_wpiBlue());
-
-            }
-
-        }
         Logger.recordOutput("Pose/BotPose", RobotContainer.SWERVE.getPose());
     }
 
@@ -135,6 +119,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        RobotContainer.SWERVE.updatePose();
     }
 
     /**
@@ -183,6 +168,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        RobotContainer.SWERVE.updatePose();
     }
 
     @Override

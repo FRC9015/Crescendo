@@ -16,11 +16,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.TunerConstants;
+import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import org.littletonrobotics.junction.Logger;
 
@@ -33,7 +35,7 @@ import java.util.function.Supplier;
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final LinearFilter speedSmoother = LinearFilter.movingAverage(5);
     private static final double kSimLoopPeriod = 0.005; // 5 ms
-    private final SwerveRequest.ApplyChassisSpeeds AutoRequest = new SwerveRequest.ApplyChassisSpeeds();
+    private final SwerveRequest.ApplyChassisSpeeds AutoRequest = new SwerveRequest.ApplyChassisSpeeds();//.withDriveRequestType(DriveRequestType.Velocity);
     public double speedMultiplier = 1;
     double[] states = new double[8];
     private Notifier m_simNotifier = null;
@@ -138,6 +140,26 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         return this.runOnce(
                 () -> speedMultiplier = 1
         );
+    }
+
+    public void updatePose(){
+            if (RobotContainer.LIMELIGHT_INTERFACE.tagCheck()) {
+            LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
+            if (LimelightHelpers.getTV("limelight")) {
+
+                double tl = result.latency_pipeline;
+                double cl = result.latency_capture;
+
+                double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
+
+
+                addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
+
+                Logger.recordOutput("limelight/botPose", result.getBotPose2d_wpiBlue());
+
+            }
+
+        }
     }
 
     @Override

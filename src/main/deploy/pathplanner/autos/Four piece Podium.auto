@@ -88,6 +88,42 @@
           "data": {
             "name": "shootNote"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Podium"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeTimeout"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
         }
       ]
     }

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7805585557503859,
-      "y": 4.567247202472939
+      "x": 0.66,
+      "y": 4.45
     },
     "rotation": -56.90251704852376
   },
@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "shootNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "pivotToIntake"
           }
         },
@@ -21,6 +27,30 @@
           "type": "path",
           "data": {
             "pathName": "Centerline 5 Shoot Source Side"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeTimeout"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
           }
         }
       ]
