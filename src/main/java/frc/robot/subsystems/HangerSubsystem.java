@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants.IntakeConstants;
 
 public class HangerSubsystem extends SubsystemBase{
@@ -82,6 +83,8 @@ public class HangerSubsystem extends SubsystemBase{
             hangerMotor.set(MathUtil.clamp(hangerPID.calculate(getHangerPosition()), -0.9, 0.9));
             SmartDashboard.putNumber("HangerPID", hangerPID.calculate(getHangerPosition()));
             SmartDashboard.putNumber("Hanger Position", getHangerPosition());
+
+            RobotContainer.logPID("hangerPID", hangerPID);
         }
 
 }

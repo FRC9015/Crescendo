@@ -6,8 +6,6 @@ import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.SHOOTER;
 
 import org.littletonrobotics.junction.Logger;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Constants.FieldConstants;
 

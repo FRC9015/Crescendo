@@ -37,13 +37,7 @@ public class DefaultDrive extends Command {
 		addRequirements(SWERVE);
 	}
 
-	@Override
-	public void initialize() {
-		
-		// headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		// headingPID.enableContinuousInput(-PI, PI);
-	
-	}
+
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
@@ -64,15 +58,7 @@ public class DefaultDrive extends Command {
 
 		double rotationalVelocity = (inputZ * angularSpeed );
 
-		// if(abs(rotationalVelocity) > 1e-10){
-		// 	headingPID.setSetpoint(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		// 	headingPID.reset();
-		// }else if(abs(xVelocity) > 1e-10 || abs(yVelocity) > 1e-10){
-		// 	rotationalVelocity = -headingPID.calculate(POSE_ESTIMATOR.getEstimatedPose().getRotation().getRadians());
-		// }
 		
-		// Logger.recordOutput("Swerve/heading/target", headingPID.getSetpoint());
-		// Logger.recordOutput("Swerve/heading/error", headingPID.getPositionError());
 
 		
 		

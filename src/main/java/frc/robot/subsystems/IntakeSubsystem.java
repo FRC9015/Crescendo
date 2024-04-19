@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -17,6 +19,7 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final DigitalOutput handoffSensor = new DigitalOutput(2);
+    public boolean handoff = true;
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
     };
@@ -33,6 +36,7 @@ public class IntakeSubsystem extends SubsystemBase {
             motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
 
         }
+        handoff = true;
     }
 
     public Command intakeNote(){
@@ -104,6 +108,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         SmartDashboard.putBoolean("Intake Sensor",handoffSensor.get());
+        Logger.recordOutput("Sensors/HandOffSensor", handoffMotor.get());
 
     }
 

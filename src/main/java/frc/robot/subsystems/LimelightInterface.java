@@ -59,9 +59,10 @@ public class LimelightInterface extends SubsystemBase {
         shooterInterp.put(3.8, 0.285);
         shooterInterp.put(4.0, 0.288);
         shooterInterp.put(4.5, 0.302);
-        shooterInterp.put(5.0, 0.307);
-        shooterInterp.put(5.5, 0.313);
-        shooterInterp.put(6.0, 0.315);
+        shooterInterp.put(4.7, 0.314);
+        // shooterInterp.put(5.0, 0.307);
+        // shooterInterp.put(5.5, 0.313);
+        // shooterInterp.put(6.0, 0.315);
 
     }
 
@@ -75,6 +76,8 @@ public class LimelightInterface extends SubsystemBase {
         SmartDashboard.putBoolean("April Tag", tag);
         SmartDashboard.putNumber("distance", getSpeakerDistance());
         SmartDashboard.putString("Angle", getSpeakerAngle().toString());
+
+        Logger.recordOutput("Distance", getSpeakerDistance());
 
     }
 

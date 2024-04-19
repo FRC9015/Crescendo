@@ -7,10 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+import static frc.robot.RobotContainer.SHOOTER;
 
 import java.awt.Color;
 
@@ -75,5 +78,7 @@ public class LEDSubsystem extends SubsystemBase {
         indicateNote();
         indicateShooter();
         updateLEDs();
+
+        SmartDashboard.putBoolean("has two note",shooter.getShooterSensor() && intake.getHandoffStatus() && ( Math.floor(System.currentTimeMillis()/20)) %2 == 0);
     }
 }

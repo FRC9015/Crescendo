@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.TunerConstants;
@@ -36,6 +38,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     double[] states = new double[8];
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    Field2d field = new Field2d();
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
@@ -58,6 +61,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
+         SmartDashboard.putData("field",field);
     }
 
     public double getYVelocity() {
@@ -150,5 +154,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
         Logger.recordOutput("Rotation/Rotational", getPose().getRotation());
         Logger.recordOutput("Swerve/YVelocity", getYVelocity());
+        Logger.recordOutput("Speeds/Chassisspeeds", getRobotRelativeChassisSpeeds());
+
+        field.setRobotPose(getPose());
+       
     }
 }

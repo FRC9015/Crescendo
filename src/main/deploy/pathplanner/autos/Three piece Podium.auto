@@ -32,13 +32,25 @@
         {
           "type": "named",
           "data": {
-            "name": "pivotToSubWoofer"
+            "name": "intakeTimeout"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootNote"
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
           }
         },
         {
@@ -50,19 +62,37 @@
         {
           "type": "path",
           "data": {
+            "pathName": "in Between"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Middle podium"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "pivotToSubWoofer"
+            "name": "intakeTimeout"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootNote"
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
           }
         }
       ]

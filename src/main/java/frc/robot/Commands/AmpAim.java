@@ -15,18 +15,18 @@ import static frc.robot.RobotContainer.SWERVE;
 import static java.lang.Math.*;
 
 public class AmpAim extends Command {
-    PIDController limelightPID = new PIDController(0.2, 0.01, 0.0025);
+    PIDController ampAimPID = new PIDController(0.2, 0.01, 0.0025);
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
 
     public AmpAim() {
         addRequirements(SWERVE);
-        limelightPID.enableContinuousInput(-180, 180);
+        ampAimPID.enableContinuousInput(-180, 180);
     }
 
     @Override
     public void initialize() {
-        limelightPID.reset();
+        ampAimPID.reset();
     }
 
     @Override
@@ -44,12 +44,11 @@ public class AmpAim extends Command {
         double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
 
-        double rotationalVelocity = limelightPID.calculate(SWERVE.getPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getLeadingAmpAngle().getDegrees());
-        Logger.recordOutput("AutoAim/PID/Error", limelightPID.getPositionError());
+        double rotationalVelocity = ampAimPID.calculate(SWERVE.getPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getLeadingAmpAngle().getDegrees());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
-        SmartDashboard.putNumber("Drive error", limelightPID.getPositionError());
+        SmartDashboard.putNumber("Drive error", ampAimPID.getPositionError());
 
-
+        RobotContainer.logPID("ampAimPID", ampAimPID);
     }
 
 }

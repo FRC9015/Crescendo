@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
 import frc.robot.RobotContainer;
+
+
 import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.Constants.Constants.SwerveConstants;
@@ -27,6 +29,7 @@ public class LimelightDrive extends Command {
     @Override
     public void initialize() {
         limelightPID.reset();
+        Logger.recordOutput("Commands/LimeLightDrive", true);
     }
 
     @Override
@@ -45,11 +48,16 @@ public class LimelightDrive extends Command {
 
 
         double rotationalVelocity = limelightPID.calculate(SWERVE.getPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getLeadingSpeakerAngle().getDegrees());
-        Logger.recordOutput("AutoAim/PID/Error", limelightPID.getPositionError());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
         SmartDashboard.putNumber("Drive error", limelightPID.getPositionError());
 
         LIMELIGHT_INTERFACE.Error = abs(limelightPID.getPositionError()) < 1;
+
+        RobotContainer.logPID("LimeLightPID", limelightPID);
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        Logger.recordOutput("Commands/LimeLightDrive", false);
+    }
 }

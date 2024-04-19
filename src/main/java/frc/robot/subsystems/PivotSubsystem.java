@@ -22,6 +22,7 @@ import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 
 import org.littletonrobotics.junction.Logger;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants.PivotConstants;
 
 
@@ -144,7 +145,8 @@ public class PivotSubsystem extends SubsystemBase {
 
     public void setCurrentPosition(double SetPoint){
         pivotPIDController.setP(2);
-        pivotPIDController.setI(0.0004);
+        pivotPIDController.setI(0.0003);
+        Logger.recordOutput("Pivot/AutoAim/SetPoint", SetPoint);
         currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }
 
@@ -160,13 +162,15 @@ public class PivotSubsystem extends SubsystemBase {
     public void periodic(){
         //puts values on dashboard
         SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
-        Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()-currentPosition);
+
         double kDt = 0.02;
         motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
         motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
-
+        Logger.recordOutput("PivotPID/setPoint", pivotEncoder.getPosition());
         pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
         Logger.recordOutput("Pivot", new Pose3d(new Translation3d(-0.13 -0.25, 0.31 -0.25, 0.41),
                 new Rotation3d(0, -pivotInterp.get(currentPosition), 0)));
+        
+        
     }
 }

@@ -17,6 +17,13 @@
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Path Chooser": "String Chooser",
       "/SmartDashboard/Pigeon 2 (v6) [30]": "Gyro"
+    },
+    "windows": {
+      "/Shuffleboard/Autonomous/SendableChooser[1]": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {

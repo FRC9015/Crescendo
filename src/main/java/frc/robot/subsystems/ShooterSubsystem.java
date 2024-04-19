@@ -15,13 +15,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants.ShooterConstants;
 import org.littletonrobotics.junction.Logger;
 
 
 public class ShooterSubsystem extends SubsystemBase {
     private final DigitalInput speakerSensor = new DigitalInput(4);
-
+    
     private final double motorMaxFreeSpeed = 6784;//RPM
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
@@ -58,7 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> Logger.recordOutput("Commands/autoShootNoteToSpeak", true)),
                 new InstantCommand(this::setSpeakerShooterMotorSpeedsSubWoofer),
-                new WaitCommand(0.8),
+                new WaitUntilCommand(() -> shooterIsReady()),
                 new InstantCommand(amp::setAmpIntakeSpeeds),
                 new WaitCommand(0.4),
                 new InstantCommand(amp::stopAmpShooterMotorSpeeds),
@@ -187,6 +189,10 @@ public class ShooterSubsystem extends SubsystemBase {
             stopSpeakerShooterMotors();
         }
         SmartDashboard.putBoolean("Shooter Sensor", getShooterSensor());
+
+        RobotContainer.logPID("ShooterPIDTop", speakerPIDTop);
+        RobotContainer.logPID("ShooterPIDBottom", speakerPIDBottom);
+        Logger.recordOutput("Sensors/ShooterSensor", getShooterSensor());
     }
 
 

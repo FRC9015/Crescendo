@@ -32,6 +32,12 @@
         {
           "type": "named",
           "data": {
+            "name": "intakeTimeout"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "pivotToSubWoofer"
           }
         },
@@ -56,6 +62,12 @@
         {
           "type": "named",
           "data": {
+            "name": "intakeTimeout"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "pivotToSubWoofer"
           }
         },
@@ -75,6 +87,12 @@
           "type": "path",
           "data": {
             "pathName": "Middle Subwoofer Right Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeTimeout"
           }
         },
         {

@@ -3,6 +3,8 @@ package frc.robot.Commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
+
 import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
@@ -10,34 +12,36 @@ import static frc.robot.RobotContainer.SWERVE;
 import static java.lang.Math.abs;
 
 public class AutoDrive extends Command {
-    PIDController limelightPID = new PIDController(6, 1, 0.025);
-
+    PIDController autoPID = new PIDController(0.2, 0.01, 0.0025);
+    double rotationalVelocity;
     public AutoDrive() {
         addRequirements(SWERVE);
-        limelightPID.enableContinuousInput(-Math.PI, Math.PI);
+        autoPID.enableContinuousInput(-180, 180);
     }
 
     @Override
     public void initialize() {
-        limelightPID.reset();
+        autoPID.reset();
+        Logger.recordOutput("Commands/AutoDrive", true);
     }
 
     @Override
     public void execute() {
-        double rotationalVelocity = limelightPID.calculate(SWERVE.getPose().getRotation().getRadians(), LIMELIGHT_INTERFACE.getSpeakerAngle().getRadians());
+        rotationalVelocity = autoPID.calculate(SWERVE.getPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getSpeakerAngle().getDegrees());
         SWERVE.drive(0, 0, rotationalVelocity);
-        Logger.recordOutput("Drive error", limelightPID.getPositionError());
-
+        Logger.recordOutput("Drive error", autoPID.getPositionError());
+        RobotContainer.logPID("AmpDrive", autoPID);
     }
 
     @Override
     public boolean isFinished() {
-        return (abs(Units.radiansToDegrees(limelightPID.getPositionError())) < 3);
+        return (abs(autoPID.getPositionError()) < 1) && rotationalVelocity < 0.25;
     }
 
     @Override
     public void end(boolean interrupted) {
         SWERVE.drive(0,0,0);
+        Logger.recordOutput("Commands/AutoDrive", false);
     }
 }
 

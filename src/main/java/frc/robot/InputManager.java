@@ -64,6 +64,14 @@ public class InputManager {
         return Instance;
     }
 
+    public double getDriverAxis(int id){
+        return driveController.getRawAxis(id);
+    }
+
+     public double getOperatorAxis(int id){
+        return operatorController.getRawAxis(id);
+    }
+
     /**
      * Gets the button from the drive controller.
      * If it is an Xbox controller, and you want the triggers,

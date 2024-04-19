@@ -48,11 +48,11 @@
     },
     {
       "anchor": {
-        "x": 1.4,
+        "x": 1.2628535638615197,
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.4,
+        "x": 1.2628535638615197,
         "y": 5.7
       },
       "nextControl": null,
@@ -73,13 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "intakeNote"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "intakeAmp"
+                "name": "intake"
               }
             }
           ]
