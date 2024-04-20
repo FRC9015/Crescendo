@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.35,
+        "x": 1.95,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8662141128910255,
-        "y": 5.492445188825977
+        "x": 3.346135529893065,
+        "y": 5.4995730222161425
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.807104531689099,
-        "y": 4.097692568808182
+        "x": 3.1348936522185378,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 1.0542831286535252,
-        "y": 3.9655353995316913
+        "x": 2.454381797471932,
+        "y": 5.489322961305389
       },
       "nextControl": {
-        "x": 3.12645984030823,
-        "y": 4.121770945251688
+        "x": 3.571945812924456,
+        "y": 5.506857224894573
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.25071654287053,
-        "y": 4.567195079376849
+        "x": 1.9983121224129283,
+        "y": 5.487118275427639
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -73,7 +73,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 6.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -88,5 +88,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

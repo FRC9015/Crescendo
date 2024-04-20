@@ -36,9 +36,39 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "in Between"
+            "pathName": "Middle podium4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeTimeout"
           }
         },
         {
@@ -68,43 +98,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle podium"
+            "pathName": "Amp Podium4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intakeTimeout"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToSubWoofer"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootNote"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Amp Podium"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeTimeout"
+            "name": "intake"
           }
         },
         {
