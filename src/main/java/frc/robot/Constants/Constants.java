@@ -46,7 +46,7 @@ public final class Constants {
 
     public static class SwerveConstants {
         public static final double rotationLimit = 1.75;
-        public static final double maxSpeed = Units.feetToMeters(17.1);
+        public static final double maxSpeed = Units.feetToMeters(17.1) * 0.2;
         public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2) / rotationLimit;
         public static final double slewRateLimit = 20;
         public static final double dtSeconds = 0.02;
