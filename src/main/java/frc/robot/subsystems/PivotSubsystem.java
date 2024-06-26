@@ -129,6 +129,12 @@ public class PivotSubsystem extends SubsystemBase {
         
     }
 
+    public void RingToss(){
+        pivotPIDController.setP(0.4);
+        pivotPIDController.setI(0.0);
+        currentPosition = 0;
+    }
+
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
         pivotPIDController.setP(1.5);

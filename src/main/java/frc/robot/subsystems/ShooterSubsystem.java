@@ -1,6 +1,7 @@
 
 package frc.robot.subsystems;
 
+import java.lang.Math;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -27,6 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double motorMaxFreeSpeed = 6784;//RPM
     private boolean shooterIsRunning = false;
     private boolean idleMode = false;
+    private boolean randomMode = false;
     private PIDController speakerPIDTop = new PIDController((25/motorMaxFreeSpeed),0,0);
     private PIDController speakerPIDBottom = new PIDController((25/motorMaxFreeSpeed),0,0);
     private final CANSparkFlex speakerMotorTop = new CANSparkFlex(ShooterConstants.speakerShooterMotorTopID,
@@ -105,6 +107,13 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.runOnce(this::setIdleShooterSpeeds).onlyWhile(this::getShooterSensor);
     }
 
+    public Command setRandomMode(){
+        return this.startEnd(
+                ()-> this.randomMode = true,
+                ()-> this.randomMode = false);
+    }
+
+
     public Command setPassing(){
         return startEnd(
             this::setPassingShooterMotorSpeeds,
@@ -112,8 +121,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setIdleShooterSpeeds() {
-        speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
+        speakerPIDTop.setSetpoint(0 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = true;
     }
@@ -121,6 +130,28 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setSpeakerShooterMotorSpeedsSubWoofer(){
         speakerPIDTop.setSetpoint(0.5 * motorMaxFreeSpeed);
         speakerPIDBottom.setSetpoint(0.5 * motorMaxFreeSpeed);
+        shooterIsRunning = true;
+        idleMode = false;
+    }
+
+
+
+    public void setSpeakerShooterMotorSpeedsRingToss(double[] speeds){
+        double speed = 0.2;
+
+        if (randomMode){
+            double randomSelector = Math.random();
+            if (randomSelector<=0.3) {
+                speed = 0.2;
+            } else if (randomSelector <= 0.6) {
+                speed = 0.1776;
+            }else{
+                speed = 0.254;
+            }
+        }
+
+        speakerPIDTop.setSetpoint(speed * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(0.25 * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = false;
     }
