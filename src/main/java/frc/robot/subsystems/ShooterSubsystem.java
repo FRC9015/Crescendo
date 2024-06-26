@@ -136,7 +136,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-    public void setSpeakerShooterMotorSpeedsRingToss(double[] speeds){
+    public void setSpeakerShooterMotorSpeedsRingToss(){
         double speed = 0.2;
 
         if (randomMode){
