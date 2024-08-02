@@ -26,6 +26,36 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Centerline 5 Shoot Source Side"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimelightDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootLimelight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Centerline 4 Shoot Source Side"
           }
         },
