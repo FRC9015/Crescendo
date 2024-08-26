@@ -107,7 +107,7 @@ public final class Constants {
 
         public static final double Amp_X_Blue = Units.inchesToMeters(5);
         public static final double Amp_X_Red = Units.inchesToMeters(650);
-        public static final double Amp_Y = Units.inchesToMeters(325);
+        public static final double Amp_Y = Units.inchesToMeters(305);
         public static final Translation2d Amp_Blue_Pose = new Translation2d(Amp_X_Blue,Amp_Y);
         public static final Translation2d Amp_Red_Pose = new Translation2d(Amp_X_Red,Amp_Y);
         

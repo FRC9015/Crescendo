@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.FieldConstants;
 import frc.robot.Constants.Constants.LimelightConstants;
@@ -23,6 +24,8 @@ import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.RobotContainer.SWERVE;
 
+import java.util.function.BooleanSupplier;
+
 
 public class LimelightInterface extends SubsystemBase {
 
@@ -30,6 +33,7 @@ public class LimelightInterface extends SubsystemBase {
 
     private static boolean tag = false;
     public boolean Error = false;
+    public boolean LED = false;
 
 
     //takes the X, Y, and area values from the limelight network table
@@ -60,10 +64,8 @@ public class LimelightInterface extends SubsystemBase {
         shooterInterp.put(4.0, 0.288);
         shooterInterp.put(4.5, 0.302);
         shooterInterp.put(4.7, 0.314);
-        // shooterInterp.put(5.0, 0.307);
-        // shooterInterp.put(5.5, 0.313);
-        // shooterInterp.put(6.0, 0.315);
-
+        shooterInterp.put(6.0, 0.331);
+        shooterInterp.put(7.0, 0.339);
     }
 
     //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
@@ -98,12 +100,19 @@ public class LimelightInterface extends SubsystemBase {
     }
 
     public void LEDsOn() {
+        LED = true;
         table.getEntry("ledMode").setNumber(3);
     }
 
     public void LEDsOff() {
+        LED = false;
         table.getEntry("ledMode").setNumber(1);
     }
+    public BooleanSupplier LEDstatus(){
+        return () -> LED;
+    }
+
+   
 
     @AutoLogOutput
     public double getTY() {

@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants.ShooterConstants;
+
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
 import org.littletonrobotics.junction.Logger;
 
 
@@ -126,8 +129,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setSpeakerShooterMotorSpeeds(){
+        double shooterSpeeed = 0.6;
+        if(LIMELIGHT_INTERFACE.getSpeakerDistance() > 5){
+            shooterSpeeed = 0.8;
+        }
         speakerPIDTop.setSetpoint(0.8 * motorMaxFreeSpeed);
-        speakerPIDBottom.setSetpoint(0.6 * motorMaxFreeSpeed);
+        speakerPIDBottom.setSetpoint(shooterSpeeed * motorMaxFreeSpeed);
         shooterIsRunning = true;
         idleMode = false;
 

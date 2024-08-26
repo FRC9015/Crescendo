@@ -11,6 +11,7 @@ import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
 import static frc.robot.RobotContainer.SWERVE;
 import static java.lang.Math.abs;
 
+
 public class AutoDrive extends Command {
     PIDController autoPID = new PIDController(0.2, 0.02, 0.0025);
     double rotationalVelocity;
@@ -36,7 +37,7 @@ public class AutoDrive extends Command {
 
     @Override
     public boolean isFinished() {
-        return (abs(autoPID.getPositionError()) < 0.5) && rotationalVelocity < 0.25;
+        return (abs(autoPID.getPositionError()) < 0.75) && rotationalVelocity < 0.25;
     }
 
     @Override
@@ -44,5 +45,6 @@ public class AutoDrive extends Command {
         SWERVE.drive(0,0,0);
         Logger.recordOutput("Commands/AutoDrive", false);
     }
+    
 }
 

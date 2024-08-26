@@ -39,7 +39,9 @@ public class HangerSubsystem extends SubsystemBase{
                 this::hangerUpTest );
         }
 
-        
+        //-160 top
+        //-293
+        //-450
 
         public Command hangerDOWNTest(){
             return run(
@@ -48,7 +50,7 @@ public class HangerSubsystem extends SubsystemBase{
         }
 
         public void hangerUp(){
-            hangerPID.setSetpoint(225);
+            hangerPID.setSetpoint(-250);
         }
 
         public void hangerUpTest(){
@@ -61,7 +63,7 @@ public class HangerSubsystem extends SubsystemBase{
 
         public void hangerDown(){
          
-            hangerPID.setSetpoint(500);
+            hangerPID.setSetpoint(-450);
         }
 
         public void stopHanger(){

@@ -30,9 +30,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "LimelightDrive"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LimelightDrive"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
           }
         },
         {
@@ -60,9 +73,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "LimelightDrive"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LimelightDrive"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
           }
         },
         {
