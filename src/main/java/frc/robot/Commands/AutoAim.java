@@ -18,7 +18,7 @@ public class AutoAim extends Command{
     
     @Override
     public void initialize() {
-        LIMELIGHT_INTERFACE.LEDsOn();
+        //LIMELIGHT_INTERFACE.LEDsOn();
 
         
 
@@ -32,7 +32,7 @@ public class AutoAim extends Command{
     
     @Override
     public void end(boolean interrupted) {
-        LIMELIGHT_INTERFACE.LEDsOff();
+        //LIMELIGHT_INTERFACE.LEDsOff();
         SHOOTER.setIdleShooterSpeeds();
         PIVOT.intake();        
     }

@@ -22,10 +22,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.TunerConstants;
-import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 
+import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
+
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -41,6 +44,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     Field2d field = new Field2d();
+    private Optional<EstimatedRobotPose> est_pos;
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
@@ -109,6 +113,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public Pose2d getPose() {
         return getState().Pose;
     }
+    
 
     public void setUpPathPlanner() {
         double driveBaseRadius = 0;
@@ -143,22 +148,10 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     }
 
     public void updatePose(){
-            if (RobotContainer.LIMELIGHT_INTERFACE.tagCheck()) {
-            LimelightHelpers.Results result = LimelightHelpers.getLatestResults("limelight").targetingResults;
-            if (LimelightHelpers.getTV("limelight")) {
-
-                double tl = result.latency_pipeline;
-                double cl = result.latency_capture;
-
-                double timeStamp = Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
-
-
-                addVisionMeasurement(result.getBotPose2d_wpiBlue(), timeStamp);
-
-                Logger.recordOutput("limelight/botPose", result.getBotPose2d_wpiBlue());
-
-            }
-
+        
+        if(est_pos.isPresent()){
+            EstimatedRobotPose newpose = est_pos.get();
+            addVisionMeasurement(newpose.estimatedPose.toPose2d(),newpose.timestampSeconds);
         }
     }
 
@@ -179,6 +172,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         Logger.recordOutput("Speeds/Chassisspeeds", getRobotRelativeChassisSpeeds());
 
         field.setRobotPose(getPose());
-       
+        SmartDashboard.putString("pose", getPose().toString());
+        est_pos = LIMELIGHT_INTERFACE.getEstimatedPose();
+        updatePose();
     }
 }

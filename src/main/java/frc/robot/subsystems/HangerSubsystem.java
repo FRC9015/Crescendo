@@ -63,7 +63,7 @@ public class HangerSubsystem extends SubsystemBase{
 
         public void hangerDown(){
          
-            hangerPID.setSetpoint(-450);
+            hangerPID.setSetpoint(-480);
         }
 
         public void stopHanger(){

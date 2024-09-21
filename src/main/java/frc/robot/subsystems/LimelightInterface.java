@@ -8,46 +8,55 @@ import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.FieldConstants;
 import frc.robot.Constants.Constants.LimelightConstants;
 import frc.robot.Constants.Constants.ShooterConstants;
-import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.RobotContainer.SWERVE;
-
-import java.util.function.BooleanSupplier;
-
-
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import java.io.IOException;
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
 public class LimelightInterface extends SubsystemBase {
 
-    private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+   // private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
+
+    private PhotonCamera tagCam;
+    private PhotonCamera noteCam;
     private static boolean tag = false;
     public boolean Error = false;
     public boolean LED = false;
+    AprilTagFieldLayout fieldLayout;
+    double notecameraheight = Units.inchesToMeters(15.5);
 
 
-    //takes the X, Y, and area values from the limelight network table
-    NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
-    NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
-    NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
+	Transform3d camPose = new Transform3d(
+			new Translation3d(0.26, 0.29, -0.22),
+			new Rotation3d(0, Units.degreesToRadians(24), Units.degreesToRadians(180)));
+	PhotonPoseEstimator photonPoseEstimator;
 
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private Pose2d NoteCamPose = new Pose2d(Units.inchesToMeters(-16),Units.inchesToMeters(-5.5), new Rotation2d());
 
     InterpolatingTreeMap<Double, Double> shooterInterp;
 
-    NetworkTable table = inst.getTable("limelight");
-
-    //makes variables for the X Y and Area values of the limelight
+ 
 
     public LimelightInterface() {
         shooterInterp = new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
@@ -66,63 +75,48 @@ public class LimelightInterface extends SubsystemBase {
         shooterInterp.put(4.7, 0.314);
         shooterInterp.put(6.0, 0.331);
         shooterInterp.put(7.0, 0.339);
-    }
 
-    //updates limelight X, Y, and Area and puts them onto smartd95ashboard.
-    @Override
-    public void periodic() {
+        try {
+			fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+		} catch (IOException e) {
+			System.out.println("Couldn't Find April Tag Layout File");
+			e.printStackTrace();
+		}
 
-        tag = getArea() > 0.1;
+		tagCam = new PhotonCamera("Tag_Camera");
+        noteCam = new PhotonCamera("Note_cam");
 
-        SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
-        SmartDashboard.putBoolean("April Tag", tag);
-        SmartDashboard.putNumber("distance", getSpeakerDistance());
-        SmartDashboard.putString("Angle", getSpeakerAngle().toString());
+        
 
-        Logger.recordOutput("Distance", getSpeakerDistance());
-
-    }
-
-    public double getX() {
-        return tx.getDouble(0.0);
-    }
-
-    public double getY() {
-        return ty.getDouble(0.0);
-    }
-
-    public double getArea() {
-        return ta.getDouble(0.0);
-    }
-
-    public boolean tagCheck() {
-        return tag;
-    }
-
-    public void LEDsOn() {
-        LED = true;
-        table.getEntry("ledMode").setNumber(3);
-    }
-
-    public void LEDsOff() {
-        LED = false;
-        table.getEntry("ledMode").setNumber(1);
-    }
-    public BooleanSupplier LEDstatus(){
-        return () -> LED;
+		//noteCam = new PhotonCamera("Global_Shutter_Camera");
+		photonPoseEstimator =
+				new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, tagCam, camPose);
+		photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
    
+    @Override
+    public void periodic() {
 
-    @AutoLogOutput
-    public double getTY() {
-        return LimelightHelpers.getLimelightNTDouble("limelight", "ty");
+        
+
+        SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
+        SmartDashboard.putBoolean("April Tag", tagCam.getLatestResult().hasTargets());
+        SmartDashboard.putNumber("distance", getSpeakerDistance());
+        SmartDashboard.putString("Angle", notePose().toString());
+        
+        Logger.recordOutput("Distance", getSpeakerDistance());
+
+
     }
 
-    @AutoLogOutput
-    public double getTX() {
-        return LimelightHelpers.getLimelightNTDouble("limelight", "tx");
-    }
+    public Optional<EstimatedRobotPose> getEstimatedPose() {
+		if (tagCam.getLatestResult().getTargets().size() < 2){
+            return Optional.empty();
+        }else{
+            return photonPoseEstimator.update();
+        }
+	}
 
     public double getSpeakerDistance() {
         var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose : FieldConstants.Speaker_Blue_Pose);
@@ -176,5 +170,25 @@ public class LimelightInterface extends SubsystemBase {
 
         Logger.recordOutput("Target", new Pose3d(speakerPose.getX(), speakerPose.getY(), newHeight, new Rotation3d()));
         return Units.radiansToDegrees(Math.atan(Math.abs(newHeight / getSpeakerDistance())));
+    }
+
+    public Optional<Pose2d> notePose(){
+        if(noteCam == null) return  Optional.empty();
+        if(!noteCam.getLatestResult().hasTargets()) return  Optional.empty();
+        PhotonTrackedTarget target = noteCam.getLatestResult().getBestTarget();
+        if(target == null) return  Optional.empty();
+        double pitch = Units.degreesToRadians(target.getPitch());
+        double yaw = Units.degreesToRadians(target.getYaw());
+        double dx = notecameraheight / Math.tan(pitch);
+        double dy = dx * Math.tan(yaw);
+        Transform2d notepose = new Transform2d(dx,dy,new Rotation2d());
+        if(pitch > 10) return  Optional.empty();
+        else return Optional.of(NoteCamPose.plus(notepose));
+    }
+
+     public Translation2d getNoteAngle() {
+      
+            Translation2d NotePose = notePose().get().getTranslation();
+            return SWERVE.getPose().getTranslation().plus(NotePose);
     }
 }

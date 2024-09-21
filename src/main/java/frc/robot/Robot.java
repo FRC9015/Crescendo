@@ -119,7 +119,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        RobotContainer.SWERVE.updatePose();
+        //RobotContainer.SWERVE.updatePose();
     }
 
     /**
@@ -168,7 +168,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        RobotContainer.SWERVE.updatePose();
+        //RobotContainer.SWERVE.updatePose();
     }
 
     @Override

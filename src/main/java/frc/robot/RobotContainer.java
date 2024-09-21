@@ -77,7 +77,7 @@ public class RobotContainer {
         SWERVE.setUpPathPlanner();
         autoChooser = AutoBuilder.buildAutoChooser();
         Shuffleboard.getTab("Autonomous").add(autoChooser);
-        SmartDashboard.putString("NAME OF FOUR NOTE IS FOUR PIECE PODIUM", "NAME OF FOUR NOTE IS FOUR PIECE PODIUM");
+        SmartDashboard.putString("AUTO NAMES", "Name:Four Peice podium: function: four note speaker\n Name:Centerline 4 Function: CenterLine auto\n Name:Shoot Source Side Function: shoot source side no move\n Name: shoot amp side");
     }
 
     public static boolean IsRed() {
@@ -109,7 +109,7 @@ public class RobotContainer {
         new Trigger(() -> InputManager.getInstance().getDriverAxis(3) > 0.5).whileTrue(new LimelightDrive().alongWith(new AutoAim()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(HANGER::panic));
         InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new AutoDrive());
-        InputManager.getInstance().getDriverPOV(270).onTrue(new ConditionalCommand(new InstantCommand(LIMELIGHT_INTERFACE::LEDsOff), new InstantCommand(LIMELIGHT_INTERFACE::LEDsOn),LIMELIGHT_INTERFACE.LEDstatus()));
+        InputManager.getInstance().getDriverPOV(270).onTrue(new NoteDrive());
 
         // Operator Bindings
         InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());

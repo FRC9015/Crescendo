@@ -1,39 +1,42 @@
 package frc.robot.Commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.InputManager;
+import static frc.robot.RobotContainer.*;
 import frc.robot.RobotContainer;
-
-
-import org.littletonrobotics.junction.Logger;
-
-import static frc.robot.Constants.Constants.SwerveConstants;
-import static frc.robot.RobotContainer.LIMELIGHT_INTERFACE;
-import static frc.robot.RobotContainer.SWERVE;
+import frc.robot.Constants.Constants.SwerveConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import static java.lang.Math.*;
 
-public class LimelightDrive extends Command {
-    PIDController limelightPID = new PIDController(0.2, 0.01, 0.0025);
+
+public class NoteDrive extends Command {
+    PIDController notePID = new PIDController(0.1, 0.0, 0.0);
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
 
-    public LimelightDrive() {
+    public NoteDrive() {
         addRequirements(SWERVE);
-        limelightPID.enableContinuousInput(-180, 180);
+        notePID.enableContinuousInput(-180, 180);
     }
-
     @Override
     public void initialize() {
-        limelightPID.reset();
-        Logger.recordOutput("Commands/LimeLightDrive", true);
+        notePID.reset();
     }
-
     @Override
     public void execute() {
+        
+        
+        if(LIMELIGHT_INTERFACE.notePose().isEmpty()){
+            return;
+        }
+        
+        double targetRotation = LIMELIGHT_INTERFACE.getNoteAngle().minus(SWERVE.getPose().getTranslation()).getAngle().getDegrees();
+
         double[] inputXYZ = InputManager.getInstance().getDriverXYZAxes();
         double inputX = inputXYZ[0];
         double inputY = inputXYZ[1];
@@ -46,21 +49,23 @@ public class LimelightDrive extends Command {
 
         double yVelocity = yVelocityFilter.calculate(sin(inputDir) * inputMagnitude * SwerveConstants.maxSpeed * forwardDirectionSign * SWERVE.speedMultiplier);
 
-
-        double rotationalVelocity = limelightPID.calculate(SWERVE.getPose().getRotation().getDegrees(), LIMELIGHT_INTERFACE.getLeadingSpeakerAngle().getDegrees());
-            
+        notePID.setSetpoint(targetRotation);
+        double rotationalVelocity = notePID.calculate(SWERVE.getPose().getTranslation().getAngle().getDegrees(), targetRotation);//LIMELIGHT_INTERFACE.getNoteAngle().getAngle().getDegrees());
         SWERVE.drive(-yVelocity, -xVelocity, rotationalVelocity);
         
-        SmartDashboard.putNumber("Drive error", limelightPID.getPositionError());
         
+       SmartDashboard.putNumber("RotationPID", notePID.getPositionError());
 
-        LIMELIGHT_INTERFACE.Error = abs(limelightPID.getPositionError()) < 1;
-
-        RobotContainer.logPID("LimeLightPID", limelightPID);
+        RobotContainer.logPID("notePID", notePID);
     }
 
-    @Override
-    public void end(boolean interrupted) {
-        Logger.recordOutput("Commands/LimeLightDrive", false);
-    }
+   @Override
+   public boolean isFinished() {
+       return Math.abs(notePID.getPositionError()) < 3 || LIMELIGHT_INTERFACE.notePose().isEmpty();
+   }
+   @Override
+   public void end(boolean interrupted) {
+       SWERVE.drive(0, 0, 0);
+   }
+
 }
