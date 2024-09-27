@@ -70,6 +70,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
         NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWooferAuto());
         NamedCommands.registerCommand("LimelightDrive", new AutoDrive());
+        NamedCommands.registerCommand("Upadate", new InstantCommand(SWERVE::updatePose));
 
         SWERVE.setDefaultCommand(new DefaultDrive());
         configureBindings();

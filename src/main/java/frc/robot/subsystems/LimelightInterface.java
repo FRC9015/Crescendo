@@ -48,8 +48,8 @@ public class LimelightInterface extends SubsystemBase {
 
 
 	Transform3d camPose = new Transform3d(
-			new Translation3d(0.26, 0.29, -0.22),
-			new Rotation3d(0, Units.degreesToRadians(24), Units.degreesToRadians(180)));
+			new Translation3d(-Units.inchesToMeters(11.25), -Units.inchesToMeters(16), Units.inchesToMeters(10.5)),
+			new Rotation3d(0, Units.degreesToRadians(26), Units.degreesToRadians(180)));
 	PhotonPoseEstimator photonPoseEstimator;
 
     private Pose2d NoteCamPose = new Pose2d(Units.inchesToMeters(-16),Units.inchesToMeters(-5.5), new Rotation2d());
@@ -101,7 +101,7 @@ public class LimelightInterface extends SubsystemBase {
         
 
         SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
-        SmartDashboard.putBoolean("April Tag", tagCam.getLatestResult().hasTargets());
+        SmartDashboard.putBoolean("April Tag", tagCam.getLatestResult().getTargets().size() == 2);
         SmartDashboard.putNumber("distance", getSpeakerDistance());
         SmartDashboard.putString("Angle", notePose().toString());
         

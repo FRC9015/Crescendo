@@ -16,7 +16,8 @@
       "/Shuffleboard/swerve/Field": "Field2d",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Path Chooser": "String Chooser",
-      "/SmartDashboard/Pigeon 2 (v6) [30]": "Gyro"
+      "/SmartDashboard/Pigeon 2 (v6) [30]": "Gyro",
+      "/SmartDashboard/field": "Field2d"
     },
     "windows": {
       "/Shuffleboard/Autonomous/SendableChooser[1]": {
