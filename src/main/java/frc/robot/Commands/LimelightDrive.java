@@ -17,7 +17,7 @@ import static frc.robot.RobotContainer.SWERVE;
 import static java.lang.Math.*;
 
 public class LimelightDrive extends Command {
-    PIDController limelightPID = new PIDController(0.2, 0.01, 0.0025);
+    PIDController limelightPID = new PIDController(0.175, 0.01, 0.0025);
     SlewRateLimiter xVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
     SlewRateLimiter yVelocityFilter = new SlewRateLimiter(SwerveConstants.slewRateLimit);
 

@@ -15,9 +15,7 @@ public class AmpPreset extends Command{
        PIVOT.AmpPreset();
        SHOOTER.stopSpeakerShooterMotors();
     }
-    @Override
-    public void execute() {   
-    }
+    
 
     @Override
     public void end(boolean interrupted) {

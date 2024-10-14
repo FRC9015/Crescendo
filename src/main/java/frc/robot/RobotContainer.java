@@ -110,7 +110,7 @@ public class RobotContainer {
         new Trigger(() -> InputManager.getInstance().getDriverAxis(3) > 0.5).whileTrue(new LimelightDrive().alongWith(new AutoAim()));
 		InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(HANGER::panic));
         InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new AutoDrive());
-        InputManager.getInstance().getDriverPOV(270).onTrue(new NoteDrive());
+        //InputManager.getInstance().getDriverPOV(270).onTrue(new NoteDrive());
 
         // Operator Bindings
         InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());

@@ -145,7 +145,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     public void setCurrentPosition(double SetPoint){
         pivotPIDController.setP(2);
-        pivotPIDController.setI(0.0003);
+        pivotPIDController.setI(0.0005);
         Logger.recordOutput("Pivot/AutoAim/SetPoint", SetPoint);
         currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
     }

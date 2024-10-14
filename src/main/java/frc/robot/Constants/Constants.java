@@ -92,14 +92,14 @@ public final class Constants {
     }
 
     public static class LimelightConstants {
-        public static final double aprilTag_Height = 57.5;
+        public static final double aprilTag_Height = Units.inchesToMeters(57.5);
         public static final double LimelightHeight = 12.5;
-        public static final double speakerGoalHeight = Units.inchesToMeters(110 - ShooterConstants.shooterHeight);
+        public static final double speakerGoalHeight = Units.inchesToMeters(83.091);
         public static final double LimelightAngle = 32;
     }
 
     public static class FieldConstants {
-        public static final double Speaker_X_Blue = Units.inchesToMeters(-1.5 + 5);
+        public static final double Speaker_X_Blue = Units.inchesToMeters(-1.5 + 5);//18.033
         public static final double Speaker_X_Red = Units.inchesToMeters(652.3 - 5);
         public static final double SpeakerY = Units.inchesToMeters(218.42);
         public static final Translation2d Speaker_Red_Pose = new Translation2d(Speaker_X_Red, SpeakerY);

@@ -31,8 +31,10 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
 public class LimelightInterface extends SubsystemBase {
 
    // private static final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
@@ -46,10 +48,12 @@ public class LimelightInterface extends SubsystemBase {
     AprilTagFieldLayout fieldLayout;
     double notecameraheight = Units.inchesToMeters(15.5);
 
-
+    
 	Transform3d camPose = new Transform3d(
-			new Translation3d(-Units.inchesToMeters(11.25), -Units.inchesToMeters(16), Units.inchesToMeters(10.5)),
-			new Rotation3d(0, Units.degreesToRadians(26), Units.degreesToRadians(180)));
+			
+        //new Translation3d(Units.inchesToMeters(12.25), -Units.inchesToMeters(10.875), Units.inchesToMeters(11)),
+	    new Translation3d(-Units.inchesToMeters(27), -Units.inchesToMeters(13.5), Units.inchesToMeters(11)),			
+        new Rotation3d(0, Units.degreesToRadians(30), Units.degreesToRadians(180)));//37.4
 	PhotonPoseEstimator photonPoseEstimator;
 
     private Pose2d NoteCamPose = new Pose2d(Units.inchesToMeters(-16),Units.inchesToMeters(-5.5), new Rotation2d());
@@ -84,7 +88,7 @@ public class LimelightInterface extends SubsystemBase {
 		}
 
 		tagCam = new PhotonCamera("Tag_Camera");
-        noteCam = new PhotonCamera("Note_cam");
+        //noteCam = new PhotonCamera("Note_cam");
 
         
 
@@ -103,15 +107,17 @@ public class LimelightInterface extends SubsystemBase {
         SmartDashboard.putNumber("SpeakerSetPoint", getSetPoint());
         SmartDashboard.putBoolean("April Tag", tagCam.getLatestResult().getTargets().size() == 2);
         SmartDashboard.putNumber("distance", getSpeakerDistance());
-        SmartDashboard.putString("Angle", notePose().toString());
+        SmartDashboard.putNumber("photonDistance",PhotonUtils.calculateDistanceToTargetMeters(camPose.getZ(), LimelightConstants.aprilTag_Height, Units.degreesToRadians(37.4), 0));
+        //SmartDashboard.putString("Angle", notePose().toString());
         
         Logger.recordOutput("Distance", getSpeakerDistance());
-
-
+        Logger.recordOutput("Tags/TwoTag", tagCam.getLatestResult().getTargets().size() == 2);
+        Logger.recordOutput("Tags/Number", tagCam.getLatestResult().getTargets().size());
+       
     }
 
     public Optional<EstimatedRobotPose> getEstimatedPose() {
-		if (tagCam.getLatestResult().getTargets().size() < 2){
+		if (tagCam.getLatestResult().getTargets().size() != 2){
             return Optional.empty();
         }else{
             return photonPoseEstimator.update();
@@ -121,7 +127,7 @@ public class LimelightInterface extends SubsystemBase {
     public double getSpeakerDistance() {
         var speakerPose = (RobotContainer.IsRed() ? FieldConstants.Speaker_Red_Pose : FieldConstants.Speaker_Blue_Pose);
 
-        return SWERVE.getPose().getTranslation().getDistance(speakerPose) - Units.inchesToMeters(14);
+        return SWERVE.getPose().getTranslation().getDistance(speakerPose);
     }
     public double getAmpDistance() {
         var ampPose = (RobotContainer.IsRed() ? FieldConstants.Amp_Red_Pose : FieldConstants.Amp_Blue_Pose); //first should be red
@@ -172,23 +178,23 @@ public class LimelightInterface extends SubsystemBase {
         return Units.radiansToDegrees(Math.atan(Math.abs(newHeight / getSpeakerDistance())));
     }
 
-    public Optional<Pose2d> notePose(){
-        if(noteCam == null) return  Optional.empty();
-        if(!noteCam.getLatestResult().hasTargets()) return  Optional.empty();
-        PhotonTrackedTarget target = noteCam.getLatestResult().getBestTarget();
-        if(target == null) return  Optional.empty();
-        double pitch = Units.degreesToRadians(target.getPitch());
-        double yaw = Units.degreesToRadians(target.getYaw());
-        double dx = notecameraheight / Math.tan(pitch);
-        double dy = dx * Math.tan(yaw);
-        Transform2d notepose = new Transform2d(dx,dy,new Rotation2d());
-        if(pitch > 10) return  Optional.empty();
-        else return Optional.of(NoteCamPose.plus(notepose));
-    }
+    // public Optional<Pose2d> notePose(){
+    //     if(noteCam == null) return  Optional.empty();
+    //     if(!noteCam.getLatestResult().hasTargets()) return  Optional.empty();
+    //     PhotonTrackedTarget target = noteCam.getLatestResult().getBestTarget();
+    //     if(target == null) return  Optional.empty();
+    //     double pitch = Units.degreesToRadians(target.getPitch());
+    //     double yaw = Units.degreesToRadians(target.getYaw());
+    //     double dx = notecameraheight / Math.tan(pitch);
+    //     double dy = dx * Math.tan(yaw);
+    //     Transform2d notepose = new Transform2d(dx,dy,new Rotation2d());
+    //     if(pitch > 10) return  Optional.empty();
+    //     else return Optional.of(NoteCamPose.plus(notepose));
+    // }
 
-     public Translation2d getNoteAngle() {
+    //  public Translation2d getNoteAngle() {
       
-            Translation2d NotePose = notePose().get().getTranslation();
-            return SWERVE.getPose().getTranslation().plus(NotePose);
-    }
+    //         Translation2d NotePose = notePose().get().getTranslation();
+    //         return SWERVE.getPose().getTranslation().plus(NotePose);
+    // }
 }
