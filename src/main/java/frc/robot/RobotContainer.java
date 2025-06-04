@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,17 +30,10 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import frc.robot.Constants.Constants.FieldConstants;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here...
+    // Subsystems
     public static final SwerveSubsystem SWERVE = TunerConstants.DriveTrain;
     public static final Pigeon PIGEON = new Pigeon();
-
     public static final PivotSubsystem PIVOT = new PivotSubsystem();
     public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
     public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
@@ -48,13 +42,38 @@ public class RobotContainer {
     public static final HangerSubsystem HANGER = new HangerSubsystem();
     public static final AmpSubsystem AMP = new AmpSubsystem();
 
+    // Controllers
+    private final CommandXboxController driverController = 
+        new CommandXboxController(Constants.OperatorConstants.driverControllerPort);
+    private final CommandXboxController operatorController = 
+        new CommandXboxController(Constants.OperatorConstants.operatorControllerPort);
+
+    // Autonomous
     SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
     public RobotContainer() {
-        // Configure the trigger bindings
+        configureSubsystemDefaults();
+        configureNamedCommands();
+        configureBindings();
+        
+        SWERVE.setUpPathPlanner();
+        autoChooser = AutoBuilder.buildAutoChooser();
+        Shuffleboard.getTab("Autonomous").add(autoChooser);
+    }
+
+    private void configureSubsystemDefaults() {
+        SWERVE.setDefaultCommand(new DefaultDrive(
+            SWERVE,
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
+            () -> -driverController.getRightX(),
+            () -> driverController.getHID().getRightBumper()
+        ));
+        
+        SHOOTER.setDefaultCommand(new MaintainShooterIdle(SHOOTER));
+    }
+
+    private void configureNamedCommands() {
         NamedCommands.registerCommand("shootNote", SHOOTER.autoShootNoteToSpeaker(AMP));
         NamedCommands.registerCommand("shootLimelight", SHOOTER.autoShootNoteLimelight(AMP));
         NamedCommands.registerCommand("intakeNote", INTAKE.autoIntakeNote());
@@ -62,7 +81,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("outtakeNote", INTAKE.outtakeNote());
         NamedCommands.registerCommand("stopSpeakerShooter", SHOOTER.stopShooter());
         NamedCommands.registerCommand("intake", new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor));
-		NamedCommands.registerCommand("intakeTimeout", new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor).withTimeout(2).until(() -> INTAKE.handoff));
+        NamedCommands.registerCommand("intakeTimeout", new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor).withTimeout(2).until(() -> INTAKE.handoff));
         NamedCommands.registerCommand("stopIntake", INTAKE.stopIntake());
         NamedCommands.registerCommand("ampShoot", AMP.shootNoteToAmp());
         NamedCommands.registerCommand("pivotToIntake", PIVOT.movePivotToIntake());
@@ -70,86 +89,64 @@ public class RobotContainer {
         NamedCommands.registerCommand("autoAim", PIVOT.autoAutoAim());
         NamedCommands.registerCommand("pivotToSubWoofer", PIVOT.movePivotToSubWooferAuto());
         NamedCommands.registerCommand("LimelightDrive", new AutoDrive());
-
-        SWERVE.setDefaultCommand(new DefaultDrive());
-        configureBindings();
-
-        SWERVE.setUpPathPlanner();
-        autoChooser = AutoBuilder.buildAutoChooser();
-        Shuffleboard.getTab("Autonomous").add(autoChooser);
     }
 
-    public static boolean IsRed() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-    }
-
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
     private void configureBindings() {
-        // Driver Bindings
-        InputManager.getInstance().getDriverButton(InputManager.Button.LB_Button5).whileTrue(INTAKE.outtakeNote());
-        InputManager.getInstance().getDriverButton(InputManager.Button.RB_Button6).whileTrue(new Handoff(INTAKE, AMP).until(SHOOTER::getShooterSensor).andThen(SHOOTER::setIdleShooterSpeeds));
-        InputManager.getInstance().getDriverButton(InputManager.Button.X_Button3).onTrue(new InstantCommand(PIGEON::zeroYaw));
-        new Trigger(() -> InputManager.getInstance().getDriverAxis(2) > 0.5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
-        InputManager.getInstance().getDriverButton(InputManager.Button.A_Button1).onTrue(PIVOT.printPivotAngle());
-        //InputManager.getInstance().getDriverPOV(0).whileTrue(new ConditionalCommand(HANGER.hangerUPTest(), HANGER.hangerUP(),DriverStation::isTest));
-        //InputManager.getInstance().getDriverPOV(180).whileTrue(new ConditionalCommand(HANGER.hangerDOWNTest(), HANGER.hangerDOWN(),DriverStation::isTest));
-        //new Trigger(() -> InputManager.getInstance().getDriverAxis(3) > 0.5).whileTrue(new LimelightDrive().alongWith(new AutoAim()));
-		//InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(HANGER::panic));
-        //InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new AutoDrive());
+        // Driver Controls
+        driverController.leftBumper().whileTrue(INTAKE.outtakeNote());
+        driverController.rightBumper().whileTrue(
+            new Handoff(INTAKE, AMP)
+                .until(SHOOTER::getShooterSensor)
+                .andThen(SHOOTER::setIdleShooterSpeeds));
+        
+        driverController.x().onTrue(new InstantCommand(PIGEON::zeroYaw));
+        driverController.leftTrigger(0.5).onTrue(SWERVE.slowModeOn()).onFalse(SWERVE.slowModeOff());
+        driverController.a().onTrue(PIVOT.printPivotAngle());
 
-        // Operator Bindings
-        InputManager.getInstance().getOperatorButton(InputManager.Button.RB_Button6).whileTrue(AMP.shootNoteToAmp());
-        InputManager.getInstance().getOperatorButton(InputManager.Button.LB_Button5).whileTrue(SHOOTER.shootNoteToSpeaker());
-        InputManager.getInstance().getOperatorButton(InputManager.Button.B_Button2).toggleOnTrue((SHOOTER.setRandomMode()));
-        InputManager.getInstance().getOperatorPOV(270).whileTrue(AMP.ampIntake());
-        InputManager.getInstance().getOperatorPOV(90).whileTrue(SHOOTER.shooterBackward());
-        InputManager.getInstance().getOperatorPOV(0).whileTrue(PIVOT.raisePivot());
-        InputManager.getInstance().getOperatorPOV(180).whileTrue(PIVOT.lowerPivot());
-        //new Trigger(() -> InputManager.getInstance().getOperatorAxis(2) > 0.5).whileTrue(SHOOTER.setPassing().alongWith(PIVOT.movePivotToSubWoofer()));
-        //new Trigger(() -> InputManager.getInstance().getOperatorAxis(3) > 0.5).whileTrue(new AmpAim().alongWith(PIVOT.movePivotToSubWoofer()).alongWith(SHOOTER.setPassing()));
-        // Operator Presets
-        //InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
-        InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new RingTossPreset());
-        //InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
-       
-
-
+        // Operator Controls
+        operatorController.rightBumper().whileTrue(AMP.shootNoteToAmp());
+        operatorController.leftBumper().whileTrue(SHOOTER.shootNoteToSpeaker());
+        operatorController.b().toggleOnTrue(SHOOTER.setRandomMode());
+        
+        operatorController.povDown().whileTrue(AMP.ampIntake());
+        operatorController.povRight().whileTrue(SHOOTER.shooterBackward());
+        operatorController.povUp().whileTrue(PIVOT.raisePivot());
+        operatorController.povDown().whileTrue(PIVOT.lowerPivot());
+        
+        operatorController.y().whileTrue(new AmpPreset());
+        operatorController.a().whileTrue(new RingTossPreset());
+        operatorController.x().whileTrue(new PassNotePreset());
     }
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
 
+    // Alliance Color Detection
+    public static boolean IsRed() {
+        return DriverStation.getAlliance()
+            .map(alliance -> alliance == DriverStation.Alliance.Red)
+            .orElse(false);
+    }
+
+    // Robot State Management
     public void disableRobot() {
-        PIVOT.SubWoofer();
-        INTAKE.stopIntake();
-        SHOOTER.stopSpeakerShooterMotors();
-        AMP.stopAmp();
+        Logger.recordOutput("Robot/Disabled", true);
+        CommandScheduler.getInstance().cancelAll();
     }
 
     public void enableRobot() {
-        PIVOT.intake();
-        INTAKE.stopIntake();
-        SHOOTER.setIdleShooterSpeeds();
-        AMP.stopAmp();
-        FieldConstants.WING.updateToAlliance();
+        Logger.recordOutput("Robot/Disabled", false);
+        SWERVE.zeroGyro();
+        INTAKE.resetIntakeEncoder();
     }
 
-    public static void logPID(String name, PIDController pid){
-        Logger.recordOutput(name+"/error", pid.getPositionError());
-        Logger.recordOutput(name+"/setPoint", pid.getSetpoint());
-        
+    // PID Telemetry
+    public static void logPID(String name, PIDController pid) {
+        Logger.recordOutput("PID/" + name + "/P", pid.getP());
+        Logger.recordOutput("PID/" + name + "/I", pid.getI());
+        Logger.recordOutput("PID/" + name + "/D", pid.getD());
+        Logger.recordOutput("PID/" + name + "/Setpoint", pid.getSetpoint());
+        Logger.recordOutput("PID/" + name + "/PositionError", pid.getPositionError());
     }
 }
