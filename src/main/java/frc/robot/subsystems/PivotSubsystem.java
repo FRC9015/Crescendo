@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
@@ -23,41 +25,39 @@ import frc.robot.Constants.Constants.PivotConstants;
 public class PivotSubsystem extends SubsystemBase {
     
     //makes motors
-    public final CANSparkFlex pivotMotor1 = new CANSparkFlex(PivotConstants.pivotMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-    public final CANSparkFlex pivotMotor2 = new CANSparkFlex(PivotConstants.pivotMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+    public final SparkFlex pivotMotor1 = new SparkFlex(PivotConstants.pivotMotor1ID, SparkLowLevel.MotorType.kBrushless);
+    public final SparkFlex pivotMotor2 = new SparkFlex(PivotConstants.pivotMotor2ID, SparkLowLevel.MotorType.kBrushless);
 
     //gets encoders
-    public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
-
-
+    //public final RelativeEncoder pivotEncoder = pivotMotor1.getEncoder();
     //makes PID for motors
-    private final SparkPIDController pivotPIDController = pivotMotor1.getPIDController();
+   // private final SparkClosedLoopController pivotConfig.closedLoop = pivotMotor1.getClosedLoopController();
+
+    private final SparkMaxConfig pivotConfig = new SparkMaxConfig();
 
     //motion profiling
     private final TrapezoidProfile pivot1Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
     private final TrapezoidProfile pivot2Profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(3.0, 1.0));
-    TrapezoidProfile.State motor1Setpoint = new TrapezoidProfile.State();
-    TrapezoidProfile.State motor2Setpoint = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor1point = new TrapezoidProfile.State();
+    TrapezoidProfile.State motor2point = new TrapezoidProfile.State();
     TrapezoidProfile.State motor1Goal = new TrapezoidProfile.State();
     TrapezoidProfile.State motor2Goal = new TrapezoidProfile.State();
 
 
     private double currentPosition = 0;
-
+ 
 
     public PivotSubsystem(){
 
         //sets PID values of both controllers
-        pivotPIDController.setP(2);
-        pivotPIDController.setI(0);
-        pivotPIDController.setD(0);
-        pivotPIDController.setOutputRange(-1,1.45);
-        pivotPIDController.setFF(0.00015);
+        pivotConfig.closedLoop.pid(2,0,0);
+        pivotConfig.closedLoop.outputRange(-1,1.45);
+        pivotConfig.closedLoop.velocityFF(0.00015);
 
 
-        pivotMotor2.follow(pivotMotor1,true);
+        pivotMotor2.follow(pivotMotor1, true);
         //makes encoder account for gear box/Chain
-        pivotEncoder.setPositionConversionFactor(1.0/15);
+        pivotConfig.encoder.positionConversionFactor(1.0/15);
 
 
     }
@@ -105,42 +105,42 @@ public class PivotSubsystem extends SubsystemBase {
         motor1Goal = new TrapezoidProfile.State(0.5,0.5);
         motor2Goal = new TrapezoidProfile.State(-0.5,0.5);
 
-        pivotPIDController.setP(2);
-        pivotPIDController.setI(0.0);
+        pivotConfig.closedLoop.p(2);
+        pivotConfig.closedLoop.i(0.0);
         currentPosition = 0.24;
     }
 
     //uses SparkMax PID to set the motors to a position
     public void SubWoofer(){
-        pivotPIDController.setP(0.4);
-        pivotPIDController.setI(0.0);
+        pivotConfig.closedLoop.p(0.4);
+        pivotConfig.closedLoop.i(0.0);
         currentPosition = 0;
         
     }
 
     //uses SparkMax PID to set the motors to a position
     public void AmpPreset(){
-        pivotPIDController.setP(1.5);
-        pivotPIDController.setI(0.0);
+        pivotConfig.closedLoop.p(1.5);
+        pivotConfig.closedLoop.i(0.0);
         currentPosition = 1.3;
         
     }
 
     public void passNotePreset(){
-        pivotPIDController.setP(2);
-        pivotPIDController.setI(0.0);
+        pivotConfig.closedLoop.p(2);
+        pivotConfig.closedLoop.i(0.0);
         currentPosition = 0.48;
     }
 
-    public void setCurrentPosition(double SetPoint){
-        pivotPIDController.setP(7);
-        pivotPIDController.setI(0.0004);
-        currentPosition = MathUtil.clamp(SetPoint, 0, 1.3);
+    public void setCurrentPosition(double point){
+        pivotConfig.closedLoop.p(7);
+        pivotConfig.closedLoop.i(0.0004);
+        currentPosition = MathUtil.clamp(point, 0, 1.3);
     }
 
     public void autoAim(){
       
-        setCurrentPosition(LIMELIGHT_INTERFACE.getSetPoint());
+        setCurrentPosition(LIMELIGHT_INTERFACE.getpoint());
         
     }
 
@@ -149,13 +149,13 @@ public class PivotSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         //puts values on dashboard
-        SmartDashboard.putNumber("pivot Position", pivotEncoder.getPosition());
+        SmartDashboard.putNumber("pivot Position", pivotMotor1.configAccessor.encoder.getPosition());
         Logger.recordOutput("Pivot/Error", pivotEncoder.getPosition()-currentPosition);
         double kDt = 0.02;
-        motor1Setpoint = pivot1Profile.calculate(kDt,motor1Setpoint,motor1Goal);
-        motor2Setpoint = pivot2Profile.calculate(kDt,motor2Setpoint,motor2Goal);
+        motor1point = pivot1Profile.calculate(kDt,motor1point,motor1Goal);
+        motor2point = pivot2Profile.calculate(kDt,motor2point,motor2Goal);
 
-        pivotPIDController.setReference(currentPosition, CANSparkFlex.ControlType.kPosition);
+        pivotConfig.closedLoop.setSetpoint(currentPosition, SparkFlex.ControlType.kPosition);
         
     }
 }
