@@ -1,40 +1,24 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.SignalsConfig;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.SparkFlex;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants.ShooterConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class AmpSubsystem extends SubsystemBase{
         
-    private final CANSparkFlex ampMotorTop = new CANSparkFlex(ShooterConstants.ampShooterMotor1ID,
+    private final SparkFlex ampMotorTop = new SparkFlex(ShooterConstants.ampShooterMotor1ID,
             MotorType.kBrushless);
-    private final CANSparkFlex ampMotorBottom = new CANSparkFlex(ShooterConstants.ampShooterMotor2ID,
+    private final SparkFlex ampMotorBottom = new SparkFlex(ShooterConstants.ampShooterMotor2ID,
             MotorType.kBrushless);
 
     public AmpSubsystem(){
-        ampMotorTop.setSmartCurrentLimit(30);
-        ampMotorBottom.setSmartCurrentLimit(30);
-
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 10000);
-        ampMotorTop.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 10000);
-
-
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 10000);
-        ampMotorBottom.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 10000);
 
     }
 

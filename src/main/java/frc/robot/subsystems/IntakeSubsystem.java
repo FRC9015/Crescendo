@@ -2,10 +2,11 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
@@ -14,28 +15,19 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.Constants.IntakeConstants;
+import frc.robot.Constants.IntakeConstants;
 
 
 public class IntakeSubsystem extends SubsystemBase {
     private final DigitalOutput handoffSensor = new DigitalOutput(2);
     public boolean handoff = true;
-    private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
-        new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
+    private SparkFlex[] intakeMotors = new SparkFlex[]{
+        new SparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
     };
-    private final CANSparkFlex handoffMotor = new CANSparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
+    private final SparkFlex handoffMotor = new SparkFlex(IntakeConstants.handoffMotorID, MotorType.kBrushless);
     RelativeEncoder handoffMotorEncoder = handoffMotor.getEncoder();
 
     public IntakeSubsystem(){
-        for (CANSparkFlex motor:intakeMotors){
-            motor.setSmartCurrentLimit(30);
-            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 10000);
-            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 10000);
-            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 10000);
-            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 10000);
-            motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10000);
-
-        }
         handoff = true;
     }
 
@@ -80,20 +72,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private void setIntakeMotorSpeeds(){
         double motorSpeed = -0.8;
-        for (CANSparkFlex motor : intakeMotors) {
+        for (SparkFlex motor : intakeMotors) {
             motor.set(motorSpeed);
         }
         handoffMotor.set(-motorSpeed);
     }
     private void setReverseIntakeMotorSpeeds(){
         double motorSpeed = 0.8;
-        for(CANSparkFlex motor:intakeMotors){
+        for(SparkFlex motor:intakeMotors){
             motor.set(motorSpeed);
         }
         handoffMotor.set(-motorSpeed);
     }
     private void stopIntakeMotors(){
-        for (CANSparkFlex motor:intakeMotors){
+        for (SparkFlex motor:intakeMotors){
             motor.stopMotor();
         }
         handoffMotor.stopMotor();

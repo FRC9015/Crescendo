@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,7 +16,7 @@ public class Pigeon extends SubsystemBase{
 	}
 
 	public Rotation2d getYawAsRotation2d() {
-		return Rotation2d.fromDegrees(pigeon.getYaw().getValue());
+		return Rotation2d.fromDegrees(pigeon.getYaw().getValueAsDouble());
 	}
 
 	public void zeroYaw() {

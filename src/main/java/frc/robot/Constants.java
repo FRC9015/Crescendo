@@ -2,14 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Constants;
+package frc.robot;
 
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Zone;
+import edu.wpi.first.wpilibj.RobotBase;
 
 
 /**
@@ -21,18 +25,25 @@ import frc.robot.Zone;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
+    public static final Mode simMode = Mode.SIM;
+    public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+   
     public static final double robotWidth = Units.inchesToMeters(27);
     public static final double robotLength = Units.inchesToMeters(27);
     public static final double wheelRadius = Units.inchesToMeters(2);
     public static final double gearRatio = 6.12;
-    public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-            new PIDConstants(2.1, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(2, 0.0, 0.0), // Rotation PID constants
-            4, // Max module speed, in m/s
-            Units.feetToMeters(15 / 12), // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-    );
+
+    
+     public static enum Mode {
+        /** Running on a real robot. */
+        REAL,
+
+        /** Running a physics simulator. */
+        SIM,
+
+        /** Replaying from a log file. */
+        REPLAY
+    }
 
     public static class OperatorConstants {
         public static final int driverControllerPort = 0;
@@ -50,6 +61,10 @@ public final class Constants {
         public static final double angularSpeed = maxSpeed / (Math.hypot(robotLength, robotWidth) / 2) / rotationLimit;
         public static final double slewRateLimit = 20;
         public static final double dtSeconds = 0.02;
+
+        public static final double ROBOT_MASS_KG = 59.90;
+        public static final double ROBOT_MOI = 6.554;
+        public static final double WHEEL_COF = 1.19;
     }
 
     public static class ShooterConstants {
@@ -111,6 +126,5 @@ public final class Constants {
         public static final Translation2d Amp_Blue_Pose = new Translation2d(Amp_X_Blue,Amp_Y);
         public static final Translation2d Amp_Red_Pose = new Translation2d(Amp_X_Red,Amp_Y);
         
-        public static final Zone WING = new Zone(new Translation2d(0.9,7.46), new Translation2d(5.1,2.23));
     }
 }

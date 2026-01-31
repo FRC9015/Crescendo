@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Constants.InputConstants;
-import frc.robot.Constants.Constants.OperatorConstants;
+import frc.robot.Constants.InputConstants;
+import frc.robot.Constants.OperatorConstants;
 
 /**
  * This handles ALL input from the controller.
