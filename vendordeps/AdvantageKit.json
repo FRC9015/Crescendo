@@ -4,7 +4,7 @@
     "version": "3.2.1",
     "uuid": "d820cc26-74e3-11ec-90d6-0242ac120003",
     "frcYear": "2024",
-    "mavenUrls": [],
+    "mavenUrls": ["https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit/org/littletonrobotics/akit/conduit/conduit-api/3.2.1/conduit-api-3.2.1.pom"],
     "jsonUrl": "https://github.com/Mechanical-Advantage/AdvantageKit/releases/latest/download/AdvantageKit.json",
     "javaDependencies": [
         {

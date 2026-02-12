@@ -106,7 +106,8 @@ public class RobotContainer {
         //InputManager.getInstance().getDriverPOV(0).whileTrue(new ConditionalCommand(HANGER.hangerUPTest(), HANGER.hangerUP(),DriverStation::isTest));
         //InputManager.getInstance().getDriverPOV(180).whileTrue(new ConditionalCommand(HANGER.hangerDOWNTest(), HANGER.hangerDOWN(),DriverStation::isTest));
         //new Trigger(() -> InputManager.getInstance().getDriverAxis(3) > 0.5).whileTrue(new LimelightDrive().alongWith(new AutoAim()));
-		//InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new InstantCommand(HANGER::panic));
+		//InputManager.getInstance().getDriverButton(InputManager.Button.B_Button2).onTrue(new I 7  
+        //nstantCommand(HANGER::panic));
         //InputManager.getInstance().getDriverButton(InputManager.Button.Y_Button4).whileTrue(new AutoDrive());
 
         // Operator Bindings
@@ -120,8 +121,7 @@ public class RobotContainer {
         //new Trigger(() -> InputManager.getInstance().getOperatorAxis(2) > 0.5).whileTrue(SHOOTER.setPassing().alongWith(PIVOT.movePivotToSubWoofer()));
         //new Trigger(() -> InputManager.getInstance().getOperatorAxis(3) > 0.5).whileTrue(new AmpAim().alongWith(PIVOT.movePivotToSubWoofer()).alongWith(SHOOTER.setPassing()));
         // Operator Presets
-        //InputManager.getInstance().getOperatorButton(InputManager.Button.Y_Button4).whileTrue(new AmpPreset());
-        InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new RingTossPreset());
+        // InputManager.getInstance().getOperatorButton(InputManager.Button.A_Button1).whileTrue(new RingTossPreset());
         //InputManager.getInstance().getOperatorButton(InputManager.Button.X_Button3).whileTrue(new PassNotePreset());
        
 

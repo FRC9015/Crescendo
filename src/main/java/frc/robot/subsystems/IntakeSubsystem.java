@@ -7,8 +7,8 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,7 +18,7 @@ import frc.robot.Constants.Constants.IntakeConstants;
 
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final DigitalOutput handoffSensor = new DigitalOutput(2);
+    private final DigitalInput handoffSensor = new DigitalInput(2);
     public boolean handoff = true;
     private CANSparkFlex[] intakeMotors = new CANSparkFlex[]{
         new CANSparkFlex(IntakeConstants.intakeMotor1ID, MotorType.kBrushless),
